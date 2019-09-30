@@ -44,5 +44,13 @@ namespace DoAnLTTQ.Tools
             }
         }
 
+        public Color Color
+        {
+            set
+            {
+                pen.Color = value;
+            }
+        }
+
     }
 }

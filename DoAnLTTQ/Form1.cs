@@ -12,7 +12,7 @@ namespace DoAnLTTQ
 {
     enum tool
     {
-        pen, eraser
+        pen, eraser, picker
     }
 
     public partial class Form1 : Form
@@ -22,18 +22,28 @@ namespace DoAnLTTQ
         string filename;
         tool currentTool;
         Tools.PenTools pen;
+        Tools.Picker picker;
         public Form1()
         {
             InitializeComponent();
         }
 
-
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            workPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
+            workPanel.Height = this.Height - topPanel.Height - statusStrip1.Height - menuStrip.Height - 39;
+            layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 34;
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             pen = new Tools.PenTools();
+            picker = new Tools.Picker();
+
             currentTool = tool.pen;
         }
+
+        #region MenuStip
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -85,20 +95,54 @@ namespace DoAnLTTQ
             }
         }
 
-        private void Form1_SizeChanged(object sender, EventArgs e)
+        #endregion
+
+        #region ToolStrip
+
+        private void MToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            workPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
-            workPanel.Height = this.Height - topPanel.Height - statusStrip1.Height - menuStrip.Height - 39;
-            layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 34;
+            UncheckAll();
+            if(e.ClickedItem.GetType() == typeof(ToolStripButton))
+            {
+                ToolStripButton button = (ToolStripButton)e.ClickedItem;
+                button.Checked = true;
+                button.CheckState = CheckState.Checked;
+                if(button.Text == penStripButton.Text)
+                {
+                    currentTool = tool.pen;
+                }
+                else if (button.Text == eraserStripButton.Text)
+                {
+                    currentTool = tool.eraser;
+                }
+                else if (button.Text == pickerStripButton.Text)
+                {
+                    currentTool = tool.picker;
+                }
+            } 
         }
 
-        private void PictureBox1_Paint(object sender, PaintEventArgs e)
+        void UncheckAll()
+        {
+            foreach(ToolStripButton button in mToolStrip.Items)
+            {
+                button.Checked = false;
+                button.CheckState = CheckState.Unchecked;
+            }
+        }
+
+
+        #endregion
+
+        #region mPicBox
+
+        private void mPicBox_Paint(object sender, PaintEventArgs e)
         {
             finalBmp = currentBmp;
             mPicBox.Image = finalBmp;
         }
 
-        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
+        private void mPicBox_MouseDown(object sender, MouseEventArgs e)
         {
             switch(currentTool)
             {
@@ -107,13 +151,18 @@ namespace DoAnLTTQ
                         pen.GetLocation(ref e);
                     }
                     break;
+                case tool.picker:
+                    {
+                        mainColorPic.BackColor = picker.GetColor(ref finalBmp, ref e);
+                    }
+                    break;
                 default:
                     break;
             }
         }
 
 
-        private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
+        private void mPicBox_MouseMove(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)
             {
@@ -130,14 +179,122 @@ namespace DoAnLTTQ
             }
         }
 
-        private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
+        private void mPicBox_MouseUp(object sender, MouseEventArgs e)
         {
 
         }
+
+        #endregion
 
         private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             pen.Size = (float)numericUpDown1.Value;
         }
+
+        #region ColorTabPage
+
+        bool colorIsPicking = false;
+        private void ColorGradian_MouseDown(object sender, MouseEventArgs e)
+        {
+            colorIsPicking = true;
+        }
+
+        private void ColorGradian_MouseMove(object sender, MouseEventArgs e)
+        {
+            if(colorIsPicking)
+            {
+                using (Bitmap bmp = new Bitmap(colorGradian.Image))
+                {
+                    if(e.X >0 && e.Y > 0 && e.X < colorGradian.Width && e.Y < colorGradian.Height)
+                    {
+                        Color c = bmp.GetPixel(e.X, e.Y);
+                        mainColorPic.BackColor = c;
+                    }
+                    
+                }
+            }
+        }
+
+        private void ColorGradian_MouseUp(object sender, MouseEventArgs e)
+        {
+            colorIsPicking = false;
+        }
+
+        private void ColorGradian_MouseClick(object sender, MouseEventArgs e)
+        {
+            using (Bitmap bmp = new Bitmap(colorGradian.Image))
+            {
+                Color c = bmp.GetPixel(e.X, e.Y);
+                mainColorPic.BackColor = c;
+            }
+        }
+
+        private void MainColorPic_BackColorChanged(object sender, EventArgs e)
+        {
+            redTrackBar.Value = mainColorPic.BackColor.R;
+            greenTrackBar.Value = mainColorPic.BackColor.G;
+            blueTrackBar.Value = mainColorPic.BackColor.B;
+
+            pen.Color = mainColorPic.BackColor;
+        }
+
+        private void RedTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            Color c = mainColorPic.BackColor;
+            mainColorPic.BackColor = Color.FromArgb(redTrackBar.Value, c.G, c.B);
+            label7.Text = Convert.ToString(redTrackBar.Value);
+        }
+
+        private void GreenTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            Color c = mainColorPic.BackColor;
+            mainColorPic.BackColor = Color.FromArgb(c.R, greenTrackBar.Value, c.B);
+            label8.Text = Convert.ToString(greenTrackBar.Value);
+        }
+
+        private void BlueTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            Color c = mainColorPic.BackColor;
+            mainColorPic.BackColor = Color.FromArgb(c.R, c.G, blueTrackBar.Value);
+            label9.Text = Convert.ToString(blueTrackBar.Value);
+        }
+
+        private void AlphaTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            mainColorPic.BackColor = Color.FromArgb(alphaTrackBar.Value, mainColorPic.BackColor);
+            label10.Text = Convert.ToString(alphaTrackBar.Value);
+        }
+
+        private void Label3_Click(object sender, EventArgs e)
+        {
+            if (redTrackBar.Value != 0)
+                redTrackBar.Value = 0;
+            else redTrackBar.Value = 255;
+        }
+
+        private void Label4_Click(object sender, EventArgs e)
+        {
+            if (greenTrackBar.Value != 0)
+                greenTrackBar.Value = 0;
+            else greenTrackBar.Value = 255;
+        }
+
+        private void Label5_Click(object sender, EventArgs e)
+        {
+            if (blueTrackBar.Value != 0)
+                blueTrackBar.Value = 0;
+            else blueTrackBar.Value = 255;
+        }
+
+        private void Label6_Click(object sender, EventArgs e)
+        {
+            if (alphaTrackBar.Value != 0)
+                alphaTrackBar.Value = 0;
+            else alphaTrackBar.Value = 100;
+        }
+
+
+        #endregion
+
     }
 }
