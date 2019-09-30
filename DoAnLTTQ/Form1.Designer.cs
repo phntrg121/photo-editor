@@ -58,6 +58,21 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.alphaTrackBar = new MetroFramework.Controls.MetroTrackBar();
+            this.blueTrackBar = new MetroFramework.Controls.MetroTrackBar();
+            this.greenTrackBar = new MetroFramework.Controls.MetroTrackBar();
+            this.redTrackBar = new MetroFramework.Controls.MetroTrackBar();
+            this.mainColorPic = new System.Windows.Forms.PictureBox();
+            this.subColorPic = new System.Windows.Forms.PictureBox();
+            this.colorGradian = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.topPanel = new System.Windows.Forms.Panel();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -67,24 +82,9 @@
             this.toolStripButton = new System.Windows.Forms.ToolStripButton();
             this.handStripButton = new System.Windows.Forms.ToolStripButton();
             this.penStripButton = new System.Windows.Forms.ToolStripButton();
-            this.erarerStripButton = new System.Windows.Forms.ToolStripButton();
+            this.eraserStripButton = new System.Windows.Forms.ToolStripButton();
             this.pickerStripButton = new System.Windows.Forms.ToolStripButton();
             this.leftPanel = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.metroTrackBar1 = new MetroFramework.Controls.MetroTrackBar();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.metroTrackBar2 = new MetroFramework.Controls.MetroTrackBar();
-            this.metroTrackBar3 = new MetroFramework.Controls.MetroTrackBar();
-            this.metroTrackBar4 = new MetroFramework.Controls.MetroTrackBar();
             this.menuStrip.SuspendLayout();
             this.workPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mPicBox)).BeginInit();
@@ -94,13 +94,13 @@
             this.panel5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainColorPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.subColorPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.colorGradian)).BeginInit();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.mToolStrip.SuspendLayout();
             this.leftPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -168,25 +168,25 @@
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // cutToolStripMenuItem
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cutToolStripMenuItem.Text = "Cut";
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // toolToolStripMenuItem
@@ -201,13 +201,13 @@
             // penToolStripMenuItem
             // 
             this.penToolStripMenuItem.Name = "penToolStripMenuItem";
-            this.penToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.penToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.penToolStripMenuItem.Text = "Pen";
             // 
             // eraserToolStripMenuItem
             // 
             this.eraserToolStripMenuItem.Name = "eraserToolStripMenuItem";
-            this.eraserToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.eraserToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.eraserToolStripMenuItem.Text = "Eraser";
             // 
             // viewToolStripMenuItem
@@ -243,10 +243,10 @@
             this.mPicBox.TabIndex = 0;
             this.mPicBox.TabStop = false;
             this.mPicBox.Visible = false;
-            this.mPicBox.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBox1_Paint);
-            this.mPicBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseDown);
-            this.mPicBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseMove);
-            this.mPicBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseUp);
+            this.mPicBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mPicBox_Paint);
+            this.mPicBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mPicBox_MouseDown);
+            this.mPicBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mPicBox_MouseMove);
+            this.mPicBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mPicBox_MouseUp);
             // 
             // rightPanel
             // 
@@ -349,21 +349,21 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.textBox4);
-            this.tabPage1.Controls.Add(this.textBox3);
-            this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.label6);
+            this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.label8);
             this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.metroTrackBar4);
-            this.tabPage1.Controls.Add(this.metroTrackBar3);
-            this.tabPage1.Controls.Add(this.metroTrackBar2);
-            this.tabPage1.Controls.Add(this.metroTrackBar1);
-            this.tabPage1.Controls.Add(this.pictureBox3);
-            this.tabPage1.Controls.Add(this.pictureBox2);
-            this.tabPage1.Controls.Add(this.pictureBox1);
+            this.tabPage1.Controls.Add(this.alphaTrackBar);
+            this.tabPage1.Controls.Add(this.blueTrackBar);
+            this.tabPage1.Controls.Add(this.greenTrackBar);
+            this.tabPage1.Controls.Add(this.redTrackBar);
+            this.tabPage1.Controls.Add(this.mainColorPic);
+            this.tabPage1.Controls.Add(this.subColorPic);
+            this.tabPage1.Controls.Add(this.colorGradian);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -371,6 +371,167 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Color";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(169, 191);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(25, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "100";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 191);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(14, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "A";
+            this.label6.Click += new System.EventHandler(this.Label6_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(169, 164);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(13, 13);
+            this.label9.TabIndex = 3;
+            this.label9.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 164);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(14, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "B";
+            this.label5.Click += new System.EventHandler(this.Label5_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(169, 136);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(13, 13);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 136);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(15, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "G";
+            this.label4.Click += new System.EventHandler(this.Label4_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(169, 111);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(13, 13);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 110);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(15, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "R";
+            this.label3.Click += new System.EventHandler(this.Label3_Click);
+            // 
+            // alphaTrackBar
+            // 
+            this.alphaTrackBar.BackColor = System.Drawing.Color.Transparent;
+            this.alphaTrackBar.LargeChange = 1;
+            this.alphaTrackBar.Location = new System.Drawing.Point(26, 186);
+            this.alphaTrackBar.Name = "alphaTrackBar";
+            this.alphaTrackBar.Size = new System.Drawing.Size(128, 23);
+            this.alphaTrackBar.TabIndex = 2;
+            this.alphaTrackBar.Text = "metroTrackBar1";
+            this.alphaTrackBar.Value = 100;
+            this.alphaTrackBar.ValueChanged += new System.EventHandler(this.AlphaTrackBar_ValueChanged);
+            // 
+            // blueTrackBar
+            // 
+            this.blueTrackBar.BackColor = System.Drawing.Color.Transparent;
+            this.blueTrackBar.LargeChange = 1;
+            this.blueTrackBar.Location = new System.Drawing.Point(26, 160);
+            this.blueTrackBar.Maximum = 255;
+            this.blueTrackBar.Name = "blueTrackBar";
+            this.blueTrackBar.Size = new System.Drawing.Size(128, 23);
+            this.blueTrackBar.TabIndex = 2;
+            this.blueTrackBar.Text = "metroTrackBar1";
+            this.blueTrackBar.Value = 0;
+            this.blueTrackBar.ValueChanged += new System.EventHandler(this.BlueTrackBar_ValueChanged);
+            // 
+            // greenTrackBar
+            // 
+            this.greenTrackBar.BackColor = System.Drawing.Color.Transparent;
+            this.greenTrackBar.LargeChange = 1;
+            this.greenTrackBar.Location = new System.Drawing.Point(26, 131);
+            this.greenTrackBar.Maximum = 255;
+            this.greenTrackBar.Name = "greenTrackBar";
+            this.greenTrackBar.Size = new System.Drawing.Size(128, 23);
+            this.greenTrackBar.TabIndex = 2;
+            this.greenTrackBar.Text = "metroTrackBar1";
+            this.greenTrackBar.Value = 0;
+            this.greenTrackBar.ValueChanged += new System.EventHandler(this.GreenTrackBar_ValueChanged);
+            // 
+            // redTrackBar
+            // 
+            this.redTrackBar.BackColor = System.Drawing.Color.Transparent;
+            this.redTrackBar.LargeChange = 1;
+            this.redTrackBar.Location = new System.Drawing.Point(25, 105);
+            this.redTrackBar.Maximum = 255;
+            this.redTrackBar.Name = "redTrackBar";
+            this.redTrackBar.Size = new System.Drawing.Size(128, 23);
+            this.redTrackBar.TabIndex = 2;
+            this.redTrackBar.Text = "metroTrackBar1";
+            this.redTrackBar.Value = 0;
+            this.redTrackBar.ValueChanged += new System.EventHandler(this.RedTrackBar_ValueChanged);
+            // 
+            // mainColorPic
+            // 
+            this.mainColorPic.BackColor = System.Drawing.Color.Black;
+            this.mainColorPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mainColorPic.Location = new System.Drawing.Point(6, 42);
+            this.mainColorPic.Name = "mainColorPic";
+            this.mainColorPic.Size = new System.Drawing.Size(35, 34);
+            this.mainColorPic.TabIndex = 1;
+            this.mainColorPic.TabStop = false;
+            this.mainColorPic.BackColorChanged += new System.EventHandler(this.MainColorPic_BackColorChanged);
+            // 
+            // subColorPic
+            // 
+            this.subColorPic.BackColor = System.Drawing.Color.White;
+            this.subColorPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.subColorPic.Location = new System.Drawing.Point(25, 60);
+            this.subColorPic.Name = "subColorPic";
+            this.subColorPic.Size = new System.Drawing.Size(35, 34);
+            this.subColorPic.TabIndex = 1;
+            this.subColorPic.TabStop = false;
+            // 
+            // colorGradian
+            // 
+            this.colorGradian.Image = ((System.Drawing.Image)(resources.GetObject("colorGradian.Image")));
+            this.colorGradian.Location = new System.Drawing.Point(7, 5);
+            this.colorGradian.Name = "colorGradian";
+            this.colorGradian.Size = new System.Drawing.Size(188, 31);
+            this.colorGradian.TabIndex = 0;
+            this.colorGradian.TabStop = false;
+            this.colorGradian.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseClick);
+            this.colorGradian.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseDown);
+            this.colorGradian.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseMove);
+            this.colorGradian.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseUp);
             // 
             // tabPage2
             // 
@@ -427,13 +588,14 @@
             this.toolStripButton,
             this.handStripButton,
             this.penStripButton,
-            this.erarerStripButton,
+            this.eraserStripButton,
             this.pickerStripButton});
-            this.mToolStrip.Location = new System.Drawing.Point(5, 0);
+            this.mToolStrip.Location = new System.Drawing.Point(-3, 0);
             this.mToolStrip.Name = "mToolStrip";
-            this.mToolStrip.Size = new System.Drawing.Size(24, 523);
+            this.mToolStrip.Size = new System.Drawing.Size(32, 523);
             this.mToolStrip.TabIndex = 6;
             this.mToolStrip.Text = "toolStrip1";
+            this.mToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MToolStrip_ItemClicked);
             // 
             // moveStripButton
             // 
@@ -441,7 +603,7 @@
             this.moveStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveStripButton.Image")));
             this.moveStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveStripButton.Name = "moveStripButton";
-            this.moveStripButton.Size = new System.Drawing.Size(21, 20);
+            this.moveStripButton.Size = new System.Drawing.Size(29, 20);
             this.moveStripButton.Text = "toolStripButton5";
             // 
             // toolStripButton
@@ -450,7 +612,7 @@
             this.toolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton.Image")));
             this.toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton.Name = "toolStripButton";
-            this.toolStripButton.Size = new System.Drawing.Size(21, 20);
+            this.toolStripButton.Size = new System.Drawing.Size(29, 20);
             this.toolStripButton.Text = "toolStripButton6";
             // 
             // handStripButton
@@ -459,7 +621,7 @@
             this.handStripButton.Image = ((System.Drawing.Image)(resources.GetObject("handStripButton.Image")));
             this.handStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.handStripButton.Name = "handStripButton";
-            this.handStripButton.Size = new System.Drawing.Size(21, 20);
+            this.handStripButton.Size = new System.Drawing.Size(29, 20);
             this.handStripButton.Text = "toolStripButton5";
             // 
             // penStripButton
@@ -470,17 +632,17 @@
             this.penStripButton.Image = ((System.Drawing.Image)(resources.GetObject("penStripButton.Image")));
             this.penStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.penStripButton.Name = "penStripButton";
-            this.penStripButton.Size = new System.Drawing.Size(21, 20);
+            this.penStripButton.Size = new System.Drawing.Size(29, 20);
             this.penStripButton.Text = "toolStripButton1";
             // 
-            // erarerStripButton
+            // eraserStripButton
             // 
-            this.erarerStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.erarerStripButton.Image = ((System.Drawing.Image)(resources.GetObject("erarerStripButton.Image")));
-            this.erarerStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.erarerStripButton.Name = "erarerStripButton";
-            this.erarerStripButton.Size = new System.Drawing.Size(21, 20);
-            this.erarerStripButton.Text = "toolStripButton2";
+            this.eraserStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.eraserStripButton.Image = ((System.Drawing.Image)(resources.GetObject("eraserStripButton.Image")));
+            this.eraserStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.eraserStripButton.Name = "eraserStripButton";
+            this.eraserStripButton.Size = new System.Drawing.Size(29, 20);
+            this.eraserStripButton.Text = "toolStripButton2";
             // 
             // pickerStripButton
             // 
@@ -488,7 +650,7 @@
             this.pickerStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pickerStripButton.Image")));
             this.pickerStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pickerStripButton.Name = "pickerStripButton";
-            this.pickerStripButton.Size = new System.Drawing.Size(21, 20);
+            this.pickerStripButton.Size = new System.Drawing.Size(29, 20);
             this.pickerStripButton.Text = "toolStripButton7";
             // 
             // leftPanel
@@ -500,152 +662,6 @@
             this.leftPanel.Name = "leftPanel";
             this.leftPanel.Size = new System.Drawing.Size(29, 523);
             this.leftPanel.TabIndex = 1;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(7, 5);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(188, 34);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.White;
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(25, 63);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(35, 34);
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackColor = System.Drawing.Color.Black;
-            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox3.Location = new System.Drawing.Point(6, 45);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(35, 34);
-            this.pictureBox3.TabIndex = 1;
-            this.pictureBox3.TabStop = false;
-            // 
-            // metroTrackBar1
-            // 
-            this.metroTrackBar1.BackColor = System.Drawing.Color.Transparent;
-            this.metroTrackBar1.LargeChange = 1;
-            this.metroTrackBar1.Location = new System.Drawing.Point(25, 105);
-            this.metroTrackBar1.Maximum = 255;
-            this.metroTrackBar1.Name = "metroTrackBar1";
-            this.metroTrackBar1.Size = new System.Drawing.Size(128, 23);
-            this.metroTrackBar1.TabIndex = 2;
-            this.metroTrackBar1.Text = "metroTrackBar1";
-            this.metroTrackBar1.Value = 255;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 110);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(15, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "R";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 136);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(15, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "G";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 164);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(14, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "B";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 191);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(14, 13);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "A";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(167, 105);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(28, 20);
-            this.textBox1.TabIndex = 4;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(167, 132);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(28, 20);
-            this.textBox2.TabIndex = 4;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Enabled = false;
-            this.textBox3.Location = new System.Drawing.Point(167, 161);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(28, 20);
-            this.textBox3.TabIndex = 4;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Enabled = false;
-            this.textBox4.Location = new System.Drawing.Point(167, 187);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(28, 20);
-            this.textBox4.TabIndex = 4;
-            // 
-            // metroTrackBar2
-            // 
-            this.metroTrackBar2.BackColor = System.Drawing.Color.Transparent;
-            this.metroTrackBar2.LargeChange = 1;
-            this.metroTrackBar2.Location = new System.Drawing.Point(26, 131);
-            this.metroTrackBar2.Maximum = 255;
-            this.metroTrackBar2.Name = "metroTrackBar2";
-            this.metroTrackBar2.Size = new System.Drawing.Size(128, 23);
-            this.metroTrackBar2.TabIndex = 2;
-            this.metroTrackBar2.Text = "metroTrackBar1";
-            this.metroTrackBar2.Value = 255;
-            // 
-            // metroTrackBar3
-            // 
-            this.metroTrackBar3.BackColor = System.Drawing.Color.Transparent;
-            this.metroTrackBar3.LargeChange = 1;
-            this.metroTrackBar3.Location = new System.Drawing.Point(26, 160);
-            this.metroTrackBar3.Maximum = 255;
-            this.metroTrackBar3.Name = "metroTrackBar3";
-            this.metroTrackBar3.Size = new System.Drawing.Size(128, 23);
-            this.metroTrackBar3.TabIndex = 2;
-            this.metroTrackBar3.Text = "metroTrackBar1";
-            this.metroTrackBar3.Value = 255;
-            // 
-            // metroTrackBar4
-            // 
-            this.metroTrackBar4.BackColor = System.Drawing.Color.Transparent;
-            this.metroTrackBar4.LargeChange = 1;
-            this.metroTrackBar4.Location = new System.Drawing.Point(26, 186);
-            this.metroTrackBar4.Maximum = 255;
-            this.metroTrackBar4.Name = "metroTrackBar4";
-            this.metroTrackBar4.Size = new System.Drawing.Size(128, 23);
-            this.metroTrackBar4.TabIndex = 2;
-            this.metroTrackBar4.Text = "metroTrackBar1";
-            this.metroTrackBar4.Value = 255;
             // 
             // Form1
             // 
@@ -680,6 +696,9 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mainColorPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.subColorPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.colorGradian)).EndInit();
             this.topPanel.ResumeLayout(false);
             this.topPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -687,9 +706,6 @@
             this.mToolStrip.PerformLayout();
             this.leftPanel.ResumeLayout(false);
             this.leftPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -718,7 +734,7 @@
         private System.Windows.Forms.Panel topPanel;
         private System.Windows.Forms.ToolStrip mToolStrip;
         private System.Windows.Forms.ToolStripButton penStripButton;
-        private System.Windows.Forms.ToolStripButton erarerStripButton;
+        private System.Windows.Forms.ToolStripButton eraserStripButton;
         private System.Windows.Forms.PictureBox mPicBox;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
@@ -738,21 +754,21 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ToolStripButton pickerStripButton;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.PictureBox mainColorPic;
+        private System.Windows.Forms.PictureBox subColorPic;
+        private System.Windows.Forms.PictureBox colorGradian;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private MetroFramework.Controls.MetroTrackBar metroTrackBar1;
-        private MetroFramework.Controls.MetroTrackBar metroTrackBar4;
-        private MetroFramework.Controls.MetroTrackBar metroTrackBar3;
-        private MetroFramework.Controls.MetroTrackBar metroTrackBar2;
+        private MetroFramework.Controls.MetroTrackBar redTrackBar;
+        private MetroFramework.Controls.MetroTrackBar alphaTrackBar;
+        private MetroFramework.Controls.MetroTrackBar blueTrackBar;
+        private MetroFramework.Controls.MetroTrackBar greenTrackBar;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
     }
 }
 
