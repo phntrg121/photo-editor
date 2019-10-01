@@ -17,12 +17,15 @@ namespace DoAnLTTQ
 
     public partial class Form1 : Form
     {
-        Bitmap currentBmp;
         Bitmap finalBmp;
+        Size bmpSize;
+        LayersManagement layers;
         string filename;
         tool currentTool;
         Tools.PenTools pen;
         Tools.Picker picker;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -53,9 +56,15 @@ namespace DoAnLTTQ
                 ofd.FilterIndex = 2;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    currentBmp = new Bitmap(ofd.FileName);
+                    Bitmap newBmp = new Bitmap(ofd.FileName);
                     filename = ofd.FileName;
                     mPicBox.Visible = true;
+                    bmpSize = newBmp.Size;
+                    layers = new LayersManagement(newBmp.Size);
+                    layers.Add(ref newBmp, "Layer1", true);
+                    newLStripButton.Enabled = true;
+                    finalBmp = newBmp;
+                    MPicBoxUpdate();
                 }
             }
                 
@@ -67,14 +76,20 @@ namespace DoAnLTTQ
             {
                 if (nff.ShowDialog() == DialogResult.OK)
                 {
-                    currentBmp = new Bitmap(nff.ImageSize.Width, nff.ImageSize.Height);
-                    using (Graphics g = Graphics.FromImage(currentBmp))
+                    Bitmap newBmp = new Bitmap(nff.ImageSize.Width, nff.ImageSize.Height);
+                    using (Graphics g = Graphics.FromImage(newBmp))
                     using (SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255)))
                     {
-                        g.FillRectangle(brush, 0, 0, currentBmp.Width, currentBmp.Height);
+                        g.FillRectangle(brush, 0, 0, newBmp.Width, newBmp.Height);
                     }
                     filename = nff.FileName;
                     mPicBox.Visible = true;
+                    bmpSize = newBmp.Size;
+                    layers = new LayersManagement(newBmp.Size);
+                    layers.Add(ref newBmp, "Layer1", true);
+                    newLStripButton.Enabled = true;
+                    finalBmp = newBmp;
+                    MPicBoxUpdate();
                 }
             }
         }
@@ -136,15 +151,15 @@ namespace DoAnLTTQ
 
         #region mPicBox
 
-        private void mPicBox_Paint(object sender, PaintEventArgs e)
+        void MPicBoxUpdate()
         {
-            finalBmp = currentBmp;
+            finalBmp = layers.FinalImageUpdate();
             mPicBox.Image = finalBmp;
         }
 
         private void mPicBox_MouseDown(object sender, MouseEventArgs e)
         {
-            switch(currentTool)
+            switch (currentTool)
             {
                 case tool.pen:
                     {
@@ -164,13 +179,14 @@ namespace DoAnLTTQ
 
         private void mPicBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 switch (currentTool)
                 {
                     case tool.pen:
                         {
-                            pen.Draw(ref currentBmp, ref e);
+                            pen.Draw(ref layers.Current, ref e);
+                            MPicBoxUpdate();
                         }
                         break;
                     default:
@@ -296,5 +312,33 @@ namespace DoAnLTTQ
 
         #endregion
 
+        #region Layer
+
+        private void NewLStripButton_Click(object sender, EventArgs e)
+        {
+            using(Forms.NewLayerForm nlf = new Forms.NewLayerForm())
+            {
+                nlf.SetDefaultName(layers.LayerCount);
+                if(nlf.ShowDialog()==DialogResult.OK)
+                {
+                    string name = nlf.LayerName;
+                    bool visible = nlf.IsVisible;
+                    Bitmap newBmp = new Bitmap(bmpSize.Width, bmpSize.Height);
+                    newBmp.MakeTransparent();
+                    layers.Add(ref newBmp, name, visible);
+                    deleteLStripButton.Enabled = true;
+                }
+            }
+        }
+
+        private void DeleteLStripButton_Click(object sender, EventArgs e)
+        {
+            layers.Remove();
+            if (layers.LayerCount == 1) deleteLStripButton.Enabled = false;
+            MPicBoxUpdate();
+        }
+
+
+        #endregion
     }
 }
