@@ -80,7 +80,8 @@
     <Compile Include="LayerRow.Designer.cs">
       <DependentUpon>LayerRow.cs</DependentUpon>
     </Compile>
-    <Compile Include="LayersManagement.cs" />
+    <Compile Include="Layer.cs" />
+    <Compile Include="LayerRowManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\PenTools.cs" />
@@ -176,6 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\mouse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\not_visible.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

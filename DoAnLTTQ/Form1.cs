@@ -20,7 +20,7 @@ namespace DoAnLTTQ
         Bitmap finalBmp;
         Image bgImage;
         Size bmpSize;
-        LayersManagement layers;
+        LayerRowManager layers;
         string filename;
         Tool currentTool;
         Tools.PenTools pen;
@@ -64,13 +64,13 @@ namespace DoAnLTTQ
                         filename = ofd.FileName;
                         mPicBox.Visible = true;
                         bmpSize = newBmp.Size;
-                        layers = new LayersManagement(newBmp.Size);
-                        layers.Add(newBmp, "Layer1", true);
+                        layers = new LayerRowManager();
+                        Layer firstLayer = new Layer(newBmp, "Layer1", true);
                         newLStripButton.Enabled = true;
                         clearLStripButton.Enabled = true;
                         renameLStripButton.Enabled = true;
                         finalBmp = newBmp;
-                        UpdateLayerRow();
+                        layers.AddLayerRow(ref layerContainer, ref firstLayer);
                         BackGroundGenerator();
                         MPicBoxUpdate();
                     }
@@ -96,13 +96,13 @@ namespace DoAnLTTQ
                             filename = nff.FileName;
                             mPicBox.Visible = true;
                             bmpSize = newBmp.Size;
-                            layers = new LayersManagement(newBmp.Size);
-                            layers.Add(newBmp, "Layer1", true);
+                            layers = new LayerRowManager();
+                            Layer firstLayer = new Layer(newBmp, "Layer1", true);
                             newLStripButton.Enabled = true;
                             clearLStripButton.Enabled = true;
                             renameLStripButton.Enabled = true;
                             finalBmp = newBmp;
-                            UpdateLayerRow();
+                            layers.AddLayerRow(ref layerContainer, ref firstLayer);
                             BackGroundGenerator();
                             MPicBoxUpdate();
                         }
@@ -389,7 +389,7 @@ namespace DoAnLTTQ
         {
             using (Forms.NewLayer nlf = new Forms.NewLayer())
             {
-                nlf.SetDefaultName(layers.LayerCount);
+                nlf.SetDefaultName(layers.Count);
                 if (nlf.ShowDialog() == DialogResult.OK)
                 {
                     string name = nlf.LayerName;
@@ -397,9 +397,9 @@ namespace DoAnLTTQ
                     using (Bitmap newBmp = new Bitmap(bmpSize.Width, bmpSize.Height))
                     {
                         newBmp.MakeTransparent();
-                        layers.Add(newBmp, name, visible);
+                        Layer layer = new Layer(newBmp, name, visible);
+                        layers.AddLayerRow(ref layerContainer, ref layer);
                         deleteLStripButton.Enabled = true;
-                        UpdateLayerRow();
                     }
                 }
             }
@@ -407,9 +407,8 @@ namespace DoAnLTTQ
 
         private void DeleteLStripButton_Click(object sender, EventArgs e)
         {
-            layers.Remove();
-            if (layers.LayerCount == 1) deleteLStripButton.Enabled = false;
-            UpdateLayerRow();
+            layers.RemoveLayerRow(ref layerContainer);
+            if (layers.Count == 1) deleteLStripButton.Enabled = false;
             MPicBoxUpdate();
         }
         private void RenameLStripButton_Click(object sender, EventArgs e)
@@ -420,7 +419,7 @@ namespace DoAnLTTQ
                 if (lr.ShowDialog() == DialogResult.OK)
                 {
                     layers.Current.Name = lr.NewName;
-                    UpdateLayerRow();
+                    layers.UpdateName();
                 }
             }
         }
@@ -432,11 +431,6 @@ namespace DoAnLTTQ
                 g.Clear(Color.Transparent);
             }
             MPicBoxUpdate();
-        }
-
-        void UpdateLayerRow()
-        {
-            layers.UpdatePanel(ref layerContainer);
         }
 
         #endregion
