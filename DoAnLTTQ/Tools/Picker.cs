@@ -12,7 +12,6 @@ namespace DoAnLTTQ.Tools
     {
         public Picker()
         {
-
         }
 
         public Color GetColor(ref Bitmap bmp, ref MouseEventArgs e)

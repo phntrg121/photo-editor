@@ -8,23 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DoAnLTTQ
+namespace DoAnLTTQ.Forms
 {
-    public partial class NewFileForm : Form
+    public partial class LayerRename : Form
     {
-        public NewFileForm()
+        public LayerRename()
         {
             InitializeComponent();
         }
-        public Size ImageSize
+
+        public string DefaultName
         {
-            get
+            set
             {
-                return new Size((int)numericUpDown1.Value, (int)numericUpDown2.Value);
+                textBox1.Text = value;
             }
         }
-
-        public string FileName
+        
+        public string NewName
         {
             get
             {

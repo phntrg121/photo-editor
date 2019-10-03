@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,12 +56,31 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewFileForm.cs">
+    <Compile Include="Forms\LayerRename.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewFileForm.Designer.cs">
-      <DependentUpon>NewFileForm.cs</DependentUpon>
+    <Compile Include="Forms\LayerRename.Designer.cs">
+      <DependentUpon>LayerRename.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\NewLayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewLayer.Designer.cs">
+      <DependentUpon>NewLayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewFile.Designer.cs">
+      <DependentUpon>NewFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayerRow.Designer.cs">
+      <DependentUpon>LayerRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayersManagement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\PenTools.cs" />
@@ -68,8 +88,17 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewFileForm.resx">
-      <DependentUpon>NewFileForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\LayerRename.resx">
+      <DependentUpon>LayerRename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewFile.resx">
+      <DependentUpon>NewFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewLayer.resx">
+      <DependentUpon>NewLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerRow.resx">
+      <DependentUpon>LayerRow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -79,6 +108,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -92,6 +122,60 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rename_L.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clear_L.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\color_gradian.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete_L.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eraser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\move.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\move_L_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\move_L_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new_L.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\picker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\select.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\visible.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TransparencyBG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zoom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\merge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mouse.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

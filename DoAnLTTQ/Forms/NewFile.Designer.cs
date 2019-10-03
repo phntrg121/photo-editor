@@ -46,18 +46,28 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(94, 12);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(317, 20);
+            this.textBox1.Size = new System.Drawing.Size(210, 20);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "Untitled";
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Default",
+            "--------------------",
+            "320 x 240 (QVGA)",
+            "640 x 480 (VGA)",
+            "800 x 600 (SVGA)",
+            "1024 x 768 (XGA)",
+            "1280 x 1024 (SXGA)",
+            "1600 x 1200 (UXGA)"});
             this.comboBox1.Location = new System.Drawing.Point(94, 38);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(289, 21);
+            this.comboBox1.Size = new System.Drawing.Size(210, 21);
             this.comboBox1.TabIndex = 1;
             this.comboBox1.Text = "Default";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // numericUpDown1
             // 
@@ -96,7 +106,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(308, 121);
+            this.button1.Location = new System.Drawing.Point(248, 139);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -106,7 +116,7 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(389, 121);
+            this.button2.Location = new System.Drawing.Point(329, 139);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
@@ -153,7 +163,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(476, 156);
+            this.ClientSize = new System.Drawing.Size(422, 174);
             this.ControlBox = false;
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -165,8 +175,15 @@
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "NewFileForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NewFileForm";
+            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);

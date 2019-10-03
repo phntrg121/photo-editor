@@ -40,7 +40,7 @@ namespace DoAnLTTQ.Tools
         {
             set
             {
-                pen.Width = 1 + value/2;
+                pen.Width = value / 2;
             }
         }
 
