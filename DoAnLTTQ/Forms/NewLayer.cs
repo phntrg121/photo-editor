@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace DoAnLTTQ.Forms
 {
-    public partial class NewLayerForm : Form
+    public partial class NewLayer : Form
     {
-        public NewLayerForm()
+        public NewLayer()
         {
             InitializeComponent();
         }

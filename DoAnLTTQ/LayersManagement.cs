@@ -10,7 +10,7 @@ namespace DoAnLTTQ
 {
     class LayersManagement
     {
-        List<Layer> layerList;
+        readonly List<Layer> layerList;
         Size size;
         int current;
 
@@ -29,7 +29,7 @@ namespace DoAnLTTQ
             }
         }
 
-        public void Add(ref Bitmap image, string name, bool visible)
+        public void Add(Bitmap image, string name, bool visible)
         {
             layerList.Add(new Layer(image, name, visible));
             current = layerList.Count - 1;
@@ -43,16 +43,17 @@ namespace DoAnLTTQ
             }
         }
 
-        public ref Bitmap Current
+        public Layer Current
         {
             get
             {
-                return ref layerList[current].Image;
+                return layerList[current];
             }
         }
 
         public void Remove()
         {
+            layerList[current].Dispose();
             layerList.Remove(layerList[current]);
             if (current == layerList.Count)
                 current--;
@@ -66,16 +67,38 @@ namespace DoAnLTTQ
                 foreach (Layer layer in layerList)
                 {
                     if (layer.Visible)
-                        g.DrawImage(layer.Image, new Point(0, 0));
+                        g.DrawImage(layer.Image, 0, 0);
                 }
             }
             return final;
         }
 
-
+        public void UpdatePanel(ref Panel panel )
+        {
+            foreach(Control c in panel.Controls)
+            {
+                c.Dispose();
+            }
+            panel.Controls.Clear();
+            int count = layerList.Count - 1;
+            int offset;
+            foreach(Layer layer in layerList)
+            {
+                LayerRow row = new LayerRow()
+                {
+                    Text = layer.Name,
+                    layerVisible = layer.Visible
+                };
+                offset = (count - layerList.IndexOf(layer)) * (row.Size.Height + 4);
+                row.Location = new Point(2, 2 + offset);
+                if (layerList.IndexOf(layer) == current)
+                    row.BackColor = Color.LightBlue;
+                panel.Controls.Add(row);
+            }
+        }
     }
 
-    class Layer
+    class Layer : IDisposable
     {
         Bitmap image;
         string name;
@@ -83,9 +106,26 @@ namespace DoAnLTTQ
 
         public Layer(Bitmap image, string name, bool visible)
         {
-            this.image = image;
+            this.image = new Bitmap(image);
             this.name = name;
             this.visible = visible;
+        }
+        bool disposed = false;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                image.Dispose();
+            }
         }
 
         public ref Bitmap Image
@@ -98,6 +138,11 @@ namespace DoAnLTTQ
 
         public string Name
         {
+            set
+            {
+                if (value != "")
+                    name = value;
+            }
             get
             {
                 return name;

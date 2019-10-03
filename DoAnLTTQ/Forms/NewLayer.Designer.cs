@@ -1,6 +1,6 @@
 ﻿namespace DoAnLTTQ.Forms
 {
-    partial class NewLayerForm
+    partial class NewLayer
     {
         /// <summary>
         /// Required designer variable.
@@ -92,7 +92,7 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Visible";
             // 
-            // NewLayerForm
+            // NewLayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -104,7 +104,10 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.textBox1);
-            this.Name = "NewLayerForm";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "NewLayer";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
