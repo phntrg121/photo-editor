@@ -393,6 +393,7 @@
             this.downLStripButton.Name = "downLStripButton";
             this.downLStripButton.Size = new System.Drawing.Size(23, 22);
             this.downLStripButton.Text = "move down";
+            this.downLStripButton.Click += new System.EventHandler(this.DownLStripButton_Click);
             // 
             // upLStripButton
             // 
@@ -403,6 +404,7 @@
             this.upLStripButton.Name = "upLStripButton";
             this.upLStripButton.Size = new System.Drawing.Size(23, 22);
             this.upLStripButton.Text = "move up";
+            this.upLStripButton.Click += new System.EventHandler(this.UpLStripButton_Click);
             // 
             // clearLStripButton
             // 

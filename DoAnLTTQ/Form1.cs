@@ -400,6 +400,9 @@ namespace DoAnLTTQ
                         Layer layer = new Layer(newBmp, name, visible);
                         layers.AddLayerRow(ref layerContainer, ref layer);
                         deleteLStripButton.Enabled = true;
+                        upLStripButton.Enabled = false;
+                        if (layers.Count >= 2)
+                            downLStripButton.Enabled = true;
                     }
                 }
             }
@@ -408,7 +411,17 @@ namespace DoAnLTTQ
         private void DeleteLStripButton_Click(object sender, EventArgs e)
         {
             layers.RemoveLayerRow(ref layerContainer);
-            if (layers.Count == 1) deleteLStripButton.Enabled = false;
+            if (layers.Count == 1)
+            {
+                deleteLStripButton.Enabled = false;
+                upLStripButton.Enabled = false;
+                downLStripButton.Enabled = false;
+            }
+            if (layers.CurrentIndex == layers.Count - 1)
+                upLStripButton.Enabled = false;
+            if (layers.CurrentIndex == 0)
+                downLStripButton.Enabled = false;
+
             MPicBoxUpdate();
         }
         private void RenameLStripButton_Click(object sender, EventArgs e)
@@ -433,8 +446,38 @@ namespace DoAnLTTQ
             MPicBoxUpdate();
         }
 
-        #endregion
+        private void DownLStripButton_Click(object sender, EventArgs e)
+        {
+            layers.MoveDown(ref layerContainer);
+            if(layers.CurrentIndex == 0 )
+            {
+                downLStripButton.Enabled = false;
+                upLStripButton.Enabled = true;
+            }
+            else
+            {
+                downLStripButton.Enabled = true;
+                upLStripButton.Enabled = true;
+            }
+            MPicBoxUpdate();
+        }
 
-        
+        private void UpLStripButton_Click(object sender, EventArgs e)
+        {
+            layers.MoveUp(ref layerContainer);
+            if (layers.CurrentIndex == layers.Count - 1)
+            {
+                downLStripButton.Enabled = true;
+                upLStripButton.Enabled = false;
+            }
+            else
+            {
+                downLStripButton.Enabled = true;
+                upLStripButton.Enabled = true;
+            }
+            MPicBoxUpdate();
+        }
+
+        #endregion
     }
 }

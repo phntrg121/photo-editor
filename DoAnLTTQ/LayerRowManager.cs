@@ -33,6 +33,13 @@ namespace DoAnLTTQ
                 return layers[current].Layer;
             }
         }
+        public int CurrentIndex
+        {
+            get
+            {
+                return current;
+            }
+        }
 
         public Bitmap FinalImageUpdate()
         {
@@ -68,7 +75,8 @@ namespace DoAnLTTQ
             layers[current].Dispose();
             panel.Controls.Remove(layers[current]);
             layers.Remove(layers[current]);
-            current--;
+            if (current != 0)
+                current--;
             Allocation(ref panel);
         }
 
@@ -92,5 +100,25 @@ namespace DoAnLTTQ
             layers[current].Text = layers[current].Layer.Name;
         }
 
+        public void MoveUp(ref Panel panel)
+        {
+            SwapRow(layers, current, current + 1);
+            current++;
+            Allocation(ref panel);
+        }
+
+        public void MoveDown(ref Panel panel)
+        {
+            SwapRow(layers, current, current - 1);
+            current--;
+            Allocation(ref panel);
+        }
+
+        void SwapRow(List<LayerRow> list, int row1, int row2)
+        {
+            LayerRow tmp = list[row1];
+            list[row1] = list[row2];
+            list[row2] = tmp;
+        }
     }
 }
