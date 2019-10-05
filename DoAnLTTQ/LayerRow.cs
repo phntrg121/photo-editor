@@ -50,6 +50,23 @@ namespace DoAnLTTQ
                 pictureBox1.Image = Properties.Resources.visible;
             else
                 pictureBox1.Image = Properties.Resources.not_visible;
+
+            Form1 form = (Form1)Parent.Parent.Parent.Parent.Parent;
+            form.MPicBoxUpdate();
+        }
+
+        private void LayerRow_Click(object sender, EventArgs e)
+        {
+            LayerContainer layCon = (LayerContainer)Parent.Parent;
+            layCon.CurrentRow = this;
+
+            Form1 form = (Form1)Parent.Parent.Parent.Parent.Parent;
+            form.LayerButtonCheck();
+        }
+
+        private void Label1_Click(object sender, EventArgs e)
+        {
+            LayerRow_Click(sender, e);
         }
     }
 }

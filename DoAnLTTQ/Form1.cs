@@ -20,7 +20,6 @@ namespace DoAnLTTQ
         Bitmap finalBmp;
         Image bgImage;
         Size bmpSize;
-        LayerRowManager layers;
         string filename;
         Tool currentTool;
         Tools.PenTools pen;
@@ -64,13 +63,14 @@ namespace DoAnLTTQ
                         filename = ofd.FileName;
                         mPicBox.Visible = true;
                         bmpSize = newBmp.Size;
-                        layers = new LayerRowManager();
                         Layer firstLayer = new Layer(newBmp, "Layer1", true);
+                        finalBmp = newBmp;
+
+                        layerContainer.AddLayerRow(ref firstLayer);
                         newLStripButton.Enabled = true;
                         clearLStripButton.Enabled = true;
                         renameLStripButton.Enabled = true;
-                        finalBmp = newBmp;
-                        layers.AddLayerRow(ref layerContainer, ref firstLayer);
+                        duplicateLStripButton.Enabled = true;
                         BackGroundGenerator();
                         MPicBoxUpdate();
                     }
@@ -96,13 +96,14 @@ namespace DoAnLTTQ
                             filename = nff.FileName;
                             mPicBox.Visible = true;
                             bmpSize = newBmp.Size;
-                            layers = new LayerRowManager();
                             Layer firstLayer = new Layer(newBmp, "Layer1", true);
+                            finalBmp = newBmp;
+
+                            layerContainer.AddLayerRow(ref firstLayer);
                             newLStripButton.Enabled = true;
                             clearLStripButton.Enabled = true;
                             renameLStripButton.Enabled = true;
-                            finalBmp = newBmp;
-                            layers.AddLayerRow(ref layerContainer, ref firstLayer);
+                            duplicateLStripButton.Enabled = true;
                             BackGroundGenerator();
                             MPicBoxUpdate();
                         }
@@ -177,7 +178,7 @@ namespace DoAnLTTQ
             }
         }
 
-        void UncheckAll()
+        private void UncheckAll()
         {
             foreach (ToolStripButton button in mToolStrip.Items)
             {
@@ -191,14 +192,14 @@ namespace DoAnLTTQ
 
         #region mPicBox
 
-        void MPicBoxUpdate()
+        public void MPicBoxUpdate()
         {
-            finalBmp.Dispose();
-            finalBmp = layers.FinalImageUpdate();
+            layerContainer.FinalImageUpdate();
+            finalBmp = layerContainer.Final;
             mPicBox.Image = finalBmp;
         }
 
-        void BackGroundGenerator()
+        private void BackGroundGenerator()
         {
             int m = (int)Math.Ceiling((double)bmpSize.Width / 512);
             int n = (int)Math.Ceiling((double)bmpSize.Height / 512);
@@ -246,7 +247,7 @@ namespace DoAnLTTQ
                 {
                     case Tool.pen:
                         {
-                            pen.Draw(ref layers.Current.Image, ref e);
+                            pen.Draw(ref layerContainer.Current.Image, ref e);
                             MPicBoxUpdate();
                         }
                         break;
@@ -295,7 +296,6 @@ namespace DoAnLTTQ
                         Color c = bmp.GetPixel(e.X, e.Y);
                         mainColorPic.BackColor = c;
                     }
-
                 }
             }
         }
@@ -314,26 +314,38 @@ namespace DoAnLTTQ
             }
         }
 
+        private void ColorSwitch_Click(object sender, EventArgs e)
+        {
+            Color tmp = mainColorPic.BackColor;
+            mainColorPic.BackColor = subColorPic.BackColor;
+            subColorPic.BackColor = tmp;
+        }
+
         int redVal = 0;
         int blueVal = 0;
         int greenVal = 0;
+        int alphaVal = 0;
 
         private void MainColorPic_BackColorChanged(object sender, EventArgs e)
         {
             redVal = mainColorPic.BackColor.R;
             greenVal = mainColorPic.BackColor.G;
             blueVal = mainColorPic.BackColor.B;
+            alphaVal = mainColorPic.BackColor.A;
 
             BarUpdate(ref redBar, Color.Red, redVal);
             BarUpdate(ref greenBar, Color.Green, greenVal);
             BarUpdate(ref blueBar, Color.Blue, blueVal);
+            BarUpdate(ref alphaBar, Color.DarkGray, alphaVal);
+
             label7.Text = redVal.ToString();
             label8.Text = greenVal.ToString();
             label9.Text = blueVal.ToString();
+            label10.Text = alphaVal.ToString();
 
             pen.Color = mainColorPic.BackColor;
         }
-        void BarUpdate(ref PictureBox bar, Color c, int val)
+        private void BarUpdate(ref PictureBox bar, Color c, int val)
         {
             using (SolidBrush b = new SolidBrush(c))
             {
@@ -345,19 +357,24 @@ namespace DoAnLTTQ
             }
         }
         
-        void ValCheck(ref int n)
+        private void ValCheck(ref int n)
         {
             if (n > 255) n = 255;
             if (n < 0) n = 0;
         }
 
+        private void BarVal(ref int val, ref PictureBox bar ,ref  MouseEventArgs e)
+        {
+            val = (int)(((double)e.Location.X / bar.Width) * 255);
+            ValCheck(ref val);
+            mainColorPic.BackColor = Color.FromArgb(alphaVal, redVal, greenVal, blueVal);
+        }
+
         private void RedBar_MouseMoveOrDown(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
-                redVal = (int)(((double)e.Location.X / redBar.Width) * 255);
-                ValCheck(ref redVal);
-                mainColorPic.BackColor = Color.FromArgb(redVal, greenVal, blueVal);
+                BarVal(ref redVal, ref redBar, ref e);
             }
         }
 
@@ -365,9 +382,7 @@ namespace DoAnLTTQ
         {
             if (e.Button == MouseButtons.Left)
             {
-                greenVal = (int)(((double)e.Location.X / greenBar.Width) * 255);
-                ValCheck(ref greenVal);
-                mainColorPic.BackColor = Color.FromArgb(redVal, greenVal, blueVal);
+                BarVal(ref greenVal, ref greenBar, ref e);
             }
         }
 
@@ -375,9 +390,15 @@ namespace DoAnLTTQ
         {
             if (e.Button == MouseButtons.Left)
             {
-                blueVal = (int)(((double)e.Location.X / blueBar.Width) * 255);
-                ValCheck(ref blueVal);
-                mainColorPic.BackColor = Color.FromArgb(redVal, greenVal, blueVal);
+                BarVal(ref blueVal, ref blueBar, ref e);
+            }
+        }
+
+        private void AlphaBar_MouseMoveOrDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                BarVal(ref alphaVal, ref alphaBar, ref e);
             }
         }
 
@@ -389,7 +410,7 @@ namespace DoAnLTTQ
         {
             using (Forms.NewLayer nlf = new Forms.NewLayer())
             {
-                nlf.SetDefaultName(layers.Count);
+                nlf.SetDefaultName(layerContainer.Count);
                 if (nlf.ShowDialog() == DialogResult.OK)
                 {
                     string name = nlf.LayerName;
@@ -398,11 +419,8 @@ namespace DoAnLTTQ
                     {
                         newBmp.MakeTransparent();
                         Layer layer = new Layer(newBmp, name, visible);
-                        layers.AddLayerRow(ref layerContainer, ref layer);
-                        deleteLStripButton.Enabled = true;
-                        upLStripButton.Enabled = false;
-                        if (layers.Count >= 2)
-                            downLStripButton.Enabled = true;
+                        layerContainer.AddLayerRow(ref layer);
+                        LayerButtonCheck();
                     }
                 }
             }
@@ -410,36 +428,26 @@ namespace DoAnLTTQ
 
         private void DeleteLStripButton_Click(object sender, EventArgs e)
         {
-            layers.RemoveLayerRow(ref layerContainer);
-            if (layers.Count == 1)
-            {
-                deleteLStripButton.Enabled = false;
-                upLStripButton.Enabled = false;
-                downLStripButton.Enabled = false;
-            }
-            if (layers.CurrentIndex == layers.Count - 1)
-                upLStripButton.Enabled = false;
-            if (layers.CurrentIndex == 0)
-                downLStripButton.Enabled = false;
-
+            layerContainer.RemoveLayerRow();
+            LayerButtonCheck();
             MPicBoxUpdate();
         }
         private void RenameLStripButton_Click(object sender, EventArgs e)
         {
             using (Forms.LayerRename lr = new Forms.LayerRename())
             {
-                lr.DefaultName = layers.Current.Name;
+                lr.DefaultName = layerContainer.Current.Name;
                 if (lr.ShowDialog() == DialogResult.OK)
                 {
-                    layers.Current.Name = lr.NewName;
-                    layers.UpdateName();
+                    layerContainer.Current.Name = lr.NewName;
+                    layerContainer.UpdateName();
                 }
             }
         }
 
         private void ClearLStripButton_Click(object sender, EventArgs e)
         {
-            using (Graphics g = Graphics.FromImage(layers.Current.Image))
+            using (Graphics g = Graphics.FromImage(layerContainer.Current.Image))
             {
                 g.Clear(Color.Transparent);
             }
@@ -448,36 +456,69 @@ namespace DoAnLTTQ
 
         private void DownLStripButton_Click(object sender, EventArgs e)
         {
-            layers.MoveDown(ref layerContainer);
-            if(layers.CurrentIndex == 0 )
-            {
-                downLStripButton.Enabled = false;
-                upLStripButton.Enabled = true;
-            }
-            else
-            {
-                downLStripButton.Enabled = true;
-                upLStripButton.Enabled = true;
-            }
+            layerContainer.MoveDown();
+            LayerButtonCheck();
             MPicBoxUpdate();
         }
 
         private void UpLStripButton_Click(object sender, EventArgs e)
         {
-            layers.MoveUp(ref layerContainer);
-            if (layers.CurrentIndex == layers.Count - 1)
+            layerContainer.MoveUp();
+            LayerButtonCheck();
+            MPicBoxUpdate();
+        }
+
+        public void LayerButtonCheck()
+        {
+            if (layerContainer.CurrentIndex == layerContainer.Count - 1)
             {
+
+                mergeLStripButton.Enabled = true;
                 downLStripButton.Enabled = true;
                 upLStripButton.Enabled = false;
             }
+            else if (layerContainer.CurrentIndex == 0)
+            {
+                downLStripButton.Enabled = false;
+                mergeLStripButton.Enabled = false;
+                upLStripButton.Enabled = true;
+            }
             else
             {
+                mergeLStripButton.Enabled = true;
                 downLStripButton.Enabled = true;
                 upLStripButton.Enabled = true;
             }
+
+            if (layerContainer.Count > 1)
+            {
+                deleteLStripButton.Enabled = true;
+                duplicateLStripButton.Enabled = true;
+            }
+            else
+            {
+                deleteLStripButton.Enabled = false;
+                upLStripButton.Enabled = false;
+                downLStripButton.Enabled = false;
+                mergeLStripButton.Enabled = false;
+            }
+
+        }
+
+        private void MergeLStripButton_Click(object sender, EventArgs e)
+        {
+            layerContainer.Merge();
+            LayerButtonCheck();
+            MPicBoxUpdate();
+        }
+
+        private void DuplicateLStripButton_Click(object sender, EventArgs e)
+        {
+            layerContainer.Duplicate();
             MPicBoxUpdate();
         }
 
         #endregion
+
     }
 }

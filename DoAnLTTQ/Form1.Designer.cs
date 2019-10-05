@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,19 +44,22 @@
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.penToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eraserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorPickerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.mouseLocation = new System.Windows.Forms.ToolStripStatusLabel();
             this.workPanel = new System.Windows.Forms.Panel();
             this.mPicBox = new System.Windows.Forms.PictureBox();
             this.rightPanel = new System.Windows.Forms.Panel();
             this.layerPanel = new System.Windows.Forms.Panel();
-            this.layerContainer = new System.Windows.Forms.Panel();
+            this.layerContainer = new DoAnLTTQ.LayerContainer();
             this.layerToolStrip = new System.Windows.Forms.ToolStrip();
             this.newLStripButton = new System.Windows.Forms.ToolStripButton();
             this.deleteLStripButton = new System.Windows.Forms.ToolStripButton();
@@ -63,14 +67,19 @@
             this.upLStripButton = new System.Windows.Forms.ToolStripButton();
             this.clearLStripButton = new System.Windows.Forms.ToolStripButton();
             this.renameLStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.mergeLStripButton = new System.Windows.Forms.ToolStripButton();
+            this.duplicateLStripButton = new System.Windows.Forms.ToolStripButton();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.colorSwitch = new System.Windows.Forms.PictureBox();
+            this.alphaBar = new System.Windows.Forms.PictureBox();
             this.blueBar = new System.Windows.Forms.PictureBox();
             this.greenBar = new System.Windows.Forms.PictureBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.redBar = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -103,6 +112,8 @@
             this.panel5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.colorSwitch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alphaBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blueBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.greenBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.redBar)).BeginInit();
@@ -214,7 +225,8 @@
             // 
             this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.penToolStripMenuItem,
-            this.eraserToolStripMenuItem});
+            this.eraserToolStripMenuItem,
+            this.colorPickerToolStripMenuItem});
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
             this.toolToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolToolStripMenuItem.Text = "Tools";
@@ -222,14 +234,20 @@
             // penToolStripMenuItem
             // 
             this.penToolStripMenuItem.Name = "penToolStripMenuItem";
-            this.penToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.penToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.penToolStripMenuItem.Text = "Pen";
             // 
             // eraserToolStripMenuItem
             // 
             this.eraserToolStripMenuItem.Name = "eraserToolStripMenuItem";
-            this.eraserToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
+            this.eraserToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.eraserToolStripMenuItem.Text = "Eraser";
+            // 
+            // colorPickerToolStripMenuItem
+            // 
+            this.colorPickerToolStripMenuItem.Name = "colorPickerToolStripMenuItem";
+            this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.colorPickerToolStripMenuItem.Text = "Color Picker";
             // 
             // viewToolStripMenuItem
             // 
@@ -243,7 +261,9 @@
             this.newLayerToolStripMenuItem,
             this.deleteLayerToolStripMenuItem,
             this.clearToolStripMenuItem,
-            this.renameToolStripMenuItem});
+            this.renameToolStripMenuItem,
+            this.duplicateToolStripMenuItem,
+            this.fillToolStripMenuItem});
             this.layerToolStripMenuItem.Name = "layerToolStripMenuItem";
             this.layerToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.layerToolStripMenuItem.Text = "Layer";
@@ -276,6 +296,18 @@
             this.renameToolStripMenuItem.Text = "Rename";
             this.renameToolStripMenuItem.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
             // 
+            // duplicateToolStripMenuItem
+            // 
+            this.duplicateToolStripMenuItem.Name = "duplicateToolStripMenuItem";
+            this.duplicateToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.duplicateToolStripMenuItem.Text = "Duplicate";
+            // 
+            // fillToolStripMenuItem
+            // 
+            this.fillToolStripMenuItem.Name = "fillToolStripMenuItem";
+            this.fillToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.fillToolStripMenuItem.Text = "Fill";
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -288,7 +320,7 @@
             // 
             // mouseLocation
             // 
-            this.mouseLocation.Image = global::DoAnLTTQ.Properties.Resources.mouse;
+            this.mouseLocation.Image = ((System.Drawing.Image)(resources.GetObject("mouseLocation.Image")));
             this.mouseLocation.Name = "mouseLocation";
             this.mouseLocation.Size = new System.Drawing.Size(16, 17);
             // 
@@ -340,6 +372,7 @@
             // layerContainer
             // 
             this.layerContainer.AutoScroll = true;
+            this.layerContainer.AutoSize = true;
             this.layerContainer.Location = new System.Drawing.Point(4, 55);
             this.layerContainer.Name = "layerContainer";
             this.layerContainer.Size = new System.Drawing.Size(201, 230);
@@ -355,7 +388,8 @@
             this.upLStripButton,
             this.clearLStripButton,
             this.renameLStripButton,
-            this.toolStripButton1});
+            this.mergeLStripButton,
+            this.duplicateLStripButton});
             this.layerToolStrip.Location = new System.Drawing.Point(0, 27);
             this.layerToolStrip.Name = "layerToolStrip";
             this.layerToolStrip.Size = new System.Drawing.Size(209, 25);
@@ -366,7 +400,7 @@
             // 
             this.newLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.newLStripButton.Enabled = false;
-            this.newLStripButton.Image = global::DoAnLTTQ.Properties.Resources.new_L;
+            this.newLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newLStripButton.Image")));
             this.newLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newLStripButton.Name = "newLStripButton";
             this.newLStripButton.Size = new System.Drawing.Size(23, 22);
@@ -377,7 +411,7 @@
             // 
             this.deleteLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.deleteLStripButton.Enabled = false;
-            this.deleteLStripButton.Image = global::DoAnLTTQ.Properties.Resources.delete_L;
+            this.deleteLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteLStripButton.Image")));
             this.deleteLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteLStripButton.Name = "deleteLStripButton";
             this.deleteLStripButton.Size = new System.Drawing.Size(23, 22);
@@ -388,7 +422,7 @@
             // 
             this.downLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.downLStripButton.Enabled = false;
-            this.downLStripButton.Image = global::DoAnLTTQ.Properties.Resources.move_L_down;
+            this.downLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("downLStripButton.Image")));
             this.downLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.downLStripButton.Name = "downLStripButton";
             this.downLStripButton.Size = new System.Drawing.Size(23, 22);
@@ -399,7 +433,7 @@
             // 
             this.upLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.upLStripButton.Enabled = false;
-            this.upLStripButton.Image = global::DoAnLTTQ.Properties.Resources.move_L_up;
+            this.upLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("upLStripButton.Image")));
             this.upLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.upLStripButton.Name = "upLStripButton";
             this.upLStripButton.Size = new System.Drawing.Size(23, 22);
@@ -410,7 +444,7 @@
             // 
             this.clearLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.clearLStripButton.Enabled = false;
-            this.clearLStripButton.Image = global::DoAnLTTQ.Properties.Resources.clear_L;
+            this.clearLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("clearLStripButton.Image")));
             this.clearLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.clearLStripButton.Name = "clearLStripButton";
             this.clearLStripButton.Size = new System.Drawing.Size(23, 22);
@@ -421,22 +455,35 @@
             // 
             this.renameLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.renameLStripButton.Enabled = false;
-            this.renameLStripButton.Image = global::DoAnLTTQ.Properties.Resources.rename_L;
+            this.renameLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("renameLStripButton.Image")));
             this.renameLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.renameLStripButton.Name = "renameLStripButton";
             this.renameLStripButton.Size = new System.Drawing.Size(23, 22);
             this.renameLStripButton.Text = "rename";
             this.renameLStripButton.Click += new System.EventHandler(this.RenameLStripButton_Click);
             // 
-            // toolStripButton1
+            // mergeLStripButton
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Enabled = false;
-            this.toolStripButton1.Image = global::DoAnLTTQ.Properties.Resources.merge;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "merge";
+            this.mergeLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.mergeLStripButton.Enabled = false;
+            this.mergeLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("mergeLStripButton.Image")));
+            this.mergeLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mergeLStripButton.Name = "mergeLStripButton";
+            this.mergeLStripButton.Size = new System.Drawing.Size(23, 22);
+            this.mergeLStripButton.Text = "merge";
+            this.mergeLStripButton.Click += new System.EventHandler(this.MergeLStripButton_Click);
+            // 
+            // duplicateLStripButton
+            // 
+            this.duplicateLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.duplicateLStripButton.Enabled = false;
+            this.duplicateLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("duplicateLStripButton.Image")));
+            this.duplicateLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.duplicateLStripButton.Name = "duplicateLStripButton";
+            this.duplicateLStripButton.Size = new System.Drawing.Size(23, 22);
+            this.duplicateLStripButton.Text = "toolStripButton2";
+            this.duplicateLStripButton.ToolTipText = "duplicate";
+            this.duplicateLStripButton.Click += new System.EventHandler(this.DuplicateLStripButton_Click);
             // 
             // panel5
             // 
@@ -469,9 +516,13 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.colorSwitch);
+            this.tabPage1.Controls.Add(this.alphaBar);
             this.tabPage1.Controls.Add(this.blueBar);
             this.tabPage1.Controls.Add(this.greenBar);
+            this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.redBar);
+            this.tabPage1.Controls.Add(this.label6);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.label8);
@@ -489,10 +540,32 @@
             this.tabPage1.Text = "Color";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // colorSwitch
+            // 
+            this.colorSwitch.Image = ((System.Drawing.Image)(resources.GetObject("colorSwitch.Image")));
+            this.colorSwitch.Location = new System.Drawing.Point(44, 60);
+            this.colorSwitch.Name = "colorSwitch";
+            this.colorSwitch.Size = new System.Drawing.Size(13, 12);
+            this.colorSwitch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.colorSwitch.TabIndex = 5;
+            this.colorSwitch.TabStop = false;
+            this.colorSwitch.Click += new System.EventHandler(this.ColorSwitch_Click);
+            // 
+            // alphaBar
+            // 
+            this.alphaBar.BackColor = System.Drawing.Color.Gainsboro;
+            this.alphaBar.Location = new System.Drawing.Point(26, 188);
+            this.alphaBar.Name = "alphaBar";
+            this.alphaBar.Size = new System.Drawing.Size(128, 10);
+            this.alphaBar.TabIndex = 4;
+            this.alphaBar.TabStop = false;
+            this.alphaBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AlphaBar_MouseMoveOrDown);
+            this.alphaBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.AlphaBar_MouseMoveOrDown);
+            // 
             // blueBar
             // 
             this.blueBar.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.blueBar.Location = new System.Drawing.Point(26, 180);
+            this.blueBar.Location = new System.Drawing.Point(26, 168);
             this.blueBar.Name = "blueBar";
             this.blueBar.Size = new System.Drawing.Size(128, 10);
             this.blueBar.TabIndex = 4;
@@ -503,7 +576,7 @@
             // greenBar
             // 
             this.greenBar.BackColor = System.Drawing.Color.PaleGreen;
-            this.greenBar.Location = new System.Drawing.Point(26, 152);
+            this.greenBar.Location = new System.Drawing.Point(26, 148);
             this.greenBar.Name = "greenBar";
             this.greenBar.Size = new System.Drawing.Size(128, 10);
             this.greenBar.TabIndex = 4;
@@ -511,10 +584,19 @@
             this.greenBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GreenBar_MouseMoveOrDown);
             this.greenBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GreenBar_MouseMoveOrDown);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(165, 186);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(13, 13);
+            this.label10.TabIndex = 3;
+            this.label10.Text = "0";
+            // 
             // redBar
             // 
             this.redBar.BackColor = System.Drawing.Color.Pink;
-            this.redBar.Location = new System.Drawing.Point(26, 126);
+            this.redBar.Location = new System.Drawing.Point(26, 128);
             this.redBar.Name = "redBar";
             this.redBar.Size = new System.Drawing.Size(128, 10);
             this.redBar.TabIndex = 4;
@@ -522,10 +604,19 @@
             this.redBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedBar_MouseMoveOrDown);
             this.redBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RedBar_MouseMoveOrDown);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 186);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(14, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "A";
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(165, 177);
+            this.label9.Location = new System.Drawing.Point(165, 166);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(13, 13);
             this.label9.TabIndex = 3;
@@ -534,7 +625,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(4, 177);
+            this.label5.Location = new System.Drawing.Point(8, 166);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(14, 13);
             this.label5.TabIndex = 3;
@@ -543,7 +634,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(165, 149);
+            this.label8.Location = new System.Drawing.Point(165, 146);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(13, 13);
             this.label8.TabIndex = 3;
@@ -552,7 +643,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 149);
+            this.label4.Location = new System.Drawing.Point(8, 146);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(15, 13);
             this.label4.TabIndex = 3;
@@ -561,7 +652,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(165, 124);
+            this.label7.Location = new System.Drawing.Point(165, 126);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(13, 13);
             this.label7.TabIndex = 3;
@@ -570,7 +661,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 123);
+            this.label3.Location = new System.Drawing.Point(8, 126);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(15, 13);
             this.label3.TabIndex = 3;
@@ -599,7 +690,7 @@
             // 
             // colorGradian
             // 
-            this.colorGradian.Image = global::DoAnLTTQ.Properties.Resources.color_gradian;
+            this.colorGradian.Image = ((System.Drawing.Image)(resources.GetObject("colorGradian.Image")));
             this.colorGradian.Location = new System.Drawing.Point(7, 5);
             this.colorGradian.Name = "colorGradian";
             this.colorGradian.Size = new System.Drawing.Size(188, 31);
@@ -677,7 +768,7 @@
             // moveStripButton
             // 
             this.moveStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.moveStripButton.Image = global::DoAnLTTQ.Properties.Resources.move;
+            this.moveStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveStripButton.Image")));
             this.moveStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveStripButton.Name = "moveStripButton";
             this.moveStripButton.Size = new System.Drawing.Size(21, 20);
@@ -686,7 +777,7 @@
             // toolStripButton
             // 
             this.toolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton.Image = global::DoAnLTTQ.Properties.Resources.select;
+            this.toolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton.Image")));
             this.toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton.Name = "toolStripButton";
             this.toolStripButton.Size = new System.Drawing.Size(21, 20);
@@ -695,7 +786,7 @@
             // handStripButton
             // 
             this.handStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.handStripButton.Image = global::DoAnLTTQ.Properties.Resources.hand;
+            this.handStripButton.Image = ((System.Drawing.Image)(resources.GetObject("handStripButton.Image")));
             this.handStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.handStripButton.Name = "handStripButton";
             this.handStripButton.Size = new System.Drawing.Size(21, 20);
@@ -706,7 +797,7 @@
             this.penStripButton.Checked = true;
             this.penStripButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.penStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.penStripButton.Image = global::DoAnLTTQ.Properties.Resources.pen;
+            this.penStripButton.Image = ((System.Drawing.Image)(resources.GetObject("penStripButton.Image")));
             this.penStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.penStripButton.Name = "penStripButton";
             this.penStripButton.Size = new System.Drawing.Size(21, 20);
@@ -715,7 +806,7 @@
             // eraserStripButton
             // 
             this.eraserStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.eraserStripButton.Image = global::DoAnLTTQ.Properties.Resources.eraser;
+            this.eraserStripButton.Image = ((System.Drawing.Image)(resources.GetObject("eraserStripButton.Image")));
             this.eraserStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.eraserStripButton.Name = "eraserStripButton";
             this.eraserStripButton.Size = new System.Drawing.Size(21, 20);
@@ -724,7 +815,7 @@
             // pickerStripButton
             // 
             this.pickerStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.pickerStripButton.Image = global::DoAnLTTQ.Properties.Resources.picker;
+            this.pickerStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pickerStripButton.Image")));
             this.pickerStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pickerStripButton.Name = "pickerStripButton";
             this.pickerStripButton.Size = new System.Drawing.Size(21, 20);
@@ -775,6 +866,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.colorSwitch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.alphaBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blueBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.greenBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.redBar)).EndInit();
@@ -853,13 +946,21 @@
         private System.Windows.Forms.ToolStripButton renameLStripButton;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
-        private System.Windows.Forms.Panel layerContainer;
         private System.Windows.Forms.ToolStripStatusLabel mouseLocation;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton mergeLStripButton;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.PictureBox redBar;
         private System.Windows.Forms.PictureBox blueBar;
         private System.Windows.Forms.PictureBox greenBar;
+        private LayerContainer layerContainer;
+        private System.Windows.Forms.PictureBox colorSwitch;
+        private System.Windows.Forms.ToolStripButton duplicateLStripButton;
+        private System.Windows.Forms.ToolStripMenuItem colorPickerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem duplicateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fillToolStripMenuItem;
+        private System.Windows.Forms.PictureBox alphaBar;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label6;
     }
 }
 

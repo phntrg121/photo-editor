@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace DoAnLTTQ
 {
-    class LayerRowManager
+    public partial class LayerContainer : UserControl
     {
         List<LayerRow> layers;
+        Bitmap final;
         int current;
         Size layerSize;
-        public LayerRowManager()
+
+        public LayerContainer()
         {
+            InitializeComponent();
             layers = new List<LayerRow>();
         }
 
@@ -41,24 +46,44 @@ namespace DoAnLTTQ
             }
         }
 
-        public Bitmap FinalImageUpdate()
+        public LayerRow CurrentRow
         {
-            Bitmap bmp = new Bitmap(layerSize.Width, layerSize.Height);
-            using (Graphics g = Graphics.FromImage(bmp))
+            set
             {
-                foreach(LayerRow row in layers)
+                current = layers.IndexOf(value);
+                Allocation();
+            }
+        }
+
+        public Bitmap Final
+        {
+            get
+            {
+                return final;
+            }
+        }
+
+        public void FinalImageUpdate()
+        {
+            final.Dispose();
+            final = new Bitmap(layerSize.Width, layerSize.Height);
+            using (Graphics g = Graphics.FromImage(final))
+            {
+                foreach (LayerRow row in layers)
                 {
                     if (row.Layer.Visible)
                         g.DrawImage(row.Layer.Image, 0, 0, layerSize.Width, layerSize.Height);
                 }
             }
-            return bmp;
         }
 
-        public void AddLayerRow(ref Panel panel, ref Layer layer)
+        public void AddLayerRow(ref Layer layer)
         {
             if (layers.Count == 0)
+            {
                 layerSize = layer.Image.Size;
+                final = new Bitmap(layerSize.Width, layerSize.Height);
+            }
 
             LayerRow row = new LayerRow();
             row.Layer = layer;
@@ -66,10 +91,10 @@ namespace DoAnLTTQ
             layers.Add(row);
             current = layers.Count - 1;
             panel.Controls.Add(row);
-            Allocation(ref panel);
+            Allocation();
         }
 
-        public void RemoveLayerRow(ref Panel panel)
+        public void RemoveLayerRow()
         {
             layers[current].Layer.Dispose();
             layers[current].Dispose();
@@ -77,10 +102,10 @@ namespace DoAnLTTQ
             layers.Remove(layers[current]);
             if (current != 0)
                 current--;
-            Allocation(ref panel);
+            Allocation();
         }
 
-        void Allocation(ref Panel panel)
+        private void Allocation()
         {
             foreach (LayerRow row in layers)
             {
@@ -100,25 +125,46 @@ namespace DoAnLTTQ
             layers[current].Text = layers[current].Layer.Name;
         }
 
-        public void MoveUp(ref Panel panel)
+        public void MoveUp()
         {
             SwapRow(layers, current, current + 1);
             current++;
-            Allocation(ref panel);
+            Allocation();
         }
 
-        public void MoveDown(ref Panel panel)
+        public void MoveDown()
         {
             SwapRow(layers, current, current - 1);
             current--;
-            Allocation(ref panel);
+            Allocation();
         }
 
-        void SwapRow(List<LayerRow> list, int row1, int row2)
+        private void SwapRow(List<LayerRow> list, int row1, int row2)
         {
             LayerRow tmp = list[row1];
             list[row1] = list[row2];
             list[row2] = tmp;
         }
+
+        public void Merge()
+        {
+            using(Graphics g = Graphics.FromImage(layers[current -1].Layer.Image))
+            {
+                g.DrawImage(layers[current].Layer.Image, 0, 0, layerSize.Width, layerSize.Height);
+            }
+            RemoveLayerRow();
+        }
+
+        public void Duplicate()
+        {
+            LayerRow newRow = new LayerRow();
+            newRow.Text = layers[current].Text + "-Copy";
+            newRow.Layer = new Layer(layers[current].Layer.Image, newRow.Text, true);
+            current++;
+            layers.Insert(current, newRow);
+            panel.Controls.Add(newRow);
+            Allocation();
+        }
+
     }
 }

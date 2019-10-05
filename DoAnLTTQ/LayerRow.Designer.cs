@@ -41,6 +41,7 @@
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "label1";
+            this.label1.Click += new System.EventHandler(this.Label1_Click);
             // 
             // pictureBox1
             // 
@@ -63,6 +64,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "LayerRow";
             this.Size = new System.Drawing.Size(177, 42);
+            this.Click += new System.EventHandler(this.LayerRow_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
