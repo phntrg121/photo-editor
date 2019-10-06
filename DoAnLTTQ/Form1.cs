@@ -17,14 +17,17 @@ namespace DoAnLTTQ
 
     public partial class Form1 : Form
     {
-        Bitmap finalBmp;
-        Image bgImage;
-        Size bmpSize;
-        string filename;
-        Tool currentTool;
-        Tools.PenTools pen;
-        Tools.Picker picker;
+        private Bitmap finalBmp;
+        private Image bgImage;
+        private Size bmpSize;
+        private PictureBox mPicBox;
+        private LayerContainer layerContainer;
+        private string filename;
+        private Tool currentTool;
+        private Tools.PenTools pen;
+        private Tools.Picker picker;
 
+        #region Form
 
         public Form1()
         {
@@ -48,85 +51,165 @@ namespace DoAnLTTQ
             currentTool = Tool.pen;
         }
 
+        #endregion
+
+        #region Key shortcut
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case (Keys.Control | Keys.N):
+                    return true;
+                case (Keys.Control | Keys.O):
+                    return true;
+                case (Keys.Control | Keys.S):
+                    return true;
+                case (Keys.Control | Keys.W):
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.N):
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.D):
+                    return true;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
+        }
+
+        #endregion
+
         #region MenuStip
 
+        private bool working = false;
+        private bool saved = true;
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            CloseToolStripMenuItem_Click(sender, e);
+
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Image Files(*.BMP;*.JPG;*.PNG)|*.bmp;*.jpg;*.png|All files (*.*)|*.*";
                 ofd.FilterIndex = 2;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    using (Bitmap newBmp = new Bitmap(ofd.FileName))
-                    {
-                        filename = ofd.FileName;
-                        mPicBox.Visible = true;
-                        bmpSize = newBmp.Size;
-                        Layer firstLayer = new Layer(newBmp, "Layer1", true);
-                        finalBmp = newBmp;
-
-                        layerContainer.AddLayerRow(ref firstLayer);
-                        newLStripButton.Enabled = true;
-                        clearLStripButton.Enabled = true;
-                        renameLStripButton.Enabled = true;
-                        duplicateLStripButton.Enabled = true;
-                        BackGroundGenerator();
-                        MPicBoxUpdate();
-                    }
+                    finalBmp = new Bitmap(ofd.FileName);
+                    filename = ofd.FileName;
+                    bmpSize = finalBmp.Size;
+                    MPicBoxInit();
+                    LayerContainerInit();
+                    Layer firstLayer = new Layer(finalBmp, "Layer1", true);
+                    layerContainer.AddLayerRow(ref firstLayer);
+                    BackGroundGenerator();
+                    MPicBoxUpdate();
+                    working = true;
                 }
             }
-
         }
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            CloseToolStripMenuItem_Click(sender, e);
+
             using (NewFileForm nff = new NewFileForm())
             {
                 if (nff.ShowDialog() == DialogResult.OK)
                 {
-                    using (Bitmap newBmp = new Bitmap(nff.ImageSize.Width, nff.ImageSize.Height))
-                    {
-                        using (Graphics g = Graphics.FromImage(newBmp))
-                        {
-                            using (SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255)))
-                            {
-                                g.FillRectangle(brush, 0, 0, newBmp.Width, newBmp.Height);
-                            }
-                            filename = nff.FileName;
-                            mPicBox.Visible = true;
-                            bmpSize = newBmp.Size;
-                            Layer firstLayer = new Layer(newBmp, "Layer1", true);
-                            finalBmp = newBmp;
-
-                            layerContainer.AddLayerRow(ref firstLayer);
-                            newLStripButton.Enabled = true;
-                            clearLStripButton.Enabled = true;
-                            renameLStripButton.Enabled = true;
-                            duplicateLStripButton.Enabled = true;
-                            BackGroundGenerator();
-                            MPicBoxUpdate();
-                        }
-                    }
+                    finalBmp = new Bitmap(nff.ImageSize.Width, nff.ImageSize.Height);
+                    filename = nff.FileName;
+                    bmpSize = finalBmp.Size;
+                    MPicBoxInit();
+                    LayerContainerInit();
+                    Layer firstLayer = new Layer(finalBmp, "Layer1", true);
+                    layerContainer.AddLayerRow(ref firstLayer);
+                    if (nff.BGColor == Color.Transparent)
+                        BackGroundGenerator();
+                    else
+                        mPicBox.BackColor = nff.BGColor;
+                    MPicBoxUpdate();
+                    working = true;
                 }
             }
         }
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog sfd = new SaveFileDialog())
+            if(working)
             {
-                sfd.FileName = filename;
-                sfd.Filter = "Bitmap Image (*.BMP)|*.bmp|JPEG Image (*.JPEG)|*.jpeg|PNG Image (*.PNG)|*.png";
-                sfd.FilterIndex = 3;
-                sfd.DefaultExt = "png";
-                if (sfd.ShowDialog() == DialogResult.OK)
+                using (SaveFileDialog sfd = new SaveFileDialog())
                 {
-                    finalBmp.Save(sfd.FileName);
+                    sfd.FileName = filename;
+                    sfd.Filter = "Bitmap Image (*.BMP)|*.bmp|JPEG Image (*.JPEG)|*.jpeg|PNG Image (*.PNG)|*.png";
+                    sfd.FilterIndex = 3;
+                    sfd.DefaultExt = "png";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        finalBmp.Save(sfd.FileName);
+                    }
                 }
-
+                saved = true;
             }
         }
+
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (working)
+            {
+                if(!saved)
+                {
+                    DialogResult dialog = MessageBox.Show(filename + " haven't saved yet.\nDo you want to save it", "Photo Editor",
+                                                           MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                    if (dialog == DialogResult.Yes)
+                        SaveToolStripMenuItem_Click(sender, e);
+                }
+
+                foreach (ToolStripButton button in layerToolStrip.Items)
+                    button.Enabled = false;
+                finalBmp.Dispose();
+                mPicBox.Dispose();
+                mPicBox = null;
+                workPanel.Controls.Remove(mPicBox);
+                layerContainer.Dispose();
+                layerContainer = null;
+                layerPanel.Controls.Remove(layerContainer);
+                working = false;
+            }
+        }
+        
+        private void MPicBoxInit()
+        {
+            if(mPicBox == null)
+            {
+                mPicBox = new PictureBox();
+                mPicBox.Location = new System.Drawing.Point(0, 0);
+                mPicBox.Name = "mPicBox";
+                mPicBox.Size = bmpSize;
+                mPicBox.Image = finalBmp;
+                mPicBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MPicBox_MouseDown);
+                mPicBox.MouseLeave += new System.EventHandler(this.MPicBox_MouseLeave);
+                mPicBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MPicBox_MouseMove);
+                mPicBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MPicBox_MouseUp);
+                workPanel.Controls.Add(mPicBox);
+            }
+        }
+
+        private void LayerContainerInit()
+        {
+            if(layerContainer == null)
+            {
+                layerContainer = new LayerContainer();
+                layerContainer.AutoScroll = true;
+                layerContainer.Location = new System.Drawing.Point(4, 55);
+                layerContainer.Name = "layerContainer";
+                layerContainer.Size = new System.Drawing.Size(201, 230);
+                layerPanel.Controls.Add(layerContainer);
+
+                newLStripButton.Enabled = true;
+                clearLStripButton.Enabled = true;
+                renameLStripButton.Enabled = true;
+                duplicateLStripButton.Enabled = true;
+            }
+        }
+
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -149,6 +232,20 @@ namespace DoAnLTTQ
         private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearLStripButton_Click(sender, e);
+        }
+        private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DuplicateLStripButton_Click(sender, e);
+        }
+
+        private void FillToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (Graphics g = Graphics.FromImage(layerContainer.Current.Image))
+            using (SolidBrush brush = new SolidBrush(mainColorPic.BackColor))
+            {
+                g.FillRectangle(brush, 0, 0, layerContainer.Current.Image.Width, layerContainer.Current.Image.Height);
+            }
+            MPicBoxUpdate();
         }
 
         #endregion
@@ -194,6 +291,7 @@ namespace DoAnLTTQ
 
         public void MPicBoxUpdate()
         {
+            saved = false;
             layerContainer.FinalImageUpdate();
             finalBmp = layerContainer.Final;
             mPicBox.Image = finalBmp;
@@ -279,7 +377,7 @@ namespace DoAnLTTQ
 
         #region ColorTabPage
 
-        bool colorIsPicking = false;
+        private bool colorIsPicking = false;
         private void ColorGradian_MouseDown(object sender, MouseEventArgs e)
         {
             colorIsPicking = true;
@@ -321,10 +419,10 @@ namespace DoAnLTTQ
             subColorPic.BackColor = tmp;
         }
 
-        int redVal = 0;
-        int blueVal = 0;
-        int greenVal = 0;
-        int alphaVal = 0;
+        private int redVal = 0;
+        private int blueVal = 0;
+        private int greenVal = 0;
+        private int alphaVal = 0;
 
         private void MainColorPic_BackColorChanged(object sender, EventArgs e)
         {
@@ -515,6 +613,7 @@ namespace DoAnLTTQ
         private void DuplicateLStripButton_Click(object sender, EventArgs e)
         {
             layerContainer.Duplicate();
+            LayerButtonCheck();
             MPicBoxUpdate();
         }
 

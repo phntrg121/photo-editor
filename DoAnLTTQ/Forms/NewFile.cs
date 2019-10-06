@@ -15,6 +15,7 @@ namespace DoAnLTTQ
         public NewFileForm()
         {
             InitializeComponent();
+            bgColor = Color.Transparent;
         }
         public Size ImageSize
         {
@@ -65,6 +66,32 @@ namespace DoAnLTTQ
                     break;
                 default:
                     comboBox1.SelectedIndex = 0;
+                    break;
+            }
+        }
+
+        private Color bgColor;
+        
+        public Color BGColor
+        {
+            get
+            {
+                return bgColor;
+            }
+        }
+
+        private void ComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch(comboBox2.SelectedIndex)
+            {
+                case 0:
+                    bgColor = Color.Transparent;
+                    break;
+                case 1:
+                    bgColor = Color.White;
+                    break;
+                default:
+                    comboBox2.SelectedIndex = 0;
                     break;
             }
         }

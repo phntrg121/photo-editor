@@ -12,10 +12,10 @@ namespace DoAnLTTQ
 {
     public partial class LayerContainer : UserControl
     {
-        List<LayerRow> layers;
-        Bitmap final;
-        int current;
-        Size layerSize;
+        private List<LayerRow> layers;
+        private Bitmap final;
+        private int current;
+        private Size layerSize;
 
         public LayerContainer()
         {
@@ -72,7 +72,7 @@ namespace DoAnLTTQ
                 foreach (LayerRow row in layers)
                 {
                     if (row.Layer.Visible)
-                        g.DrawImage(row.Layer.Image, 0, 0, layerSize.Width, layerSize.Height);
+                        g.DrawImageUnscaled(row.Layer.Image, 0, 0, layerSize.Width, layerSize.Height);
                 }
             }
         }
@@ -96,7 +96,6 @@ namespace DoAnLTTQ
 
         public void RemoveLayerRow()
         {
-            layers[current].Layer.Dispose();
             layers[current].Dispose();
             panel.Controls.Remove(layers[current]);
             layers.Remove(layers[current]);

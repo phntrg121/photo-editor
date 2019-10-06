@@ -12,7 +12,7 @@ namespace DoAnLTTQ
 {
     public partial class LayerRow : UserControl
     {
-        Layer layer;
+        private Layer layer;
         public LayerRow()
         {
             InitializeComponent();

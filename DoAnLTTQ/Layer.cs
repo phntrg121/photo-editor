@@ -10,17 +10,17 @@ namespace DoAnLTTQ
 {
     public class Layer : IDisposable
     {
-        Bitmap image;
-        string name;
-        bool visible;
+        private Bitmap image;
+        private string name;
+        private bool visible;
 
         public Layer(Bitmap image, string name, bool visible)
         {
             this.image = new Bitmap(image);
             this.name = name;
             this.visible = visible;
-        } 
-        bool disposed = false;
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -29,9 +29,6 @@ namespace DoAnLTTQ
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
-                return;
-
             if (disposing)
             {
                 image.Dispose();
