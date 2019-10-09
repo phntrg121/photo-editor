@@ -42,6 +42,15 @@ namespace DoAnLTTQ
             }
         }
 
+        public float Opacity
+        {
+            set
+            {
+                label2.Text = ((int)value).ToString() + '%';
+                layer.Opacity = value;
+            }
+        }
+
         private void PictureBox1_Click(object sender, EventArgs e)
         {
             layer.ChangeVisible();
@@ -62,6 +71,8 @@ namespace DoAnLTTQ
 
             Form1 form = (Form1)Parent.Parent.Parent.Parent.Parent;
             form.LayerButtonCheck();
+            form.opacityVal = layer.Opacity;
+            form.OpacityBarUpdate();
         }
 
         private void Label1_Click(object sender, EventArgs e)

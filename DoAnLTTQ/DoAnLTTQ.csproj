@@ -50,11 +50,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoubleBufferPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DoubleBufferPictureBox.Designer.cs">
+      <DependentUpon>DoubleBufferPictureBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BrightnessContrast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BrightnessContrast.Designer.cs">
+      <DependentUpon>BrightnessContrast.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\HueSaturation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HueSaturation.Designer.cs">
+      <DependentUpon>HueSaturation.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LayerRename.cs">
       <SubType>Form</SubType>
@@ -93,6 +111,12 @@
     <Compile Include="Tools\Picker.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BrightnessContrast.resx">
+      <DependentUpon>BrightnessContrast.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HueSaturation.resx">
+      <DependentUpon>HueSaturation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LayerRename.resx">
       <DependentUpon>LayerRename.cs</DependentUpon>
