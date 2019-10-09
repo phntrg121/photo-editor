@@ -31,11 +31,11 @@ namespace DoAnLTTQ
             }
         }
 
-        public Layer Current
+        public LayerRow Current
         {
             get
             {
-                return layers[current].Layer;
+                return layers[current];
             }
         }
         public int CurrentIndex
@@ -45,7 +45,6 @@ namespace DoAnLTTQ
                 return current;
             }
         }
-
         public LayerRow CurrentRow
         {
             set
@@ -63,16 +62,25 @@ namespace DoAnLTTQ
             }
         }
 
-        public void FinalImageUpdate()
+        public void FinalImageUpdate(Bitmap processing)
         {
-            final.Dispose();
-            final = new Bitmap(layerSize.Width, layerSize.Height);
+            if (processing != null)
+            {
+                using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
+                    g.DrawImageUnscaled(processing, 0, 0, layerSize.Width, layerSize.Height);
+            }
+            
+
             using (Graphics g = Graphics.FromImage(final))
             {
+                g.Clear(Color.Transparent);
                 foreach (LayerRow row in layers)
                 {
                     if (row.Layer.Visible)
-                        g.DrawImageUnscaled(row.Layer.Image, 0, 0, layerSize.Width, layerSize.Height);
+                    {
+                        g.DrawImageUnscaled(row.Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                        
                 }
             }
         }
