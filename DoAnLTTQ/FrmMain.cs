@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-
+//alooo
 namespace SimplePaint
 {
     public partial class FrmMain : Form
