@@ -92,6 +92,9 @@
     <Compile Include="Forms\NewFile.Designer.cs">
       <DependentUpon>NewFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LayerContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
