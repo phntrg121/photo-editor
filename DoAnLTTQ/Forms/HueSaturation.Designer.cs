@@ -36,16 +36,16 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.saturationTrack = new System.Windows.Forms.TrackBar();
+            this.hueTrack = new System.Windows.Forms.TrackBar();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.trackBar3 = new System.Windows.Forms.TrackBar();
+            this.lightnessTrack = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationTrack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hueTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightnessTrack)).BeginInit();
             this.SuspendLayout();
             // 
             // label4
@@ -104,28 +104,28 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Hue";
             // 
-            // trackBar2
+            // saturationTrack
             // 
-            this.trackBar2.LargeChange = 10;
-            this.trackBar2.Location = new System.Drawing.Point(75, 266);
-            this.trackBar2.Maximum = 100;
-            this.trackBar2.Minimum = -100;
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(200, 45);
-            this.trackBar2.TabIndex = 6;
-            this.trackBar2.Scroll += new System.EventHandler(this.TrackBar2_Scroll);
+            this.saturationTrack.LargeChange = 10;
+            this.saturationTrack.Location = new System.Drawing.Point(75, 266);
+            this.saturationTrack.Maximum = 100;
+            this.saturationTrack.Minimum = -100;
+            this.saturationTrack.Name = "saturationTrack";
+            this.saturationTrack.Size = new System.Drawing.Size(200, 45);
+            this.saturationTrack.TabIndex = 6;
+            this.saturationTrack.Scroll += new System.EventHandler(this.TrackBar2_Scroll);
             // 
-            // trackBar1
+            // hueTrack
             // 
-            this.trackBar1.AutoSize = false;
-            this.trackBar1.LargeChange = 1;
-            this.trackBar1.Location = new System.Drawing.Point(75, 230);
-            this.trackBar1.Maximum = 180;
-            this.trackBar1.Minimum = -180;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(200, 45);
-            this.trackBar1.TabIndex = 7;
-            this.trackBar1.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
+            this.hueTrack.AutoSize = false;
+            this.hueTrack.LargeChange = 1;
+            this.hueTrack.Location = new System.Drawing.Point(75, 230);
+            this.hueTrack.Maximum = 180;
+            this.hueTrack.Minimum = -180;
+            this.hueTrack.Name = "hueTrack";
+            this.hueTrack.Size = new System.Drawing.Size(200, 45);
+            this.hueTrack.TabIndex = 7;
+            this.hueTrack.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
             // 
             // pictureBox1
             // 
@@ -138,16 +138,16 @@
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
-            // trackBar3
+            // lightnessTrack
             // 
-            this.trackBar3.LargeChange = 10;
-            this.trackBar3.Location = new System.Drawing.Point(75, 302);
-            this.trackBar3.Maximum = 100;
-            this.trackBar3.Minimum = -100;
-            this.trackBar3.Name = "trackBar3";
-            this.trackBar3.Size = new System.Drawing.Size(200, 45);
-            this.trackBar3.TabIndex = 6;
-            this.trackBar3.Scroll += new System.EventHandler(this.TrackBar3_Scroll);
+            this.lightnessTrack.LargeChange = 10;
+            this.lightnessTrack.Location = new System.Drawing.Point(75, 302);
+            this.lightnessTrack.Maximum = 100;
+            this.lightnessTrack.Minimum = -100;
+            this.lightnessTrack.Name = "lightnessTrack";
+            this.lightnessTrack.Size = new System.Drawing.Size(200, 45);
+            this.lightnessTrack.TabIndex = 6;
+            this.lightnessTrack.Scroll += new System.EventHandler(this.TrackBar3_Scroll);
             // 
             // label5
             // 
@@ -181,9 +181,9 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.trackBar3);
-            this.Controls.Add(this.trackBar2);
-            this.Controls.Add(this.trackBar1);
+            this.Controls.Add(this.lightnessTrack);
+            this.Controls.Add(this.saturationTrack);
+            this.Controls.Add(this.hueTrack);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -193,10 +193,10 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hue and Saturation";
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.saturationTrack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hueTrack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightnessTrack)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,10 +210,10 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TrackBar trackBar2;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar saturationTrack;
+        private System.Windows.Forms.TrackBar hueTrack;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TrackBar trackBar3;
+        private System.Windows.Forms.TrackBar lightnessTrack;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
     }

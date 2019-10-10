@@ -50,7 +50,11 @@ namespace DoAnLTTQ
         private void Form1_Load(object sender, EventArgs e)
         {
             bgImage = Properties.Resources.TransparencyBG;
+            LayerMenuStripEnable(false);
+            FilterMenuStripEnable(false);
             layerPanel.Enabled = false;
+            saveToolStripMenuItem.Enabled = false;
+            closeToolStripMenuItem.Enabled = false;
             currentTool = Tool.pen;
         }
 
@@ -108,11 +112,14 @@ namespace DoAnLTTQ
                     bmpSize = finalBmp.Size;
                     MPicBoxInit();
                     LayerContainerInit();
+                    LayerMenuStripEnable(true);
+                    FilterMenuStripEnable(true);
                     Layer firstLayer = new Layer(finalBmp, "Layer1", true);
                     layerContainer.AddLayerRow(ref firstLayer);
                     BackGroundGenerator();
                     MPicBoxUpdate();
                     working = true;
+                    closeToolStripMenuItem.Enabled = true;
                 }
             }
         }
@@ -130,6 +137,8 @@ namespace DoAnLTTQ
                     bmpSize = finalBmp.Size;
                     MPicBoxInit();
                     LayerContainerInit();
+                    LayerMenuStripEnable(true);
+                    FilterMenuStripEnable(true);
                     Layer firstLayer = new Layer(finalBmp, "Layer1", true);
                     layerContainer.AddLayerRow(ref firstLayer);
                     if (nff.BGColor == Color.Transparent)
@@ -138,6 +147,7 @@ namespace DoAnLTTQ
                         mPicBox.BackColor = nff.BGColor;
                     MPicBoxUpdate();
                     working = true;
+                    closeToolStripMenuItem.Enabled = true;
                 }
             }
         }
@@ -158,6 +168,7 @@ namespace DoAnLTTQ
                     }
                 }
                 saved = true;
+                saveToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -173,7 +184,6 @@ namespace DoAnLTTQ
                         SaveToolStripMenuItem_Click(sender, e);
                 }
 
-                layerPanel.Enabled = false;
                 finalBmp.Dispose();
                 mPicBox.Dispose();
                 mPicBox = null;
@@ -181,7 +191,13 @@ namespace DoAnLTTQ
                 layerContainer.Dispose();
                 layerContainer = null;
                 layerPanel.Controls.Remove(layerContainer);
+                LayerMenuStripEnable(false);
+                FilterMenuStripEnable(false);
+                layerPanel.Enabled = false;
                 working = false;
+                closeToolStripMenuItem.Enabled = false;
+                saved = true;
+                saveToolStripMenuItem.Enabled = false;
             }
         }       
 
@@ -230,6 +246,14 @@ namespace DoAnLTTQ
         #endregion
 
         #region Filter menu
+
+        private void FilterMenuStripEnable(bool enable)
+        {
+            foreach(ToolStripMenuItem item in filterToolStripMenuItem.DropDownItems)
+            {
+                item.Enabled = enable;
+            }
+        }
         private void BrightnessAndContrastToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (Forms.BrightnessContrast bc = new Forms.BrightnessContrast())
@@ -246,12 +270,14 @@ namespace DoAnLTTQ
 
         private void HueAndSaturationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.HueSaturation bc = new Forms.HueSaturation())
+            using (Forms.HueSaturation hs = new Forms.HueSaturation())
             {
-                bc.Image = layerContainer.Current.Layer.Image;
-                if (bc.ShowDialog() == DialogResult.OK)
+                hs.Image = layerContainer.Current.Layer.Image;
+                if (hs.ShowDialog() == DialogResult.OK)
                 {
-
+                    layerContainer.Current.Layer.Image.Dispose();
+                    layerContainer.Current.Layer.Image = hs.Image;
+                    MPicBoxUpdate();
                 }
             }
         }
@@ -319,6 +345,7 @@ namespace DoAnLTTQ
         public void MPicBoxUpdate()
         {
             saved = false;
+            saveToolStripMenuItem.Enabled = true;
             layerContainer.FinalImageUpdate(processing);
             if(processing !=null)
             {
@@ -406,8 +433,12 @@ namespace DoAnLTTQ
         {
             mPicBox.Controls.Remove(subPB);
             MPicBoxUpdate();
-            subPB.Dispose();
-            subPB = null;
+            if(subPB !=null)
+            {
+                subPB.Dispose();
+                subPB = null;
+            }
+            
         }
 
         #endregion
@@ -550,6 +581,14 @@ namespace DoAnLTTQ
                 layerPanel.Enabled = true;
                 opacityVal = 100f;
                 OpacityBarUpdate();
+            }
+        }
+
+        private void LayerMenuStripEnable(bool enable)
+        {
+            foreach(ToolStripMenuItem item in layerToolStripMenuItem.DropDownItems)
+            {
+                item.Enabled = enable;
             }
         }
 
