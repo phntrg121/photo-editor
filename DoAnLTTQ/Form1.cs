@@ -263,8 +263,8 @@ namespace DoAnLTTQ
                 {
                     layerContainer.Current.Layer.Image.Dispose();
                     layerContainer.Current.Layer.Image = bc.Image;
-                    MPicBoxUpdate();
                 }
+                MPicBoxUpdate();
             }
         }
 
@@ -273,12 +273,51 @@ namespace DoAnLTTQ
             using (Forms.HueSaturation hs = new Forms.HueSaturation())
             {
                 hs.Image = layerContainer.Current.Layer.Image;
+                hs.Initialize();
+
                 if (hs.ShowDialog() == DialogResult.OK)
                 {
                     layerContainer.Current.Layer.Image.Dispose();
                     layerContainer.Current.Layer.Image = hs.Image;
-                    MPicBoxUpdate();
                 }
+                MPicBoxUpdate();
+            }
+        }
+
+        private void InvertToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using(Bitmap bmp = new Bitmap(layerContainer.Current.Layer.Image))
+            using(Graphics g = Graphics.FromImage(bmp))
+            {
+                System.Drawing.Imaging.ColorMatrix matrix = new System.Drawing.Imaging.ColorMatrix();
+                matrix.Matrix00 = matrix.Matrix11 = matrix.Matrix22 = -1f;
+                matrix.Matrix33 = matrix.Matrix40 = matrix.Matrix41 = matrix.Matrix42 = matrix.Matrix44 = 1f;
+                using (System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes())
+                {
+                    attributes.SetColorMatrix(matrix);
+                    g.DrawImage(layerContainer.Current.Layer.Image, new Rectangle(0, 0, bmpSize.Width, bmpSize.Height),
+                        0, 0, bmpSize.Width, bmpSize.Height, GraphicsUnit.Pixel, attributes);
+
+                    layerContainer.Current.Layer.Image.Dispose();
+                    layerContainer.Current.Layer.Image = new Bitmap(bmp);
+                }
+            }
+            MPicBoxUpdate();
+        }
+
+        private void ThresholdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (Forms.Threshold th = new Forms.Threshold())
+            {
+                th.Image = layerContainer.Current.Layer.Image;
+                th.Initialize();
+
+                if (th.ShowDialog() == DialogResult.OK)
+                {
+                    layerContainer.Current.Layer.Image.Dispose();
+                    layerContainer.Current.Layer.Image = th.Image;
+                }
+                MPicBoxUpdate();
             }
         }
 
@@ -379,6 +418,7 @@ namespace DoAnLTTQ
 
         private void MPicBox_MouseDown(object sender, MouseEventArgs e)
         {
+            processing = new Bitmap(bmpSize.Width, bmpSize.Height);
             subPB = new DoubleBufferPictureBox();
             subPB.Location = new Point(0, 0);
             subPB.Size = mPicBox.Size;
@@ -390,7 +430,6 @@ namespace DoAnLTTQ
                 case Tool.pen:
                     {
                         pen.GetLocation(ref e);
-                        processing = new Bitmap(bmpSize.Width, bmpSize.Height);
                     }
                     break;
                 case Tool.picker:
@@ -415,6 +454,7 @@ namespace DoAnLTTQ
                             {
                                 pen.Draw(ref processing, ref e);
                                 subPB.Image = processing;
+                                subPB.Invalidate();
                             }
                         }
                         break;

@@ -15,6 +15,9 @@ namespace DoAnLTTQ.Forms
         private Bitmap image;
         private Bitmap adjusted;
         private System.Drawing.Imaging.BitmapData bmpData;
+        private byte[] imagePixels;
+        private IntPtr ptr;
+        private int dataSize;
 
         public HueSaturation()
         {
@@ -25,9 +28,9 @@ namespace DoAnLTTQ.Forms
         {
             set
             {
-                image = value;
+                image = new Bitmap(value);
                 pictureBox1.Image = image;
-
+                adjusted = new Bitmap(image);
             }
             get
             {
@@ -35,8 +38,18 @@ namespace DoAnLTTQ.Forms
             }
         }
 
-        float H, S, L;
-        float hueVal, saturationVal, lightnessVal;
+        public void Initialize()
+        {
+            bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat);
+            ptr = bmpData.Scan0;
+            dataSize = Math.Abs(bmpData.Stride) * image.Height;
+            imagePixels = new byte[dataSize];
+            System.Runtime.InteropServices.Marshal.Copy(ptr, imagePixels, 0, dataSize);
+            image.UnlockBits(bmpData);
+        }
+
+        float H, S, V;
+        float hueVal, saturationVal, brightnessVal;
         private void Adjust()
         {
             if (adjusted != null)
@@ -46,44 +59,35 @@ namespace DoAnLTTQ.Forms
             }
             adjusted = new Bitmap(image);
             bmpData = adjusted.LockBits(new Rectangle(0, 0, adjusted.Width, adjusted.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, adjusted.PixelFormat);
-
-            IntPtr ptr = bmpData.Scan0;
-            int size = Math.Abs(bmpData.Stride) * adjusted.Height;
-            byte[] pixels1 = new byte[size];
-            byte[] pixels2 = new byte[size];
-
-            System.Runtime.InteropServices.Marshal.Copy(ptr, pixels1, 0, size);
-
-            for (int i = 0; i < pixels1.Length; i += 4)
+            ptr = bmpData.Scan0;
+            byte[] pixels = new byte[dataSize];
+            for (int i = 0; i < dataSize; i += 4)
             {
-                Color c = Color.FromArgb(pixels1[i + 3], pixels1[i + 0], pixels1[i + 1], pixels1[i + 2]);
+                Color c = Color.FromArgb(imagePixels[i + 3], imagePixels[i + 0], imagePixels[i + 1], imagePixels[i + 2]);
                 SetColor(ref c);
-                pixels2[i + 3] = c.A;
-                pixels2[i + 0] = c.R;
-                pixels2[i + 1] = c.G;
-                pixels2[i + 2] = c.B;
+                pixels[i + 3] = imagePixels[i + 3];
+                pixels[i + 0] = c.R;
+                pixels[i + 1] = c.G;
+                pixels[i + 2] = c.B;
             }
-
-            System.Runtime.InteropServices.Marshal.Copy(pixels2, 0, ptr, size);
-
+            System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, dataSize);
             adjusted.UnlockBits(bmpData);
-
             pictureBox1.Image = adjusted;
         }
 
         private void SetColor(ref Color c)
         {
-            RGBtoHSL(ref H, ref S, ref L, c);
+            RGBtoHSV(ref H, ref S, ref V, c);
             H += hueVal;
             if (H < 0) H += 360;
             if (H >= 360) H -= 360;
             S *= 1 + saturationVal / 100;
-            L *= 1 + lightnessVal / 100;
-            HSLtoRBG(H, S, L, ref c);
+            V *= 1 + brightnessVal / 100;
+            HSVtoRBG(H, S, V, ref c);
         }
 
 
-        private void RGBtoHSL(ref float H, ref float S, ref float L, Color c)
+        private void RGBtoHSV(ref float H, ref float S, ref float V, Color c)
         {
             float r, g, b;
             r = (float)c.R / 255;
@@ -97,18 +101,19 @@ namespace DoAnLTTQ.Forms
             else if (max == b) H = 60 * (4 + (r - g) / (max - min));
             if (H < 0) H += 360;
             if (H >= 360) H -= 360;
-            L = (max + min) / 2;
             if (max == 0 || min == 1)
                 S = 0;
-            else S = (max - min) / (1 - Math.Abs(max + min - 1));
+            else S = (max - min) / max;
+            V = max;
         }
 
-        private void HSLtoRBG(float H, float S, float L, ref Color c)
+        private void HSVtoRBG(float H, float S, float V, ref Color c)
         {
             float r, g, b;
             r = g = b = 0;
-            float C = (1 - Math.Abs(2 * L - 1)) * S;
+            float C = V * S;
             float X = C * (1 - Math.Abs((H / 60) % 2 - 1));
+            float m = V - C;
             if (0 <= H && H < 60)
             {
                 r = C;
@@ -145,7 +150,6 @@ namespace DoAnLTTQ.Forms
                 g = 0;
                 b = X;
             }
-            float m = L - C / 2;
             int R = (int)((r + m) * 255);
             if (R < 0) R = 0;
             if (R > 255) R = 255;
@@ -174,9 +178,20 @@ namespace DoAnLTTQ.Forms
 
         private void TrackBar3_Scroll(object sender, EventArgs e)
         {
-            label6.Text = lightnessTrack.Value.ToString();
-            lightnessVal = lightnessTrack.Value;
+            label6.Text = luminosityTrack.Value.ToString();
+            brightnessVal = luminosityTrack.Value;
             Adjust();
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            hueTrack.Value = 0;
+            label3.Text = hueTrack.Value.ToString();
+            saturationTrack.Value = 0;
+            label4.Text = saturationTrack.Value.ToString();
+            luminosityTrack.Value = 0;
+            label6.Text = luminosityTrack.Value.ToString();
+            pictureBox1.Image = image;
         }
     }
 }

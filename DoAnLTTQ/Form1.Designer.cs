@@ -56,6 +56,7 @@
             this.filterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.brightnessAndContrastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hueAndSaturationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.invertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutPhotoEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -92,6 +93,7 @@
             this.subColorPic = new System.Windows.Forms.PictureBox();
             this.colorGradian = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.topPanel = new System.Windows.Forms.Panel();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -103,6 +105,7 @@
             this.eraserStripButton = new System.Windows.Forms.ToolStripButton();
             this.pickerStripButton = new System.Windows.Forms.ToolStripButton();
             this.leftPanel = new System.Windows.Forms.Panel();
+            this.thresholdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.rightPanel.SuspendLayout();
@@ -322,7 +325,9 @@
             // 
             this.filterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.brightnessAndContrastToolStripMenuItem,
-            this.hueAndSaturationToolStripMenuItem});
+            this.hueAndSaturationToolStripMenuItem,
+            this.invertToolStripMenuItem,
+            this.thresholdToolStripMenuItem});
             this.filterToolStripMenuItem.Name = "filterToolStripMenuItem";
             this.filterToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.filterToolStripMenuItem.Text = "Filter";
@@ -340,6 +345,13 @@
             this.hueAndSaturationToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.hueAndSaturationToolStripMenuItem.Text = "Hue and Saturation";
             this.hueAndSaturationToolStripMenuItem.Click += new System.EventHandler(this.HueAndSaturationToolStripMenuItem_Click);
+            // 
+            // invertToolStripMenuItem
+            // 
+            this.invertToolStripMenuItem.Name = "invertToolStripMenuItem";
+            this.invertToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.invertToolStripMenuItem.Text = "Invert";
+            this.invertToolStripMenuItem.Click += new System.EventHandler(this.InvertToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -549,6 +561,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(7, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -717,8 +730,17 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(201, 224);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Texture";
+            this.tabPage2.Text = "Filters";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(201, 224);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "History";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // topPanel
             // 
@@ -839,6 +861,13 @@
             this.leftPanel.Name = "leftPanel";
             this.leftPanel.Size = new System.Drawing.Size(29, 523);
             this.leftPanel.TabIndex = 1;
+            // 
+            // thresholdToolStripMenuItem
+            // 
+            this.thresholdToolStripMenuItem.Name = "thresholdToolStripMenuItem";
+            this.thresholdToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.thresholdToolStripMenuItem.Text = "Threshold";
+            this.thresholdToolStripMenuItem.Click += new System.EventHandler(this.ThresholdToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -968,5 +997,8 @@
         private System.Windows.Forms.ToolStripMenuItem brightnessAndContrastToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hueAndSaturationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutPhotoEditorToolStripMenuItem;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ToolStripMenuItem invertToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thresholdToolStripMenuItem;
     }
 }
