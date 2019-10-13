@@ -49,7 +49,7 @@ namespace DoAnLTTQ.Forms
         }
 
         float H, S, V;
-        float hueVal, saturationVal, brightnessVal;
+        float hueVal, saturationVal, luiminosityVal;
         private void Adjust()
         {
             if (adjusted != null)
@@ -82,7 +82,7 @@ namespace DoAnLTTQ.Forms
             if (H < 0) H += 360;
             if (H >= 360) H -= 360;
             S *= 1 + saturationVal / 100;
-            V *= 1 + brightnessVal / 100;
+            V *= 1 + luiminosityVal / 100;
             HSVtoRBG(H, S, V, ref c);
         }
 
@@ -179,19 +179,19 @@ namespace DoAnLTTQ.Forms
         private void TrackBar3_Scroll(object sender, EventArgs e)
         {
             label6.Text = luminosityTrack.Value.ToString();
-            brightnessVal = luminosityTrack.Value;
+            luiminosityVal = luminosityTrack.Value;
             Adjust();
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            hueTrack.Value = 0;
+            hueVal = hueTrack.Value = 0;
             label3.Text = hueTrack.Value.ToString();
-            saturationTrack.Value = 0;
+            saturationVal = saturationTrack.Value = 0;
             label4.Text = saturationTrack.Value.ToString();
-            luminosityTrack.Value = 0;
+            luiminosityVal = luminosityTrack.Value = 0;
             label6.Text = luminosityTrack.Value.ToString();
-            pictureBox1.Image = image;
+            Adjust();
         }
     }
 }

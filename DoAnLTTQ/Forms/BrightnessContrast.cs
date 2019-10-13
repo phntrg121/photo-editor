@@ -35,7 +35,7 @@ namespace DoAnLTTQ.Forms
         }
 
         private float brightness = 0f;
-        private float contrast = 1f;
+        private float contrast = 0f;
         private void Adjust()
         {
             if (adjusted != null)
@@ -48,7 +48,7 @@ namespace DoAnLTTQ.Forms
             using (ImageAttributes imageAttributes = new ImageAttributes())
             {
                 ColorMatrix matrix = new ColorMatrix();
-                matrix.Matrix00 = matrix.Matrix11 = matrix.Matrix22 = contrast;
+                matrix.Matrix00 = matrix.Matrix11 = matrix.Matrix22 = contrast + 1f;
                 matrix.Matrix33 = matrix.Matrix44 = 1f;
                 matrix.Matrix40 = matrix.Matrix41 = matrix.Matrix42 = brightness;
 
@@ -71,17 +71,17 @@ namespace DoAnLTTQ.Forms
         private void TrackBar2_Scroll(object sender, EventArgs e)
         {
             label4.Text = contrastTrack.Value.ToString();
-            contrast = (float)contrastTrack.Value / 100 + 1f;
+            contrast = (float)contrastTrack.Value / 100;
             Adjust();
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            brightnessTrack.Value = 0;
+            brightness = brightnessTrack.Value = 0;
             label3.Text = brightnessTrack.Value.ToString();
-            contrastTrack.Value = 0;
+            contrast = contrastTrack.Value = 0;
             label4.Text = contrastTrack.Value.ToString();
-            pictureBox1.Image = image;
+            Adjust();
         }
     }
 }
