@@ -61,7 +61,7 @@ namespace DoAnLTTQ
                 pictureBox1.Image = Properties.Resources.not_visible;
 
             Form1 form = (Form1)Parent.Parent.Parent.Parent.Parent;
-            form.MPicBoxUpdate();
+            form.DSUpdate();
         }
 
         private void LayerRow_Click(object sender, EventArgs e)

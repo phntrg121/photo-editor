@@ -14,6 +14,8 @@ namespace DoAnLTTQ
     {
         private List<LayerRow> layers;
         private Bitmap final;
+        private Bitmap back;
+        private Bitmap front;
         private int current;
         private Size layerSize;
 
@@ -61,27 +63,68 @@ namespace DoAnLTTQ
                 return final;
             }
         }
+        public Bitmap Back
+        {
+            get
+            {
+                return back;
+            }
+        }
+        public Bitmap Front
+        {
+            get
+            {
+                return front;
+            }
+        }
 
-        public void FinalImageUpdate(Bitmap processing)
+        public void ProcessUpdate(Bitmap processing)
         {
             if (processing != null)
             {
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
                     g.DrawImageUnscaled(processing, 0, 0, layerSize.Width, layerSize.Height);
+                processing.Dispose();
             }
-            
+        }
 
+        public void BackUpdate()
+        {
+            using (Graphics g = Graphics.FromImage(back))
+            {
+                g.Clear(Color.Transparent);
+                for (int i = 0; i <= current; i++)
+                {
+                    if (layers[i].Layer.Visible)
+                    {
+                        g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                }
+            }
+        }
+
+        public void FrontUpdate()
+        {
+            using (Graphics g = Graphics.FromImage(front))
+            {
+                g.Clear(Color.Transparent);
+                for (int i = current + 1; i < layers.Count; i++)
+                {
+                    if (layers[i].Layer.Visible)
+                    {
+                        g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                }
+            }
+        }
+
+        public void FinalUpdate()
+        {
             using (Graphics g = Graphics.FromImage(final))
             {
                 g.Clear(Color.Transparent);
-                foreach (LayerRow row in layers)
-                {
-                    if (row.Layer.Visible)
-                    {
-                        g.DrawImageUnscaled(row.Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
-                    }
-                        
-                }
+                g.DrawImageUnscaled(back, 0, 0, layerSize.Width, layerSize.Height);
+                g.DrawImageUnscaled(front, 0, 0, layerSize.Width, layerSize.Height);
             }
         }
 
@@ -91,6 +134,8 @@ namespace DoAnLTTQ
             {
                 layerSize = layer.Image.Size;
                 final = new Bitmap(layerSize.Width, layerSize.Height);
+                back = new Bitmap(layerSize.Width, layerSize.Height);
+                front = new Bitmap(layerSize.Width, layerSize.Height);
             }
 
             LayerRow row = new LayerRow();

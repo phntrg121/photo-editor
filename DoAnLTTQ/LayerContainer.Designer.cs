@@ -19,6 +19,8 @@
                 
             }
             final.Dispose();
+            front.Dispose();
+            back.Dispose();
             base.Dispose(disposing);
         }
 
