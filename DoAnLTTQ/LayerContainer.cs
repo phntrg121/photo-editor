@@ -18,11 +18,13 @@ namespace DoAnLTTQ
         private Bitmap front;
         private int current;
         private Size layerSize;
+        private Stack<KeyValuePair<int, LayerRow>> deletedRows;
 
         public LayerContainer()
         {
             InitializeComponent();
             layers = new List<LayerRow>();
+            deletedRows = new Stack<KeyValuePair<int, LayerRow>>();
         }
 
         public int Count
@@ -82,6 +84,7 @@ namespace DoAnLTTQ
         {
             if (processing != null)
             {
+                layers[current].Layer.Stacking();
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
                     g.DrawImageUnscaled(processing, 0, 0, layerSize.Width, layerSize.Height);
                 processing.Dispose();
@@ -132,6 +135,7 @@ namespace DoAnLTTQ
         {
             if (layers.Count == 0)
             {
+                current = -1;
                 layerSize = layer.Image.Size;
                 final = new Bitmap(layerSize.Width, layerSize.Height);
                 back = new Bitmap(layerSize.Width, layerSize.Height);
@@ -141,18 +145,39 @@ namespace DoAnLTTQ
             LayerRow row = new LayerRow();
             row.Layer = layer;
             row.Text = layer.Name;
-            layers.Add(row);
-            current = layers.Count - 1;
+            current++;
+            layers.Insert(current, row);
             panel.Controls.Add(row);
+            Allocation();
+        }
+
+        public void RestoreRow()
+        {
+            LayerRow l = layers[current];
+            layers.Insert(deletedRows.Peek().Key, deletedRows.Peek().Value);
+            panel.Controls.Add(deletedRows.Peek().Value);
+            current = layers.IndexOf(l);
+            deletedRows.Pop();
             Allocation();
         }
 
         public void RemoveLayerRow()
         {
-            layers[current].Dispose();
+            deletedRows.Push(new KeyValuePair<int, LayerRow>(current, layers[current]));
             panel.Controls.Remove(layers[current]);
             layers.Remove(layers[current]);
             if (current != 0)
+                current--;
+            Allocation();
+        }
+
+        public void DeleteRowAt(LayerRow lr)
+        {
+            int index = layers.IndexOf(lr);
+            layers[index].Dispose();
+            panel.Controls.Remove(layers[index]);
+            layers.Remove(layers[index]);
+            if (index <= current && current > 0)
                 current--;
             Allocation();
         }
@@ -191,6 +216,14 @@ namespace DoAnLTTQ
             Allocation();
         }
 
+        public void MoveBack(LayerRow lr,bool up)
+        {
+            int index = layers.IndexOf(lr);
+            if (up) SwapRow(layers, index, index + 1);
+            else SwapRow(layers, index, index - 1);
+            Allocation();
+        }
+
         private void SwapRow(List<LayerRow> list, int row1, int row2)
         {
             LayerRow tmp = list[row1];
@@ -200,7 +233,8 @@ namespace DoAnLTTQ
 
         public void Merge()
         {
-            using(Graphics g = Graphics.FromImage(layers[current -1].Layer.Image))
+            layers[current - 1].Layer.Stacking();
+            using (Graphics g = Graphics.FromImage(layers[current -1].Layer.Image))
             {
                 g.DrawImage(layers[current].Layer.Image, 0, 0, layerSize.Width, layerSize.Height);
             }
@@ -210,7 +244,7 @@ namespace DoAnLTTQ
         public void Duplicate()
         {
             LayerRow newRow = new LayerRow();
-            newRow.Text = layers[current].Text + "-Copy";
+            newRow.Text = layers[current].Text + "(Copy)";
             newRow.Layer = new Layer(layers[current].Layer.Image, newRow.Text, true);
             current++;
             layers.Insert(current, newRow);

@@ -98,6 +98,12 @@
     <Compile Include="Forms\Threshold.Designer.cs">
       <DependentUpon>Threshold.cs</DependentUpon>
     </Compile>
+    <Compile Include="History.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="History.Designer.cs">
+      <DependentUpon>History.cs</DependentUpon>
+    </Compile>
     <Compile Include="LayerContainer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -138,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Threshold.resx">
       <DependentUpon>Threshold.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="History.resx">
+      <DependentUpon>History.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LayerContainer.resx">
       <DependentUpon>LayerContainer.cs</DependentUpon>

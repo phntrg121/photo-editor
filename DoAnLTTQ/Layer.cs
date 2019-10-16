@@ -16,14 +16,20 @@ namespace DoAnLTTQ
         private string name;
         private bool visible;
         private float opacity;
+        private Stack<Bitmap> bmpList;
+        private Stack<byte> oldOp;
 
         public Layer(Bitmap image, string name, bool visible)
         {
-            this.image = new Bitmap(image);
+            bmpList = new Stack<Bitmap>();
+            bmpList.Push(new Bitmap(image));
+            this.image = bmpList.Peek();
             this.imageWithOpacity = new Bitmap(image);
+
             this.name = name;
             this.visible = visible;
             this.opacity = 1f;
+            oldOp = new Stack<byte>();
         }
 
         public void Dispose()
@@ -47,6 +53,19 @@ namespace DoAnLTTQ
             {
                 return ref image;
             }
+        }
+
+        public void Stacking()
+        {
+            bmpList.Push(new Bitmap(bmpList.Peek()));
+            image = bmpList.Peek();
+        }
+
+        public void UnStacking()
+        {
+            image.Dispose();
+            bmpList.Pop();
+            image = bmpList.Peek();
         }
 
         public Bitmap ImageWithOpacity
@@ -82,12 +101,19 @@ namespace DoAnLTTQ
         {
             set
             {
+                oldOp.Push((byte)(opacity*100));
                 opacity = value / 100;
             }
             get
             {
                 return opacity * 100;
             }
+        }
+        
+        public void RestoreOpacity()
+        {
+            opacity = (float)oldOp.Peek()/100;
+            oldOp.Pop();
         }
 
         private Bitmap SetOpacity()

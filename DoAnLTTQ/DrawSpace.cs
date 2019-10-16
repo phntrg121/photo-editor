@@ -10,6 +10,11 @@ using System.Windows.Forms;
 
 namespace DoAnLTTQ
 {
+
+    public enum Tool
+    {
+        Pen, Eraser, Picker
+    }
     public partial class DrawSpace : UserControl
     {
         private Bitmap processing;
@@ -50,6 +55,10 @@ namespace DoAnLTTQ
         }
         public Image ProcessBoxImage
         {
+            set
+            {
+                processing = (Bitmap)value;
+            }
             get
             {
                 if (processing != null)
@@ -130,12 +139,12 @@ namespace DoAnLTTQ
 
             switch (current)
             {
-                case Tool.pen:
+                case Tool.Pen:
                     {
                         pen.GetLocation(ref e);
                     }
                     break;
-                case Tool.picker:
+                case Tool.Picker:
                     {
                         color = picker.GetColor(ref final, ref e);
                     }
@@ -151,7 +160,7 @@ namespace DoAnLTTQ
             {
                 switch (current)
                 {
-                    case Tool.pen:
+                    case Tool.Pen:
                         {
                             pen.Draw(ref processing, ref e);
                             processBox.Image = processing;

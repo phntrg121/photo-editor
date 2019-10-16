@@ -47,7 +47,6 @@ namespace DoAnLTTQ
             set
             {
                 label2.Text = ((int)value).ToString() + '%';
-                layer.Opacity = value;
             }
         }
 
@@ -73,6 +72,7 @@ namespace DoAnLTTQ
             form.LayerButtonCheck();
             form.opacityVal = layer.Opacity;
             form.OpacityBarUpdate();
+            form.DSUpdate();
         }
 
         private void Label1_Click(object sender, EventArgs e)

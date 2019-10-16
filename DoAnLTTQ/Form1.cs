@@ -10,14 +10,8 @@ using System.Windows.Forms;
 
 namespace DoAnLTTQ
 {
-    public enum Tool
-    {
-        pen, eraser, picker
-    }
-
     public partial class Form1 : Form
     {
-        private Image bgImage;
         private Size bmpSize;
         private DrawSpace drawSpace;
         private LayerContainer layerContainer;
@@ -43,14 +37,13 @@ namespace DoAnLTTQ
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            bgImage = Properties.Resources.TransparencyBG;
             LayerMenuStripEnable(false);
             FilterMenuStripEnable(false);
             layerPanel.Enabled = false;
             saveToolStripMenuItem.Enabled = false;
             saveAsToolStripMenuItem.Enabled = false;
             closeToolStripMenuItem.Enabled = false;
-            currentTool = Tool.pen;
+            currentTool = Tool.Pen;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -84,6 +77,9 @@ namespace DoAnLTTQ
                     return true;
                 case (Keys.Control | Keys.W):
                     CloseToolStripMenuItem_Click(closeToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Z):
+                    UndoToolStripMenuItem_Click(undoToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.N):
                     NewLayerToolStripMenuItem_Click(newLayerToolStripMenuItem, null);
@@ -237,6 +233,15 @@ namespace DoAnLTTQ
 
         #endregion
 
+        #region Edit menu
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            history.Remove();
+            DSUpdate();
+        }
+
+        #endregion
+
         #region Layer menu
 
         private void NewLayerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -264,11 +269,14 @@ namespace DoAnLTTQ
 
         private void FillToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Graphics g = Graphics.FromImage(layerContainer.Current.Layer.Image))
+            Bitmap bmp = new Bitmap(bmpSize.Width, bmpSize.Height);
+            using (Graphics g = Graphics.FromImage(bmp))
             using (SolidBrush brush = new SolidBrush(mainColorPic.BackColor))
             {
-                g.FillRectangle(brush, 0, 0, layerContainer.Current.Layer.Image.Width, layerContainer.Current.Layer.Image.Height);
+                g.FillRectangle(brush, 0, 0, bmpSize.Width, bmpSize.Height);
             }
+            drawSpace.ProcessBoxImage = bmp;
+            DSProcessUpdate(HistoryEvent.Draw);
             DSUpdate();
         }
 
@@ -288,11 +296,12 @@ namespace DoAnLTTQ
             using (Forms.BrightnessContrast bc = new Forms.BrightnessContrast())
             {
                 bc.Image = layerContainer.Current.Layer.Image;
+
                 if (bc.ShowDialog() == DialogResult.OK)
                 {
-                    layerContainer.Current.Layer.Image.Dispose();
-                    layerContainer.Current.Layer.Image = bc.Image;
+                    drawSpace.ProcessBoxImage = bc.Image;
                 }
+                DSProcessUpdate(HistoryEvent.DrawFilter);
                 DSUpdate();
             }
         }
@@ -306,9 +315,9 @@ namespace DoAnLTTQ
 
                 if (hs.ShowDialog() == DialogResult.OK)
                 {
-                    layerContainer.Current.Layer.Image.Dispose();
-                    layerContainer.Current.Layer.Image = hs.Image;
+                    drawSpace.ProcessBoxImage = hs.Image;
                 }
+                DSProcessUpdate(HistoryEvent.DrawFilter);
                 DSUpdate();
             }
         }
@@ -327,10 +336,10 @@ namespace DoAnLTTQ
                     g.DrawImage(layerContainer.Current.Layer.Image, new Rectangle(0, 0, bmpSize.Width, bmpSize.Height),
                         0, 0, bmpSize.Width, bmpSize.Height, GraphicsUnit.Pixel, attributes);
 
-                    layerContainer.Current.Layer.Image.Dispose();
-                    layerContainer.Current.Layer.Image = new Bitmap(bmp);
+                    drawSpace.ProcessBoxImage = new Bitmap(bmp);
                 }
             }
+            DSProcessUpdate(HistoryEvent.DrawFilter);
             DSUpdate();
         }
 
@@ -343,9 +352,9 @@ namespace DoAnLTTQ
 
                 if (th.ShowDialog() == DialogResult.OK)
                 {
-                    layerContainer.Current.Layer.Image.Dispose();
-                    layerContainer.Current.Layer.Image = th.Image;
+                    drawSpace.ProcessBoxImage = th.Image;
                 }
+                DSProcessUpdate(HistoryEvent.DrawFilter);
                 DSUpdate();
             }
         }
@@ -366,15 +375,15 @@ namespace DoAnLTTQ
                 button.CheckState = CheckState.Checked;
                 if (button.Text == penStripButton.Text)
                 {
-                    currentTool = Tool.pen;
+                    currentTool = Tool.Pen;
                 }
                 else if (button.Text == eraserStripButton.Text)
                 {
-                    currentTool = Tool.eraser;
+                    currentTool = Tool.Eraser;
                 }
                 else if (button.Text == pickerStripButton.Text)
                 {
-                    currentTool = Tool.picker;
+                    currentTool = Tool.Picker;
                 }
             }
         }
@@ -409,11 +418,16 @@ namespace DoAnLTTQ
             }
         }
 
-        public void DSUpdate()
+        public void DSProcessUpdate(HistoryEvent e)
         {
             saved = false;
             saveToolStripMenuItem.Enabled = true;
-            layerContainer.ProcessUpdate((Bitmap)drawSpace.ProcessBoxImage);
+            if (e == HistoryEvent.Draw || e == HistoryEvent.DrawFilter)
+                layerContainer.ProcessUpdate((Bitmap)drawSpace.ProcessBoxImage);
+            history.Add(e, layerContainer.Current);
+        }
+        public void DSUpdate()
+        {
             layerContainer.BackUpdate();
             drawSpace.BackBoxImage = layerContainer.Back;
             layerContainer.FrontUpdate();
@@ -426,7 +440,7 @@ namespace DoAnLTTQ
         {
             drawSpace.Event_Mouse_Down(e, currentTool);
 
-            if (currentTool == Tool.picker)
+            if (currentTool == Tool.Picker)
             {
                 mainColorPic.BackColor = drawSpace.GetColor();
             }
@@ -445,6 +459,7 @@ namespace DoAnLTTQ
         private void DS_MouseUp(object sender, MouseEventArgs e)
         {
             drawSpace.Event_Mouse_Up(e, currentTool);
+            DSProcessUpdate(HistoryEvent.Draw);
             DSUpdate();
         }
 
@@ -614,6 +629,7 @@ namespace DoAnLTTQ
                         Layer layer = new Layer(newBmp, name, visible);
                         layerContainer.AddLayerRow(ref layer);
                         LayerButtonCheck();
+                        DSProcessUpdate(HistoryEvent.NewL);
                     }
                 }
             }
@@ -623,6 +639,7 @@ namespace DoAnLTTQ
         {
             layerContainer.RemoveLayerRow();
             LayerButtonCheck();
+            DSProcessUpdate(HistoryEvent.DeleteL);
             DSUpdate();
         }
         private void RenameLStripButton_Click(object sender, EventArgs e)
@@ -644,6 +661,7 @@ namespace DoAnLTTQ
             {
                 g.Clear(Color.Transparent);
             }
+            DSProcessUpdate(HistoryEvent.Draw);
             DSUpdate();
         }
 
@@ -651,6 +669,7 @@ namespace DoAnLTTQ
         {
             layerContainer.MoveDown();
             LayerButtonCheck();
+            DSProcessUpdate(HistoryEvent.Ldown);
             DSUpdate();
         }
 
@@ -658,6 +677,7 @@ namespace DoAnLTTQ
         {
             layerContainer.MoveUp();
             LayerButtonCheck();
+            DSProcessUpdate(HistoryEvent.Lup);
             DSUpdate();
         }
 
@@ -702,6 +722,7 @@ namespace DoAnLTTQ
         {
             layerContainer.Merge();
             LayerButtonCheck();
+            DSProcessUpdate(HistoryEvent.MergeL);
             DSUpdate();
         }
 
@@ -709,6 +730,7 @@ namespace DoAnLTTQ
         {
             layerContainer.Duplicate();
             LayerButtonCheck();
+            DSProcessUpdate(HistoryEvent.DuplicateL);
             DSUpdate();
         }
 
@@ -730,7 +752,6 @@ namespace DoAnLTTQ
             {
                 using (Graphics g = opacityBar.CreateGraphics())
                 {
-
                     label10.Text = ((int)opacityVal).ToString();
                     int w = (int)Math.Ceiling(((float)opacityVal / 100) * opacityBar.Width);
                     g.Clear(opacityBar.BackColor);
@@ -742,6 +763,8 @@ namespace DoAnLTTQ
         private void OpacityBar_MouseUp(object sender, MouseEventArgs e)
         {
             layerContainer.Current.Opacity = opacityVal;
+            layerContainer.Current.Layer.Opacity = opacityVal;
+            DSProcessUpdate(HistoryEvent.Opacity);
             DSUpdate();
         }
 
