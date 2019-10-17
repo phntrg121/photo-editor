@@ -10,9 +10,11 @@ using System.Windows.Forms;
 
 namespace DoAnLTTQ
 {
+    
+
     enum Tool
     {
-        pen, eraser, picker
+        pen, eraser, picker , retangle, elip, brush,
     }
 
     public partial class Form1 : Form
@@ -28,7 +30,9 @@ namespace DoAnLTTQ
         private Tool currentTool;
         private Tools.PenTools pen;
         private Tools.Picker picker;
-
+        // draw
+        bool draw;
+        int x, y, lx, ly = 0;
         #region Form
 
         public Form1()
@@ -298,7 +302,7 @@ namespace DoAnLTTQ
         #endregion
 
         #region mPicBox
-
+        
         private void MPicBoxInit()
         {
             if (mPicBox == null)
@@ -352,6 +356,10 @@ namespace DoAnLTTQ
 
         private void MPicBox_MouseDown(object sender, MouseEventArgs e)
         {
+            // draw
+            draw = true;
+            x = e.X;
+            y = e.Y;
             subPB = new DoubleBufferPictureBox();
             subPB.Location = new Point(0, 0);
             subPB.Size = mPicBox.Size;
@@ -378,6 +386,26 @@ namespace DoAnLTTQ
 
         private void MPicBox_MouseMove(object sender, MouseEventArgs e)
         {
+            if(draw )
+            {
+                Graphics g = mPicBox.CreateGraphics();
+                switch( currentTool)
+                {
+
+                    case Tool.retangle:
+                        g.FillRectangle(new SolidBrush(Color.Red), x, y, e.X, e.Y);
+                        break;
+                    case Tool.elip:
+                        g.FillEllipse(new SolidBrush(Color.Red), x, y, e.X - x, e.Y - y);
+                        break;
+                    case Tool.brush:
+                        g.FillEllipse(new SolidBrush(Color.Red), e.X - x + x, e.Y - y + y, 20, 20);
+                        break;
+                }
+                g.Dispose();
+            }
+            
+
             if (e.Button == MouseButtons.Left)
             {
                 switch (currentTool)
@@ -404,10 +432,21 @@ namespace DoAnLTTQ
 
         private void MPicBox_MouseUp(object sender, MouseEventArgs e)
         {
+            draw = false;
+            lx = e.X;
+            ly = e.Y;
+            if (currentTool == Tool.pen)
+            {
+                Graphics g = mPicBox.CreateGraphics();
+                g.DrawLine(new Pen(new SolidBrush(Color.Red)), new Point(x, y), new Point(lx, ly));
+                g.Dispose();
+            }
+            
             mPicBox.Controls.Remove(subPB);
             MPicBoxUpdate();
             subPB.Dispose();
             subPB = null;
+            
         }
 
         #endregion
@@ -667,6 +706,35 @@ namespace DoAnLTTQ
         }
 
         public float opacityVal;
+
+        private void toolstrip_Line_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.pen;
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.retangle;
+
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.brush;
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            currentTool = Tool.elip;
+        }
+
+        private void bt_Gray_Click(object sender, EventArgs e)
+        {
+            Bitmap copy = new Bitmap((Bitmap)this.mPicBox.Image);
+            process.ConvertToGray(copy);
+            this.mPicBox.Image = copy;
+        }
+
         private void OpacityBar_MouseMoveOrDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
