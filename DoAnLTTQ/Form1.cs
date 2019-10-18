@@ -30,6 +30,7 @@ namespace DoAnLTTQ
         private Tool currentTool;
         private Tools.PenTools pen;
         private Tools.Picker picker;
+        Form frm;
         // draw
         bool draw;
         int x, y, lx, ly = 0;
@@ -733,6 +734,17 @@ namespace DoAnLTTQ
             Bitmap copy = new Bitmap((Bitmap)this.mPicBox.Image);
             process.ConvertToGray(copy);
             this.mPicBox.Image = copy;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (frm == null)
+            {
+                Form frm = new Form2();
+                frm.Show();
+                frm.Activate();
+            }
+            
         }
 
         private void OpacityBar_MouseMoveOrDown(object sender, MouseEventArgs e)
