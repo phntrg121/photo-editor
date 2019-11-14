@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DoAnLTTQ
+namespace DoAnLTTQ.Forms
 {
     public partial class NewFileForm : Form
     {
@@ -32,6 +32,9 @@ namespace DoAnLTTQ
                 return textBox1.Text;
             }
         }
+
+        public Color ColorFore { get; set; }
+        public Color ColorBack { get; set; }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -88,6 +91,12 @@ namespace DoAnLTTQ
                     bgColor = Color.Transparent;
                     break;
                 case 1:
+                    bgColor = ColorFore;
+                    break;
+                case 2:
+                    bgColor = ColorBack;
+                    break;
+                case 3:
                     bgColor = Color.White;
                     break;
                 default:

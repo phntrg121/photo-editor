@@ -18,6 +18,7 @@
                 components.Dispose();
             }
             if (processing != null) processing.Dispose();
+            if (g != null) g.Dispose();
             base.Dispose(disposing);
         }
 

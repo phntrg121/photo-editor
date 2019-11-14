@@ -62,10 +62,10 @@ namespace DoAnLTTQ
             listBox1.Items.Insert(0, eventName);
         }
 
-        public void Remove()
+        public bool Remove()
         {
             if (events.Count == 0)
-                return;
+                return false;
 
             Form1 form = (Form1)Parent.Parent.Parent.Parent;
             LayerContainer container = (LayerContainer)events.Peek().Value.Parent.Parent;
@@ -108,6 +108,7 @@ namespace DoAnLTTQ
             }
             events.Pop();
             listBox1.Items.RemoveAt(0);
+            return true;
         }
     }
 }

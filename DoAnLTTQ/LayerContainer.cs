@@ -16,6 +16,9 @@ namespace DoAnLTTQ
         private Bitmap final;
         private Bitmap back;
         private Bitmap front;
+        private Graphics gFinal;
+        private Graphics gBack;
+        private Graphics gFront;
         private int current;
         private Size layerSize;
         private Stack<KeyValuePair<int, LayerRow>> deletedRows;
@@ -80,55 +83,45 @@ namespace DoAnLTTQ
             }
         }
 
-        public void ProcessUpdate(Bitmap processing)
+        public void ProcessUpdate(Bitmap processing, bool preview = false)
         {
             if (processing != null)
             {
-                layers[current].Layer.Stacking();
+                if (!preview) layers[current].Layer.Stacking();
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
                     g.DrawImageUnscaled(processing, 0, 0, layerSize.Width, layerSize.Height);
-                processing.Dispose();
             }
         }
 
         public void BackUpdate()
         {
-            using (Graphics g = Graphics.FromImage(back))
+            gBack.Clear(Color.Transparent);
+            for (int i = 0; i <= current; i++)
             {
-                g.Clear(Color.Transparent);
-                for (int i = 0; i <= current; i++)
+                if (layers[i].Layer.Visible)
                 {
-                    if (layers[i].Layer.Visible)
-                    {
-                        g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
-                    }
+                    gBack.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
                 }
             }
         }
 
         public void FrontUpdate()
         {
-            using (Graphics g = Graphics.FromImage(front))
+            gFront.Clear(Color.Transparent);
+            for (int i = current + 1; i < layers.Count; i++)
             {
-                g.Clear(Color.Transparent);
-                for (int i = current + 1; i < layers.Count; i++)
+                if (layers[i].Layer.Visible)
                 {
-                    if (layers[i].Layer.Visible)
-                    {
-                        g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
-                    }
+                    gFront.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
                 }
             }
         }
 
         public void FinalUpdate()
         {
-            using (Graphics g = Graphics.FromImage(final))
-            {
-                g.Clear(Color.Transparent);
-                g.DrawImageUnscaled(back, 0, 0, layerSize.Width, layerSize.Height);
-                g.DrawImageUnscaled(front, 0, 0, layerSize.Width, layerSize.Height);
-            }
+            gFinal.Clear(Color.Transparent);
+            gFinal.DrawImageUnscaled(back, 0, 0, layerSize.Width, layerSize.Height);
+            gFinal.DrawImageUnscaled(front, 0, 0, layerSize.Width, layerSize.Height);
         }
 
         public void AddLayerRow(ref Layer layer)
@@ -138,11 +131,15 @@ namespace DoAnLTTQ
                 current = -1;
                 layerSize = layer.Image.Size;
                 final = new Bitmap(layerSize.Width, layerSize.Height);
+                gFinal = Graphics.FromImage(final);
                 back = new Bitmap(layerSize.Width, layerSize.Height);
+                gBack = Graphics.FromImage(back);
                 front = new Bitmap(layerSize.Width, layerSize.Height);
+                gFront = Graphics.FromImage(front);
+
             }
 
-            LayerRow row = new LayerRow();
+            LayerRow row = new LayerRow(layer.Visible);
             row.Layer = layer;
             row.Text = layer.Name;
             current++;

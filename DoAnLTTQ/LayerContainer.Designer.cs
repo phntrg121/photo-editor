@@ -19,8 +19,12 @@
                 
             }
             final.Dispose();
+            gFinal.Dispose();
             front.Dispose();
+            gFront.Dispose();
             back.Dispose();
+            gBack.Dispose();
+
             base.Dispose(disposing);
         }
 

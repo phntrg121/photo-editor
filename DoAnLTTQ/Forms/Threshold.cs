@@ -12,40 +12,43 @@ namespace DoAnLTTQ.Forms
 {
     public partial class Threshold : Form
     {
-        private Bitmap image;
+        private LayerContainer lc;
+        private Form1 f;
+        private Bitmap origin;
         private Bitmap adjusted;
         private System.Drawing.Imaging.BitmapData bmpData;
         private byte[] imagePixels;
         private IntPtr ptr;
         private int dataSize;
 
-        public Threshold()
+        public Threshold(Form1 f, LayerContainer lc)
         {
             InitializeComponent();
+            this.f = f;
+            this.lc = lc;
         }
 
         public Bitmap Image
         {
             set
             {
-                image = new Bitmap(value);
-                pictureBox1.Image = image;
-                adjusted = new Bitmap(image);
+                origin = new Bitmap(value);
+                adjusted = new Bitmap(origin);
             }
             get
             {
-                return new Bitmap(pictureBox1.Image);
+                return adjusted;
             }
         }
 
         public void Initialize()
         {
-            bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, image.PixelFormat);
+            bmpData = origin.LockBits(new Rectangle(0, 0, origin.Width, origin.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, origin.PixelFormat);
             ptr = bmpData.Scan0;
-            dataSize = Math.Abs(bmpData.Stride) * image.Height;
+            dataSize = Math.Abs(bmpData.Stride) * origin.Height;
             imagePixels = new byte[dataSize];
             System.Runtime.InteropServices.Marshal.Copy(ptr, imagePixels, 0, dataSize);
-            image.UnlockBits(bmpData);
+            origin.UnlockBits(bmpData);
             Adjust();
         }
 
@@ -57,7 +60,7 @@ namespace DoAnLTTQ.Forms
                 adjusted.Dispose();
                 adjusted = null;
             }
-            adjusted = new Bitmap(image);
+            adjusted = new Bitmap(origin);
             bmpData = adjusted.LockBits(new Rectangle(0, 0, adjusted.Width, adjusted.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, adjusted.PixelFormat);
             ptr = bmpData.Scan0;
             byte[] pixels = new byte[dataSize];
@@ -82,7 +85,9 @@ namespace DoAnLTTQ.Forms
             }
             System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, dataSize);
             adjusted.UnlockBits(bmpData);
-            pictureBox1.Image = adjusted;
+
+            lc.ProcessUpdate(adjusted, true);
+            f.DSUpdate();
         }
 
         private void LevelTrack_Scroll(object sender, EventArgs e)
@@ -90,6 +95,12 @@ namespace DoAnLTTQ.Forms
             label3.Text = levelTrack.Value.ToString();
             level = levelTrack.Value;
             Adjust();
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            lc.ProcessUpdate(origin, true);
+            f.DSUpdate();
         }
     }
 }

@@ -26,14 +26,11 @@ namespace DoAnLTTQ.Tools
             oldPoint = e.Location;
         }
 
-        public void Draw(ref Bitmap bmp, ref MouseEventArgs e)
+        public void Draw(Graphics g, MouseEventArgs e)
         {
-            using(Graphics g = Graphics.FromImage(bmp))
-            {
-                currentPoint = e.Location;
-                g.DrawLine(pen, oldPoint, currentPoint);
-                oldPoint = currentPoint;
-            }
+            currentPoint = e.Location;
+            g.DrawLine(pen, oldPoint, currentPoint);
+            oldPoint = currentPoint;
         }
 
         public float Size

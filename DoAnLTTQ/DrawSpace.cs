@@ -23,12 +23,19 @@ namespace DoAnLTTQ
         private float lineSize;
         private Tools.PenTools pen;
         private Tools.Picker picker;
+        Graphics g;
 
         public DrawSpace()
         {
             InitializeComponent();
             pen = new Tools.PenTools();
             picker = new Tools.Picker();
+        }
+
+        public void Init()
+        {
+            processing = new Bitmap(this.Size.Width, this.Size.Height);
+            g = Graphics.FromImage(processing);
         }
 
         public PictureBox Event
@@ -38,6 +45,8 @@ namespace DoAnLTTQ
                 return frontBox;
             }
         }
+
+        public bool CurrentVisible { get; set; }
 
         public Image BackBoxImage
         {
@@ -58,18 +67,18 @@ namespace DoAnLTTQ
             set
             {
                 processing = (Bitmap)value;
+                g = Graphics.FromImage(processing);
             }
             get
             {
-                if (processing != null)
-                {
-                    Bitmap bmp = new Bitmap(processing);
-                    using (Graphics g = Graphics.FromImage(processing))
-                        g.Clear(Color.Transparent);
-                    return bmp;
-                }
-                else return new Bitmap(Size.Width, Size.Height);
+                return processing;
             }
+        }
+
+        public void ClearProcess()
+        {
+            if (processing == null) return;
+            g.Clear(Color.Transparent);
         }
 
         public Image Final
@@ -135,7 +144,10 @@ namespace DoAnLTTQ
         public void Event_Mouse_Down(MouseEventArgs e, Tool current)
         {
             if (processing == null)
+            {
                 processing = new Bitmap(this.Size.Width, this.Size.Height);
+                g = Graphics.FromImage(processing);
+            }
 
             switch (current)
             {
@@ -156,14 +168,18 @@ namespace DoAnLTTQ
 
         public void Event_Mouse_Move(MouseEventArgs e, Tool current)
         {
+            if (processing == null)
+                return;
+
             if (e.Button == MouseButtons.Left)
             {
                 switch (current)
                 {
                     case Tool.Pen:
                         {
-                            pen.Draw(ref processing, ref e);
-                            processBox.Image = processing;
+                            pen.Draw(g, e);
+                            if (CurrentVisible)
+                                processBox.Image = processing;
                         }
                         break;
                     default:

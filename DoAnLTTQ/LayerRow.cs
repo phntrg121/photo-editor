@@ -13,9 +13,13 @@ namespace DoAnLTTQ
     public partial class LayerRow : UserControl
     {
         private Layer layer;
-        public LayerRow()
+        public LayerRow(bool visible = true)
         {
             InitializeComponent();
+            if (visible)
+                pictureBox1.Image = Properties.Resources.visible;
+            else
+                pictureBox1.Image = Properties.Resources.not_visible;
         }
 
         public Layer Layer

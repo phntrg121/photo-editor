@@ -38,7 +38,7 @@ namespace DoAnLTTQ
         private void Form1_Load(object sender, EventArgs e)
         {
             LayerMenuStripEnable(false);
-            FilterMenuStripEnable(false);
+            ColorMenuStripEnable(false);
             layerPanel.Enabled = false;
             saveToolStripMenuItem.Enabled = false;
             saveAsToolStripMenuItem.Enabled = false;
@@ -117,7 +117,7 @@ namespace DoAnLTTQ
                     DrawSpaceInit();
                     LayerContainerInit();
                     LayerMenuStripEnable(true);
-                    FilterMenuStripEnable(true);
+                    ColorMenuStripEnable(true);
                     Layer firstLayer = new Layer(bmp, "Layer1", true);
                     layerContainer.AddLayerRow(ref firstLayer);
                     drawSpace.BGGenerator(Color.Transparent);
@@ -136,8 +136,11 @@ namespace DoAnLTTQ
         {
             CloseToolStripMenuItem_Click(sender, e);
 
-            using (NewFileForm nff = new NewFileForm())
+            using (Forms.NewFileForm nff = new Forms.NewFileForm())
             {
+                nff.ColorFore = mainColorPic.BackColor; 
+                nff.ColorBack = subColorPic.BackColor;
+
                 if (nff.ShowDialog() == DialogResult.OK)
                 {
                     Bitmap bmp = new Bitmap(nff.ImageSize.Width, nff.ImageSize.Height);
@@ -146,7 +149,7 @@ namespace DoAnLTTQ
                     DrawSpaceInit();
                     LayerContainerInit();
                     LayerMenuStripEnable(true);
-                    FilterMenuStripEnable(true);
+                    ColorMenuStripEnable(true);
                     Layer firstLayer = new Layer(bmp, "Layer1", true);
                     layerContainer.AddLayerRow(ref firstLayer);
                     drawSpace.BGGenerator(nff.BGColor);
@@ -216,19 +219,23 @@ namespace DoAnLTTQ
                 layerContainer.Dispose();
                 layerContainer = null;
                 layerPanel.Controls.Remove(layerContainer);
+
                 LayerMenuStripEnable(false);
-                FilterMenuStripEnable(false);
+                ColorMenuStripEnable(false);
                 layerPanel.Enabled = false;
                 working = false;
                 closeToolStripMenuItem.Enabled = false;
                 saved = true;
                 saveToolStripMenuItem.Enabled = false;
+                saveAsToolStripMenuItem.Enabled = false;
+                stored = false;
+                filePath = null;
             }
         }       
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Close();
         }
 
         #endregion
@@ -236,8 +243,8 @@ namespace DoAnLTTQ
         #region Edit menu
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            history.Remove();
-            DSUpdate();
+            if (history.Remove())
+                DSUpdate();
         }
 
         #endregion
@@ -282,33 +289,32 @@ namespace DoAnLTTQ
 
         #endregion
 
-        #region Filter menu
+        #region Color menu
 
-        private void FilterMenuStripEnable(bool enable)
+        private void ColorMenuStripEnable(bool enable)
         {
-            foreach(ToolStripMenuItem item in filterToolStripMenuItem.DropDownItems)
+            foreach(ToolStripMenuItem item in colorToolStripMenuItem.DropDownItems)
             {
                 item.Enabled = enable;
             }
         }
         private void BrightnessAndContrastToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.BrightnessContrast bc = new Forms.BrightnessContrast())
+            using (Forms.BrightnessContrast bc = new Forms.BrightnessContrast(this, layerContainer))
             {
                 bc.Image = layerContainer.Current.Layer.Image;
-
                 if (bc.ShowDialog() == DialogResult.OK)
                 {
                     drawSpace.ProcessBoxImage = bc.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
                 }
-                DSProcessUpdate(HistoryEvent.DrawFilter);
-                DSUpdate();
             }
         }
 
         private void HueAndSaturationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.HueSaturation hs = new Forms.HueSaturation())
+            using (Forms.HueSaturation hs = new Forms.HueSaturation(this, layerContainer))
             {
                 hs.Image = layerContainer.Current.Layer.Image;
                 hs.Initialize();
@@ -316,9 +322,9 @@ namespace DoAnLTTQ
                 if (hs.ShowDialog() == DialogResult.OK)
                 {
                     drawSpace.ProcessBoxImage = hs.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
                 }
-                DSProcessUpdate(HistoryEvent.DrawFilter);
-                DSUpdate();
             }
         }
 
@@ -345,7 +351,7 @@ namespace DoAnLTTQ
 
         private void ThresholdToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.Threshold th = new Forms.Threshold())
+            using (Forms.Threshold th = new Forms.Threshold(this, layerContainer))
             {
                 th.Image = layerContainer.Current.Layer.Image;
                 th.Initialize();
@@ -353,9 +359,24 @@ namespace DoAnLTTQ
                 if (th.ShowDialog() == DialogResult.OK)
                 {
                     drawSpace.ProcessBoxImage = th.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
                 }
-                DSProcessUpdate(HistoryEvent.DrawFilter);
-                DSUpdate();
+            }
+        }
+
+        private void ColorBalanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (Forms.ColorBalance hs = new Forms.ColorBalance(this, layerContainer))
+            {
+                hs.Image = layerContainer.Current.Layer.Image;
+
+                if (hs.ShowDialog() == DialogResult.OK)
+                {
+                    drawSpace.ProcessBoxImage = hs.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
+                }
             }
         }
 
@@ -410,11 +431,16 @@ namespace DoAnLTTQ
                 drawSpace.Location = new System.Drawing.Point(0, 0);
                 drawSpace.Name = "workspace";
                 drawSpace.Size = bmpSize;
+                drawSpace.Init();
                 drawSpace.Event.MouseDown += DS_MouseDown;
                 drawSpace.Event.MouseLeave += DS_MouseLeave;
                 drawSpace.Event.MouseMove += DS_MouseMove;
                 drawSpace.Event.MouseUp += DS_MouseUp;
                 workPanel.Controls.Add(drawSpace);
+
+                drawSpace.ColorUpdate(mainColorPic.BackColor);
+                drawSpace.LineSizeUpdate((float)numericUpDown1.Value);
+
             }
         }
 
@@ -423,9 +449,13 @@ namespace DoAnLTTQ
             saved = false;
             saveToolStripMenuItem.Enabled = true;
             if (e == HistoryEvent.Draw || e == HistoryEvent.DrawFilter)
+            {
                 layerContainer.ProcessUpdate((Bitmap)drawSpace.ProcessBoxImage);
+                drawSpace.ClearProcess();
+            }
             history.Add(e, layerContainer.Current);
         }
+
         public void DSUpdate()
         {
             layerContainer.BackUpdate();
@@ -434,6 +464,7 @@ namespace DoAnLTTQ
             drawSpace.FrontBoxImage = layerContainer.Front;
             layerContainer.FinalUpdate();
             drawSpace.Final = layerContainer.Final;
+            drawSpace.CurrentVisible = layerContainer.Current.Layer.Visible;
         }
 
         private void DS_MouseDown(object sender, MouseEventArgs e)
@@ -468,7 +499,8 @@ namespace DoAnLTTQ
         #region TopPanel
         private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            drawSpace.LineSizeUpdate((float)numericUpDown1.Value);
+            if (drawSpace != null)
+                drawSpace.LineSizeUpdate((float)numericUpDown1.Value);
         }
 
         #endregion
@@ -535,7 +567,8 @@ namespace DoAnLTTQ
             label8.Text = greenVal.ToString();
             label9.Text = blueVal.ToString();
 
-            drawSpace.ColorUpdate(mainColorPic.BackColor);
+            if (drawSpace != null)
+                drawSpace.ColorUpdate(mainColorPic.BackColor);
         }
         private void BarUpdate(ref PictureBox bar, Color c, int val)
         {
@@ -630,6 +663,7 @@ namespace DoAnLTTQ
                         layerContainer.AddLayerRow(ref layer);
                         LayerButtonCheck();
                         DSProcessUpdate(HistoryEvent.NewL);
+                        DSUpdate();
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿namespace DoAnLTTQ
+﻿namespace DoAnLTTQ.Forms
 {
     partial class NewFileForm
     {
@@ -175,6 +175,8 @@
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
             "Transparent",
+            "Foreground color",
+            "Background color",
             "White"});
             this.comboBox2.Location = new System.Drawing.Point(94, 118);
             this.comboBox2.Name = "comboBox2";
