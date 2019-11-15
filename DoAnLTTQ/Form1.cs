@@ -440,7 +440,6 @@ namespace DoAnLTTQ
 
                 drawSpace.ColorUpdate(mainColorPic.BackColor);
                 drawSpace.LineSizeUpdate((float)numericUpDown1.Value);
-
             }
         }
 
