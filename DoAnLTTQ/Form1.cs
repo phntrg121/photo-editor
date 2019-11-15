@@ -448,7 +448,7 @@ namespace DoAnLTTQ
         {
             saved = false;
             saveToolStripMenuItem.Enabled = true;
-            if (e == HistoryEvent.Draw || e == HistoryEvent.DrawFilter)
+            if (e == HistoryEvent.Draw || e == HistoryEvent.DrawFilter || e == HistoryEvent.Erase)
             {
                 layerContainer.ProcessUpdate((Bitmap)drawSpace.ProcessBoxImage);
                 drawSpace.ClearProcess();
@@ -490,7 +490,15 @@ namespace DoAnLTTQ
         private void DS_MouseUp(object sender, MouseEventArgs e)
         {
             drawSpace.Event_Mouse_Up(e, currentTool);
-            DSProcessUpdate(HistoryEvent.Draw);
+            switch(currentTool)
+            {
+                case Tool.Pen:
+                    DSProcessUpdate(HistoryEvent.Draw);
+                    break;
+                case Tool.Eraser:
+                    DSProcessUpdate(HistoryEvent.Erase);
+                    break;
+            }
             DSUpdate();
         }
 

@@ -12,7 +12,7 @@ namespace DoAnLTTQ
 {
     public enum HistoryEvent
     {
-        Draw,NewL,DeleteL,DuplicateL,MergeL,Lup,Ldown,Opacity,DrawFilter
+        Draw, NewL, DeleteL, DuplicateL, MergeL, Lup, Ldown, Opacity, DrawFilter, Erase
     }
     public partial class History : UserControl
     {
@@ -31,6 +31,9 @@ namespace DoAnLTTQ
             {
                 case HistoryEvent.Draw:
                     eventName += "Draw";
+                    break;
+                case HistoryEvent.Erase:
+                    eventName += "Erase";
                     break;
                 case HistoryEvent.DrawFilter:
                     eventName += "Draw filter";
@@ -74,6 +77,7 @@ namespace DoAnLTTQ
             {
                 case HistoryEvent.Draw:
                 case HistoryEvent.DrawFilter:
+                case HistoryEvent.Erase:
                     events.Peek().Value.Layer.UnStacking();
                     break;
                 case HistoryEvent.NewL:
