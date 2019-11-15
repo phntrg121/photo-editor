@@ -23,6 +23,7 @@ namespace DoAnLTTQ
         private float lineSize;
         private Tools.PenTools pen;
         private Tools.Picker picker;
+        private Tools.Eraser eraser;
         Graphics g;
 
         public DrawSpace()
@@ -30,6 +31,7 @@ namespace DoAnLTTQ
             InitializeComponent();
             pen = new Tools.PenTools();
             picker = new Tools.Picker();
+            eraser = new Tools.Eraser();
         }
 
         public void Init()
@@ -103,6 +105,7 @@ namespace DoAnLTTQ
         {
             lineSize = n;
             pen.Size = lineSize;
+            eraser.Size = lineSize;
         }
 
         public Color GetColor()
@@ -161,6 +164,11 @@ namespace DoAnLTTQ
                         color = picker.GetColor(ref final, ref e);
                     }
                     break;
+                case Tool.Eraser:
+                    {
+                        eraser.GetLocation(ref e);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -178,6 +186,13 @@ namespace DoAnLTTQ
                     case Tool.Pen:
                         {
                             pen.Draw(g, e);
+                            if (CurrentVisible)
+                                processBox.Image = processing;
+                        }
+                        break;
+                    case Tool.Eraser:
+                        {
+                            eraser.Draw(g, e);
                             if (CurrentVisible)
                                 processBox.Image = processing;
                         }

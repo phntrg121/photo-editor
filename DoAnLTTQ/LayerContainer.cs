@@ -89,7 +89,11 @@ namespace DoAnLTTQ
             {
                 if (!preview) layers[current].Layer.Stacking();
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
+                {
                     g.DrawImageUnscaled(processing, 0, 0, layerSize.Width, layerSize.Height);
+                }
+
+                layers[current].Layer.Image.MakeTransparent(Color.FromArgb(255, 253, 254, 255));
             }
         }
 
