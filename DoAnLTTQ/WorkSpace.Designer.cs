@@ -1,6 +1,6 @@
 ﻿namespace DoAnLTTQ
 {
-    partial class History
+    partial class WorkSpace
     {
         /// <summary> 
         /// Required designer variable.
@@ -17,6 +17,9 @@
             {
                 components.Dispose();
             }
+            DrawSpace.Dispose();
+            LayerContainer.Dispose();
+            History.Dispose();
             base.Dispose(disposing);
         }
 
@@ -28,35 +31,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
-            // listBox1
-            // 
-            this.listBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(0, 0);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.listBox1.Size = new System.Drawing.Size(150, 150);
-            this.listBox1.TabIndex = 0;
-            // 
-            // History
+            // WorkSpace
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.listBox1);
-            this.Name = "History";
+            this.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.Name = "WorkSpace";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox listBox1;
     }
 }

@@ -56,6 +56,7 @@
             this.duplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorBalanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.brightnessAndContrastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hueAndSaturationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +66,6 @@
             this.aboutPhotoEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.mouseLocation = new System.Windows.Forms.ToolStripStatusLabel();
-            this.workPanel = new System.Windows.Forms.Panel();
             this.rightPanel = new System.Windows.Forms.Panel();
             this.layerPanel = new System.Windows.Forms.Panel();
             this.layerToolStrip = new System.Windows.Forms.ToolStrip();
@@ -82,35 +82,37 @@
             this.opacityBar = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.colorSwitch = new System.Windows.Forms.PictureBox();
-            this.blueBar = new System.Windows.Forms.PictureBox();
-            this.greenBar = new System.Windows.Forms.PictureBox();
-            this.redBar = new System.Windows.Forms.PictureBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.mainColorPic = new System.Windows.Forms.PictureBox();
-            this.subColorPic = new System.Windows.Forms.PictureBox();
-            this.colorGradian = new System.Windows.Forms.PictureBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.history = new DoAnLTTQ.History();
-            this.topPanel = new System.Windows.Forms.Panel();
+            this.bottomPanel = new System.Windows.Forms.Panel();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.mToolStrip = new System.Windows.Forms.ToolStrip();
             this.moveStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton = new System.Windows.Forms.ToolStripButton();
             this.handStripButton = new System.Windows.Forms.ToolStripButton();
+            this.leftPanel = new System.Windows.Forms.Panel();
+            this.colorPanel = new System.Windows.Forms.Panel();
+            this.colorSwitch = new System.Windows.Forms.PictureBox();
+            this.colorGradian = new System.Windows.Forms.PictureBox();
+            this.mainColorPic = new System.Windows.Forms.PictureBox();
+            this.subColorPic = new System.Windows.Forms.PictureBox();
+            this.blueBar = new System.Windows.Forms.PictureBox();
+            this.greenBar = new System.Windows.Forms.PictureBox();
+            this.redBar = new System.Windows.Forms.PictureBox();
+            this.toolPanel = new System.Windows.Forms.Panel();
+            this.sToolStrip = new System.Windows.Forms.ToolStrip();
+            this.pToolStrip = new System.Windows.Forms.ToolStrip();
             this.penStripButton = new System.Windows.Forms.ToolStripButton();
             this.eraserStripButton = new System.Windows.Forms.ToolStripButton();
             this.pickerStripButton = new System.Windows.Forms.ToolStripButton();
-            this.leftPanel = new System.Windows.Forms.Panel();
-            this.colorBalanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workSpaceTabControl = new System.Windows.Forms.TabControl();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.rightPanel.SuspendLayout();
@@ -119,19 +121,19 @@
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacityBar)).BeginInit();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.colorSwitch)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.blueBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.greenBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.redBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainColorPic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.subColorPic)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.colorGradian)).BeginInit();
-            this.tabPage3.SuspendLayout();
-            this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.mToolStrip.SuspendLayout();
             this.leftPanel.SuspendLayout();
+            this.colorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.colorSwitch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.colorGradian)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainColorPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.subColorPic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.greenBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.redBar)).BeginInit();
+            this.toolPanel.SuspendLayout();
+            this.pToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -147,7 +149,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip.Size = new System.Drawing.Size(1280, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -357,6 +359,13 @@
             this.colorToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.colorToolStripMenuItem.Text = "Color";
             // 
+            // colorBalanceToolStripMenuItem
+            // 
+            this.colorBalanceToolStripMenuItem.Name = "colorBalanceToolStripMenuItem";
+            this.colorBalanceToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.colorBalanceToolStripMenuItem.Text = "Color Balance";
+            this.colorBalanceToolStripMenuItem.Click += new System.EventHandler(this.ColorBalanceToolStripMenuItem_Click);
+            // 
             // brightnessAndContrastToolStripMenuItem
             // 
             this.brightnessAndContrastToolStripMenuItem.Name = "brightnessAndContrastToolStripMenuItem";
@@ -409,9 +418,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mouseLocation});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 578);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 698);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1280, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -421,23 +430,14 @@
             this.mouseLocation.Name = "mouseLocation";
             this.mouseLocation.Size = new System.Drawing.Size(16, 17);
             // 
-            // workPanel
-            // 
-            this.workPanel.AutoScroll = true;
-            this.workPanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.workPanel.Location = new System.Drawing.Point(32, 55);
-            this.workPanel.Name = "workPanel";
-            this.workPanel.Size = new System.Drawing.Size(545, 523);
-            this.workPanel.TabIndex = 2;
-            // 
             // rightPanel
             // 
             this.rightPanel.Controls.Add(this.layerPanel);
             this.rightPanel.Controls.Add(this.tabControl1);
             this.rightPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.rightPanel.Location = new System.Drawing.Point(577, 24);
+            this.rightPanel.Location = new System.Drawing.Point(1080, 24);
             this.rightPanel.Name = "rightPanel";
-            this.rightPanel.Size = new System.Drawing.Size(223, 554);
+            this.rightPanel.Size = new System.Drawing.Size(200, 674);
             this.rightPanel.TabIndex = 3;
             // 
             // layerPanel
@@ -447,7 +447,7 @@
             this.layerPanel.Controls.Add(this.panel5);
             this.layerPanel.Location = new System.Drawing.Point(7, 259);
             this.layerPanel.Name = "layerPanel";
-            this.layerPanel.Size = new System.Drawing.Size(209, 285);
+            this.layerPanel.Size = new System.Drawing.Size(186, 412);
             this.layerPanel.TabIndex = 2;
             // 
             // layerToolStrip
@@ -464,7 +464,7 @@
             this.duplicateLStripButton});
             this.layerToolStrip.Location = new System.Drawing.Point(0, 27);
             this.layerToolStrip.Name = "layerToolStrip";
-            this.layerToolStrip.Size = new System.Drawing.Size(209, 25);
+            this.layerToolStrip.Size = new System.Drawing.Size(186, 25);
             this.layerToolStrip.TabIndex = 1;
             this.layerToolStrip.Text = "toolStrip2";
             // 
@@ -562,7 +562,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(209, 27);
+            this.panel5.Size = new System.Drawing.Size(186, 27);
             this.panel5.TabIndex = 0;
             // 
             // label1
@@ -579,7 +579,7 @@
             this.opacityBar.BackColor = System.Drawing.Color.Gainsboro;
             this.opacityBar.Location = new System.Drawing.Point(51, 5);
             this.opacityBar.Name = "opacityBar";
-            this.opacityBar.Size = new System.Drawing.Size(128, 10);
+            this.opacityBar.Size = new System.Drawing.Size(104, 10);
             this.opacityBar.TabIndex = 4;
             this.opacityBar.TabStop = false;
             this.opacityBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OpacityBar_MouseMoveOrDown);
@@ -589,7 +589,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(182, 4);
+            this.label10.Location = new System.Drawing.Point(160, 4);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(25, 13);
             this.label10.TabIndex = 3;
@@ -597,86 +597,37 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(7, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(209, 250);
+            this.tabControl1.Size = new System.Drawing.Size(186, 250);
             this.tabControl1.TabIndex = 1;
             // 
-            // tabPage1
+            // tabPage2
             // 
-            this.tabPage1.Controls.Add(this.colorSwitch);
-            this.tabPage1.Controls.Add(this.blueBar);
-            this.tabPage1.Controls.Add(this.greenBar);
-            this.tabPage1.Controls.Add(this.redBar);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.label8);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.mainColorPic);
-            this.tabPage1.Controls.Add(this.subColorPic);
-            this.tabPage1.Controls.Add(this.colorGradian);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(201, 224);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Color";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(178, 224);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Filters";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // colorSwitch
+            // tabPage3
             // 
-            this.colorSwitch.Image = ((System.Drawing.Image)(resources.GetObject("colorSwitch.Image")));
-            this.colorSwitch.Location = new System.Drawing.Point(44, 60);
-            this.colorSwitch.Name = "colorSwitch";
-            this.colorSwitch.Size = new System.Drawing.Size(13, 12);
-            this.colorSwitch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.colorSwitch.TabIndex = 5;
-            this.colorSwitch.TabStop = false;
-            this.colorSwitch.Click += new System.EventHandler(this.ColorSwitch_Click);
-            // 
-            // blueBar
-            // 
-            this.blueBar.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.blueBar.Location = new System.Drawing.Point(26, 179);
-            this.blueBar.Name = "blueBar";
-            this.blueBar.Size = new System.Drawing.Size(128, 10);
-            this.blueBar.TabIndex = 4;
-            this.blueBar.TabStop = false;
-            this.blueBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlueBar_MouseMoveOrDown);
-            this.blueBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlueBar_MouseMoveOrDown);
-            // 
-            // greenBar
-            // 
-            this.greenBar.BackColor = System.Drawing.Color.PaleGreen;
-            this.greenBar.Location = new System.Drawing.Point(26, 155);
-            this.greenBar.Name = "greenBar";
-            this.greenBar.Size = new System.Drawing.Size(128, 10);
-            this.greenBar.TabIndex = 4;
-            this.greenBar.TabStop = false;
-            this.greenBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GreenBar_MouseMoveOrDown);
-            this.greenBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GreenBar_MouseMoveOrDown);
-            // 
-            // redBar
-            // 
-            this.redBar.BackColor = System.Drawing.Color.Pink;
-            this.redBar.Location = new System.Drawing.Point(26, 131);
-            this.redBar.Name = "redBar";
-            this.redBar.Size = new System.Drawing.Size(128, 10);
-            this.redBar.TabIndex = 4;
-            this.redBar.TabStop = false;
-            this.redBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedBar_MouseMoveOrDown);
-            this.redBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RedBar_MouseMoveOrDown);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(178, 224);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "History";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(165, 177);
+            this.label9.Location = new System.Drawing.Point(156, 147);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(13, 13);
             this.label9.TabIndex = 3;
@@ -685,7 +636,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 177);
+            this.label5.Location = new System.Drawing.Point(4, 147);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(14, 13);
             this.label5.TabIndex = 3;
@@ -694,7 +645,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(165, 153);
+            this.label8.Location = new System.Drawing.Point(156, 123);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(13, 13);
             this.label8.TabIndex = 3;
@@ -703,7 +654,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 153);
+            this.label4.Location = new System.Drawing.Point(4, 123);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(15, 13);
             this.label4.TabIndex = 3;
@@ -712,7 +663,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(165, 129);
+            this.label7.Location = new System.Drawing.Point(156, 99);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(13, 13);
             this.label7.TabIndex = 3;
@@ -721,93 +672,30 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 129);
+            this.label3.Location = new System.Drawing.Point(4, 99);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(15, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "R";
             // 
-            // mainColorPic
+            // bottomPanel
             // 
-            this.mainColorPic.BackColor = System.Drawing.Color.Black;
-            this.mainColorPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.mainColorPic.Location = new System.Drawing.Point(7, 56);
-            this.mainColorPic.Name = "mainColorPic";
-            this.mainColorPic.Size = new System.Drawing.Size(35, 34);
-            this.mainColorPic.TabIndex = 1;
-            this.mainColorPic.TabStop = false;
-            this.mainColorPic.BackColorChanged += new System.EventHandler(this.MainColorPic_BackColorChanged);
-            // 
-            // subColorPic
-            // 
-            this.subColorPic.BackColor = System.Drawing.Color.White;
-            this.subColorPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.subColorPic.Location = new System.Drawing.Point(26, 74);
-            this.subColorPic.Name = "subColorPic";
-            this.subColorPic.Size = new System.Drawing.Size(35, 34);
-            this.subColorPic.TabIndex = 1;
-            this.subColorPic.TabStop = false;
-            // 
-            // colorGradian
-            // 
-            this.colorGradian.Image = ((System.Drawing.Image)(resources.GetObject("colorGradian.Image")));
-            this.colorGradian.Location = new System.Drawing.Point(7, 5);
-            this.colorGradian.Name = "colorGradian";
-            this.colorGradian.Size = new System.Drawing.Size(188, 31);
-            this.colorGradian.TabIndex = 0;
-            this.colorGradian.TabStop = false;
-            this.colorGradian.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseClick);
-            this.colorGradian.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseDown);
-            this.colorGradian.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseMove);
-            this.colorGradian.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseUp);
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(201, 224);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Filters";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.history);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(201, 224);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "History";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // history
-            // 
-            this.history.Location = new System.Drawing.Point(3, 3);
-            this.history.Name = "history";
-            this.history.Size = new System.Drawing.Size(195, 218);
-            this.history.TabIndex = 0;
-            // 
-            // topPanel
-            // 
-            this.topPanel.Controls.Add(this.numericUpDown1);
-            this.topPanel.Controls.Add(this.label2);
-            this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.topPanel.Location = new System.Drawing.Point(0, 24);
-            this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(577, 31);
-            this.topPanel.TabIndex = 5;
+            this.bottomPanel.Location = new System.Drawing.Point(190, 667);
+            this.bottomPanel.Name = "bottomPanel";
+            this.bottomPanel.Size = new System.Drawing.Size(891, 31);
+            this.bottomPanel.TabIndex = 5;
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(30, 6);
+            this.numericUpDown1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericUpDown1.Location = new System.Drawing.Point(41, 78);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(38, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(133, 20);
             this.numericUpDown1.TabIndex = 1;
             this.numericUpDown1.Value = new decimal(new int[] {
             5,
@@ -819,7 +707,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 9);
+            this.label2.Location = new System.Drawing.Point(8, 80);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(27, 13);
             this.label2.TabIndex = 0;
@@ -827,17 +715,13 @@
             // 
             // mToolStrip
             // 
-            this.mToolStrip.Dock = System.Windows.Forms.DockStyle.Right;
             this.mToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.moveStripButton,
             this.toolStripButton,
-            this.handStripButton,
-            this.penStripButton,
-            this.eraserStripButton,
-            this.pickerStripButton});
-            this.mToolStrip.Location = new System.Drawing.Point(5, 0);
+            this.handStripButton});
+            this.mToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mToolStrip.Name = "mToolStrip";
-            this.mToolStrip.Size = new System.Drawing.Size(24, 523);
+            this.mToolStrip.Size = new System.Drawing.Size(181, 25);
             this.mToolStrip.TabIndex = 6;
             this.mToolStrip.Text = "toolStrip1";
             this.mToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MToolStrip_ItemClicked);
@@ -848,7 +732,7 @@
             this.moveStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveStripButton.Image")));
             this.moveStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveStripButton.Name = "moveStripButton";
-            this.moveStripButton.Size = new System.Drawing.Size(21, 20);
+            this.moveStripButton.Size = new System.Drawing.Size(23, 22);
             this.moveStripButton.Text = "toolStripButton5";
             // 
             // toolStripButton
@@ -857,7 +741,7 @@
             this.toolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton.Image")));
             this.toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton.Name = "toolStripButton";
-            this.toolStripButton.Size = new System.Drawing.Size(21, 20);
+            this.toolStripButton.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton.Text = "toolStripButton6";
             // 
             // handStripButton
@@ -866,8 +750,151 @@
             this.handStripButton.Image = ((System.Drawing.Image)(resources.GetObject("handStripButton.Image")));
             this.handStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.handStripButton.Name = "handStripButton";
-            this.handStripButton.Size = new System.Drawing.Size(21, 20);
+            this.handStripButton.Size = new System.Drawing.Size(23, 22);
             this.handStripButton.Text = "toolStripButton5";
+            // 
+            // leftPanel
+            // 
+            this.leftPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.leftPanel.Controls.Add(this.colorPanel);
+            this.leftPanel.Controls.Add(this.toolPanel);
+            this.leftPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.leftPanel.Location = new System.Drawing.Point(0, 24);
+            this.leftPanel.Name = "leftPanel";
+            this.leftPanel.Size = new System.Drawing.Size(187, 674);
+            this.leftPanel.TabIndex = 1;
+            // 
+            // colorPanel
+            // 
+            this.colorPanel.Controls.Add(this.colorSwitch);
+            this.colorPanel.Controls.Add(this.colorGradian);
+            this.colorPanel.Controls.Add(this.mainColorPic);
+            this.colorPanel.Controls.Add(this.subColorPic);
+            this.colorPanel.Controls.Add(this.blueBar);
+            this.colorPanel.Controls.Add(this.label3);
+            this.colorPanel.Controls.Add(this.greenBar);
+            this.colorPanel.Controls.Add(this.label7);
+            this.colorPanel.Controls.Add(this.redBar);
+            this.colorPanel.Controls.Add(this.label4);
+            this.colorPanel.Controls.Add(this.label9);
+            this.colorPanel.Controls.Add(this.label8);
+            this.colorPanel.Controls.Add(this.label5);
+            this.colorPanel.Location = new System.Drawing.Point(3, 9);
+            this.colorPanel.Name = "colorPanel";
+            this.colorPanel.Size = new System.Drawing.Size(181, 181);
+            this.colorPanel.TabIndex = 9;
+            // 
+            // colorSwitch
+            // 
+            this.colorSwitch.Image = ((System.Drawing.Image)(resources.GetObject("colorSwitch.Image")));
+            this.colorSwitch.Location = new System.Drawing.Point(44, 44);
+            this.colorSwitch.Name = "colorSwitch";
+            this.colorSwitch.Size = new System.Drawing.Size(13, 12);
+            this.colorSwitch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.colorSwitch.TabIndex = 5;
+            this.colorSwitch.TabStop = false;
+            this.colorSwitch.Click += new System.EventHandler(this.ColorSwitch_Click);
+            // 
+            // colorGradian
+            // 
+            this.colorGradian.Image = global::DoAnLTTQ.Properties.Resources.color_gradian;
+            this.colorGradian.Location = new System.Drawing.Point(7, 3);
+            this.colorGradian.Name = "colorGradian";
+            this.colorGradian.Size = new System.Drawing.Size(167, 31);
+            this.colorGradian.TabIndex = 0;
+            this.colorGradian.TabStop = false;
+            this.colorGradian.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseClick);
+            this.colorGradian.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseDown);
+            this.colorGradian.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseMove);
+            this.colorGradian.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ColorGradian_MouseUp);
+            // 
+            // mainColorPic
+            // 
+            this.mainColorPic.BackColor = System.Drawing.Color.Black;
+            this.mainColorPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mainColorPic.Location = new System.Drawing.Point(7, 40);
+            this.mainColorPic.Name = "mainColorPic";
+            this.mainColorPic.Size = new System.Drawing.Size(35, 34);
+            this.mainColorPic.TabIndex = 1;
+            this.mainColorPic.TabStop = false;
+            this.mainColorPic.BackColorChanged += new System.EventHandler(this.MainColorPic_BackColorChanged);
+            // 
+            // subColorPic
+            // 
+            this.subColorPic.BackColor = System.Drawing.Color.White;
+            this.subColorPic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.subColorPic.Location = new System.Drawing.Point(26, 58);
+            this.subColorPic.Name = "subColorPic";
+            this.subColorPic.Size = new System.Drawing.Size(35, 34);
+            this.subColorPic.TabIndex = 1;
+            this.subColorPic.TabStop = false;
+            // 
+            // blueBar
+            // 
+            this.blueBar.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.blueBar.Location = new System.Drawing.Point(22, 149);
+            this.blueBar.Name = "blueBar";
+            this.blueBar.Size = new System.Drawing.Size(128, 10);
+            this.blueBar.TabIndex = 4;
+            this.blueBar.TabStop = false;
+            this.blueBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlueBar_MouseMoveOrDown);
+            this.blueBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlueBar_MouseMoveOrDown);
+            // 
+            // greenBar
+            // 
+            this.greenBar.BackColor = System.Drawing.Color.PaleGreen;
+            this.greenBar.Location = new System.Drawing.Point(22, 125);
+            this.greenBar.Name = "greenBar";
+            this.greenBar.Size = new System.Drawing.Size(128, 10);
+            this.greenBar.TabIndex = 4;
+            this.greenBar.TabStop = false;
+            this.greenBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GreenBar_MouseMoveOrDown);
+            this.greenBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GreenBar_MouseMoveOrDown);
+            // 
+            // redBar
+            // 
+            this.redBar.BackColor = System.Drawing.Color.Pink;
+            this.redBar.Location = new System.Drawing.Point(22, 101);
+            this.redBar.Name = "redBar";
+            this.redBar.Size = new System.Drawing.Size(128, 10);
+            this.redBar.TabIndex = 4;
+            this.redBar.TabStop = false;
+            this.redBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RedBar_MouseMoveOrDown);
+            this.redBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RedBar_MouseMoveOrDown);
+            // 
+            // toolPanel
+            // 
+            this.toolPanel.Controls.Add(this.numericUpDown1);
+            this.toolPanel.Controls.Add(this.sToolStrip);
+            this.toolPanel.Controls.Add(this.label2);
+            this.toolPanel.Controls.Add(this.pToolStrip);
+            this.toolPanel.Controls.Add(this.mToolStrip);
+            this.toolPanel.Location = new System.Drawing.Point(3, 196);
+            this.toolPanel.Name = "toolPanel";
+            this.toolPanel.Size = new System.Drawing.Size(181, 475);
+            this.toolPanel.TabIndex = 7;
+            // 
+            // sToolStrip
+            // 
+            this.sToolStrip.Location = new System.Drawing.Point(0, 50);
+            this.sToolStrip.Name = "sToolStrip";
+            this.sToolStrip.Size = new System.Drawing.Size(181, 25);
+            this.sToolStrip.TabIndex = 8;
+            this.sToolStrip.Text = "toolStrip2";
+            this.sToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SToolStrip_ItemClicked);
+            // 
+            // pToolStrip
+            // 
+            this.pToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.penStripButton,
+            this.eraserStripButton,
+            this.pickerStripButton});
+            this.pToolStrip.Location = new System.Drawing.Point(0, 25);
+            this.pToolStrip.Name = "pToolStrip";
+            this.pToolStrip.Size = new System.Drawing.Size(181, 25);
+            this.pToolStrip.TabIndex = 7;
+            this.pToolStrip.Text = "toolStrip1";
+            this.pToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PToolStrip_ItemClicked);
             // 
             // penStripButton
             // 
@@ -877,8 +904,8 @@
             this.penStripButton.Image = ((System.Drawing.Image)(resources.GetObject("penStripButton.Image")));
             this.penStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.penStripButton.Name = "penStripButton";
-            this.penStripButton.Size = new System.Drawing.Size(21, 20);
-            this.penStripButton.Text = "toolStripButton1";
+            this.penStripButton.Size = new System.Drawing.Size(23, 22);
+            this.penStripButton.Text = "Pen";
             // 
             // eraserStripButton
             // 
@@ -886,8 +913,8 @@
             this.eraserStripButton.Image = ((System.Drawing.Image)(resources.GetObject("eraserStripButton.Image")));
             this.eraserStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.eraserStripButton.Name = "eraserStripButton";
-            this.eraserStripButton.Size = new System.Drawing.Size(21, 20);
-            this.eraserStripButton.Text = "toolStripButton2";
+            this.eraserStripButton.Size = new System.Drawing.Size(23, 22);
+            this.eraserStripButton.Text = "Eraser";
             // 
             // pickerStripButton
             // 
@@ -895,35 +922,27 @@
             this.pickerStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pickerStripButton.Image")));
             this.pickerStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pickerStripButton.Name = "pickerStripButton";
-            this.pickerStripButton.Size = new System.Drawing.Size(21, 20);
-            this.pickerStripButton.Text = "toolStripButton7";
+            this.pickerStripButton.Size = new System.Drawing.Size(23, 22);
+            this.pickerStripButton.Text = "Picker";
             // 
-            // leftPanel
+            // workSpaceTabControl
             // 
-            this.leftPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.leftPanel.Controls.Add(this.mToolStrip);
-            this.leftPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.leftPanel.Location = new System.Drawing.Point(0, 55);
-            this.leftPanel.Name = "leftPanel";
-            this.leftPanel.Size = new System.Drawing.Size(29, 523);
-            this.leftPanel.TabIndex = 1;
-            // 
-            // colorBalanceToolStripMenuItem
-            // 
-            this.colorBalanceToolStripMenuItem.Name = "colorBalanceToolStripMenuItem";
-            this.colorBalanceToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.colorBalanceToolStripMenuItem.Text = "Color Balance";
-            this.colorBalanceToolStripMenuItem.Click += new System.EventHandler(this.ColorBalanceToolStripMenuItem_Click);
+            this.workSpaceTabControl.Location = new System.Drawing.Point(190, 24);
+            this.workSpaceTabControl.Name = "workSpaceTabControl";
+            this.workSpaceTabControl.SelectedIndex = 0;
+            this.workSpaceTabControl.Size = new System.Drawing.Size(891, 643);
+            this.workSpaceTabControl.TabIndex = 0;
+            this.workSpaceTabControl.SelectedIndexChanged += new System.EventHandler(this.WorkSpaceTabControl_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 600);
+            this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.bottomPanel);
+            this.Controls.Add(this.workSpaceTabControl);
             this.Controls.Add(this.leftPanel);
-            this.Controls.Add(this.topPanel);
             this.Controls.Add(this.rightPanel);
-            this.Controls.Add(this.workPanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
@@ -946,23 +965,23 @@
             this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacityBar)).EndInit();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.colorSwitch)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.blueBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.greenBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.redBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mainColorPic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.subColorPic)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.colorGradian)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.topPanel.ResumeLayout(false);
-            this.topPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.mToolStrip.ResumeLayout(false);
             this.mToolStrip.PerformLayout();
             this.leftPanel.ResumeLayout(false);
-            this.leftPanel.PerformLayout();
+            this.colorPanel.ResumeLayout(false);
+            this.colorPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.colorSwitch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.colorGradian)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainColorPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.subColorPic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blueBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.greenBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.redBar)).EndInit();
+            this.toolPanel.ResumeLayout(false);
+            this.toolPanel.PerformLayout();
+            this.pToolStrip.ResumeLayout(false);
+            this.pToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -986,14 +1005,10 @@
         private System.Windows.Forms.ToolStripMenuItem eraserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.Panel workPanel;
         private System.Windows.Forms.Panel rightPanel;
-        private System.Windows.Forms.Panel topPanel;
+        private System.Windows.Forms.Panel bottomPanel;
         private System.Windows.Forms.ToolStrip mToolStrip;
-        private System.Windows.Forms.ToolStripButton penStripButton;
-        private System.Windows.Forms.ToolStripButton eraserStripButton;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel layerPanel;
         private System.Windows.Forms.ToolStrip layerToolStrip;
@@ -1009,7 +1024,6 @@
         private System.Windows.Forms.Panel leftPanel;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ToolStripButton pickerStripButton;
         private System.Windows.Forms.PictureBox mainColorPic;
         private System.Windows.Forms.PictureBox subColorPic;
         private System.Windows.Forms.PictureBox colorGradian;
@@ -1048,9 +1062,16 @@
         private System.Windows.Forms.ToolStripMenuItem invertToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem thresholdToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-        private History history;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem filterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem colorBalanceToolStripMenuItem;
+        private System.Windows.Forms.Panel colorPanel;
+        private System.Windows.Forms.Panel toolPanel;
+        private System.Windows.Forms.ToolStrip pToolStrip;
+        private System.Windows.Forms.ToolStrip sToolStrip;
+        private System.Windows.Forms.ToolStripButton penStripButton;
+        private System.Windows.Forms.ToolStripButton eraserStripButton;
+        private System.Windows.Forms.ToolStripButton pickerStripButton;
+        private System.Windows.Forms.TabControl workSpaceTabControl;
     }
 }

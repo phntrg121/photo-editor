@@ -13,11 +13,8 @@ namespace DoAnLTTQ
     public partial class Form1 : Form
     {
         private Size bmpSize;
-        private DrawSpace drawSpace;
-        private LayerContainer layerContainer;
-        private string fileName;
-        private string filePath;
         private Tool currentTool;
+        private WorkSpace Current;
 
         #region Form
 
@@ -28,11 +25,13 @@ namespace DoAnLTTQ
 
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
-            workPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
-            workPanel.Height = this.Height - topPanel.Height - statusStrip1.Height - menuStrip.Height - 39;
+            workSpaceTabControl.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
+            workSpaceTabControl.Height = this.Height - bottomPanel.Height - statusStrip1.Height - menuStrip.Height - 39;
             layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 34;
-            if (layerContainer != null)
-                layerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 3;
+            if (Current != null && Current.LayerContainer != null)
+                Current.LayerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 3;
+            bottomPanel.Location = new Point(190, workSpaceTabControl.Location.Y + workSpaceTabControl.Height);
+            bottomPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -49,7 +48,7 @@ namespace DoAnLTTQ
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            if (!saved)
+            if (Current!= null && !Current.Saved)
             {
                 DialogResult dialog = MessageBox.Show("Your work haven't saved yet.\nDo you want to save it", "Photo Editor",
                                                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
@@ -99,12 +98,8 @@ namespace DoAnLTTQ
         #region File menu
 
         private bool working = false;
-        private bool saved = true;
-        private bool stored = false;
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CloseToolStripMenuItem_Click(sender, e);
-
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Image Files(*.BMP;*.JPG;*.PNG)|*.bmp;*.jpg;*.png|All files (*.*)|*.*";
@@ -112,19 +107,13 @@ namespace DoAnLTTQ
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     Bitmap bmp = new Bitmap(ofd.FileName);
-                    filePath = ofd.FileName;
                     bmpSize = bmp.Size;
-                    DrawSpaceInit();
-                    LayerContainerInit();
-                    LayerMenuStripEnable(true);
-                    ColorMenuStripEnable(true);
-                    Layer firstLayer = new Layer(bmp, "Layer1", true);
-                    layerContainer.AddLayerRow(ref firstLayer);
-                    drawSpace.BGGenerator(Color.Transparent);
+                    AddWorkTab(bmp, Color.Transparent);
+                    Current.FilePath = ofd.FileName;
                     DSUpdate();
-                    saved = true;
+                    Current.Saved = true;
+                    Current.Stored = true;
                     working = true;
-                    stored = true;
                     saveAsToolStripMenuItem.Enabled = true;
                     closeToolStripMenuItem.Enabled = true;
                     bmp.Dispose();
@@ -134,8 +123,6 @@ namespace DoAnLTTQ
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CloseToolStripMenuItem_Click(sender, e);
-
             using (Forms.NewFileForm nff = new Forms.NewFileForm())
             {
                 nff.ColorFore = mainColorPic.BackColor; 
@@ -144,17 +131,11 @@ namespace DoAnLTTQ
                 if (nff.ShowDialog() == DialogResult.OK)
                 {
                     Bitmap bmp = new Bitmap(nff.ImageSize.Width, nff.ImageSize.Height);
-                    fileName = nff.FileName;
                     bmpSize = bmp.Size;
-                    DrawSpaceInit();
-                    LayerContainerInit();
-                    LayerMenuStripEnable(true);
-                    ColorMenuStripEnable(true);
-                    Layer firstLayer = new Layer(bmp, "Layer1", true);
-                    layerContainer.AddLayerRow(ref firstLayer);
-                    drawSpace.BGGenerator(nff.BGColor);
+                    AddWorkTab(bmp, nff.BGColor);
+                    Current.FileName = nff.FileName;
                     DSUpdate();
-                    saved = true;
+                    Current.Saved = true;
                     working = true;
                     saveAsToolStripMenuItem.Enabled = true;
                     closeToolStripMenuItem.Enabled = true;
@@ -167,16 +148,16 @@ namespace DoAnLTTQ
         {
             if(working)
             {
-                if (stored)
+                if (Current.Stored)
                 {
-                    drawSpace.Final.Save(filePath);
-                    saved = true;
+                    Current.DrawSpace.Final.Save(Current.FilePath);
+                    Current.Saved = true;
                     saveToolStripMenuItem.Enabled = false;
                 }
                 else
                 {
                     SaveAsToolStripMenuItem_Click(this, e);
-                    stored = true;
+                    Current.Stored = true;
                 }
             }
         }
@@ -186,15 +167,15 @@ namespace DoAnLTTQ
             {
                 using (SaveFileDialog sfd = new SaveFileDialog())
                 {
-                    sfd.FileName = fileName;
+                    sfd.FileName = Current.FileName;
                     sfd.Filter = "Bitmap Image (*.BMP)|*.bmp|JPEG Image (*.JPEG)|*.jpeg|PNG Image (*.PNG)|*.png";
                     sfd.FilterIndex = 3;
                     sfd.DefaultExt = "png";
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        drawSpace.Final.Save(sfd.FileName);
-                        filePath = sfd.FileName;
-                        saved = true;
+                        Current.DrawSpace.Final.Save(sfd.FileName);
+                        Current.FilePath = sfd.FileName;
+                        Current.Saved = true;
                         saveToolStripMenuItem.Enabled = false;
                     }
                 }
@@ -205,7 +186,7 @@ namespace DoAnLTTQ
         {
             if (working)
             {
-                if(!saved)
+                if(!Current.Saved)
                 {
                     DialogResult dialog = MessageBox.Show("Your work haven't saved yet.\nDo you want to save it", "Photo Editor",
                                                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
@@ -213,23 +194,23 @@ namespace DoAnLTTQ
                         SaveToolStripMenuItem_Click(sender, e);
                 }
 
-                drawSpace.Dispose();
-                drawSpace = null;
-                workPanel.Controls.Remove(drawSpace);
-                layerContainer.Dispose();
-                layerContainer = null;
-                layerPanel.Controls.Remove(layerContainer);
+                workSpaceTabControl.SelectedTab.Controls.Remove(Current);
+                Current.LayerContainer.Dispose();
+                Current.History.Dispose();
+                Current.Dispose();
+                workSpaceTabControl.SelectedTab.Dispose();
 
-                LayerMenuStripEnable(false);
-                ColorMenuStripEnable(false);
-                layerPanel.Enabled = false;
-                working = false;
-                closeToolStripMenuItem.Enabled = false;
-                saved = true;
-                saveToolStripMenuItem.Enabled = false;
-                saveAsToolStripMenuItem.Enabled = false;
-                stored = false;
-                filePath = null;
+                if (workSpaceTabControl.TabCount == 0)
+                {
+                    LayerMenuStripEnable(false);
+                    ColorMenuStripEnable(false);
+                    layerPanel.Enabled = false;
+                    working = false;
+                    closeToolStripMenuItem.Enabled = false;
+                    saveToolStripMenuItem.Enabled = false;
+                    saveAsToolStripMenuItem.Enabled = false;
+                    Current.FileName = Current.FilePath = null;
+                }
             }
         }       
 
@@ -243,7 +224,7 @@ namespace DoAnLTTQ
         #region Edit menu
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (history.Remove())
+            if (Current.History.Remove())
                 DSUpdate();
         }
 
@@ -282,7 +263,7 @@ namespace DoAnLTTQ
             {
                 g.FillRectangle(brush, 0, 0, bmpSize.Width, bmpSize.Height);
             }
-            drawSpace.ProcessBoxImage = bmp;
+            Current.DrawSpace.ProcessBoxImage = bmp;
             DSProcessUpdate(HistoryEvent.Draw);
             DSUpdate();
         }
@@ -300,12 +281,12 @@ namespace DoAnLTTQ
         }
         private void BrightnessAndContrastToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.BrightnessContrast bc = new Forms.BrightnessContrast(this, layerContainer))
+            using (Forms.BrightnessContrast bc = new Forms.BrightnessContrast(this, Current.LayerContainer))
             {
-                bc.Image = layerContainer.Current.Layer.Image;
+                bc.Image = Current.LayerContainer.Current.Layer.Image;
                 if (bc.ShowDialog() == DialogResult.OK)
                 {
-                    drawSpace.ProcessBoxImage = bc.Image;
+                    Current.DrawSpace.ProcessBoxImage = bc.Image;
                     DSProcessUpdate(HistoryEvent.DrawFilter);
                     DSUpdate();
                 }
@@ -314,14 +295,14 @@ namespace DoAnLTTQ
 
         private void HueAndSaturationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.HueSaturation hs = new Forms.HueSaturation(this, layerContainer))
+            using (Forms.HueSaturation hs = new Forms.HueSaturation(this, Current.LayerContainer))
             {
-                hs.Image = layerContainer.Current.Layer.Image;
+                hs.Image = Current.LayerContainer.Current.Layer.Image;
                 hs.Initialize();
 
                 if (hs.ShowDialog() == DialogResult.OK)
                 {
-                    drawSpace.ProcessBoxImage = hs.Image;
+                    Current.DrawSpace.ProcessBoxImage = hs.Image;
                     DSProcessUpdate(HistoryEvent.DrawFilter);
                     DSUpdate();
                 }
@@ -330,7 +311,7 @@ namespace DoAnLTTQ
 
         private void InvertToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using(Bitmap bmp = new Bitmap(layerContainer.Current.Layer.Image))
+            using(Bitmap bmp = new Bitmap(Current.LayerContainer.Current.Layer.Image))
             using(Graphics g = Graphics.FromImage(bmp))
             {
                 System.Drawing.Imaging.ColorMatrix matrix = new System.Drawing.Imaging.ColorMatrix();
@@ -339,10 +320,10 @@ namespace DoAnLTTQ
                 using (System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes())
                 {
                     attributes.SetColorMatrix(matrix);
-                    g.DrawImage(layerContainer.Current.Layer.Image, new Rectangle(0, 0, bmpSize.Width, bmpSize.Height),
+                    g.DrawImage(Current.LayerContainer.Current.Layer.Image, new Rectangle(0, 0, bmpSize.Width, bmpSize.Height),
                         0, 0, bmpSize.Width, bmpSize.Height, GraphicsUnit.Pixel, attributes);
 
-                    drawSpace.ProcessBoxImage = new Bitmap(bmp);
+                    Current.DrawSpace.ProcessBoxImage = new Bitmap(bmp);
                 }
             }
             DSProcessUpdate(HistoryEvent.DrawFilter);
@@ -351,14 +332,14 @@ namespace DoAnLTTQ
 
         private void ThresholdToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.Threshold th = new Forms.Threshold(this, layerContainer))
+            using (Forms.Threshold th = new Forms.Threshold(this, Current.LayerContainer))
             {
-                th.Image = layerContainer.Current.Layer.Image;
+                th.Image = Current.LayerContainer.Current.Layer.Image;
                 th.Initialize();
 
                 if (th.ShowDialog() == DialogResult.OK)
                 {
-                    drawSpace.ProcessBoxImage = th.Image;
+                    Current.DrawSpace.ProcessBoxImage = th.Image;
                     DSProcessUpdate(HistoryEvent.DrawFilter);
                     DSUpdate();
                 }
@@ -367,13 +348,13 @@ namespace DoAnLTTQ
 
         private void ColorBalanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.ColorBalance hs = new Forms.ColorBalance(this, layerContainer))
+            using (Forms.ColorBalance hs = new Forms.ColorBalance(this, Current.LayerContainer))
             {
-                hs.Image = layerContainer.Current.Layer.Image;
+                hs.Image = Current.LayerContainer.Current.Layer.Image;
 
                 if (hs.ShowDialog() == DialogResult.OK)
                 {
-                    drawSpace.ProcessBoxImage = hs.Image;
+                    Current.DrawSpace.ProcessBoxImage = hs.Image;
                     DSProcessUpdate(HistoryEvent.DrawFilter);
                     DSUpdate();
                 }
@@ -384,40 +365,58 @@ namespace DoAnLTTQ
 
         #endregion
 
-        #region ToolStrip
+        #region WorkSpace
 
-        private void MToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void AddWorkTab(Bitmap bmp,Color color)
         {
-            UncheckAll();
-            if (e.ClickedItem.GetType() == typeof(ToolStripButton))
+            LayerMenuStripEnable(true);
+            ColorMenuStripEnable(true);
+
+            if (Current != null)
             {
-                ToolStripButton button = (ToolStripButton)e.ClickedItem;
-                button.Checked = true;
-                button.CheckState = CheckState.Checked;
-                if (button.Text == penStripButton.Text)
-                {
-                    currentTool = Tool.Pen;
-                }
-                else if (button.Text == eraserStripButton.Text)
-                {
-                    currentTool = Tool.Eraser;
-                }
-                else if (button.Text == pickerStripButton.Text)
-                {
-                    currentTool = Tool.Picker;
-                }
+                layerPanel.Controls.Remove(Current.LayerContainer);
+                tabPage3.Controls.Remove(Current.History);
             }
+
+            DrawSpace drawSpace = new DrawSpace();
+
+            LayerContainer layerContainer = new LayerContainer();
+            Layer firstLayer = new Layer(bmp, "Layer1", true);
+            layerContainer.AddLayerRow(ref firstLayer);
+
+            if (tabPage3.Controls.Count != 0)
+                tabPage3.Controls.Clear();
+            History history = new History();
+            tabPage3.Controls.Add(history);
+
+            WorkSpace newWS = new WorkSpace(drawSpace, layerContainer, history);
+            TabPage tab = new TabPage();
+            tab.Controls.Add(newWS);
+            tab.Text = "new";
+            workSpaceTabControl.TabPages.Add(tab);
+            Current = newWS;
+
+            DrawSpaceInit();
+            LayerContainerInit();
+            Current.DrawSpace.BGGenerator(color);
+            workSpaceTabControl.SelectedIndex = workSpaceTabControl.TabPages.IndexOf(tab);
         }
 
-        private void UncheckAll()
+        private void WorkSpaceTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach (ToolStripButton button in mToolStrip.Items)
-            {
-                button.Checked = false;
-                button.CheckState = CheckState.Unchecked;
-            }
-        }
+            if (workSpaceTabControl.TabCount == 0)
+                return;
 
+            layerPanel.Controls.Remove(Current.LayerContainer);
+            tabPage3.Controls.Remove(Current.History);
+            Current = (WorkSpace)workSpaceTabControl.SelectedTab.Controls[0];
+            layerPanel.Controls.Add(Current.LayerContainer);
+            LayerButtonCheck();
+            opacityVal = Current.LayerContainer.Current.Layer.Opacity;
+            OpacityBarUpdate();
+            tabPage3.Controls.Add(Current.History);
+            saveToolStripMenuItem.Enabled = !Current.Saved;
+        }
 
         #endregion
 
@@ -425,60 +424,55 @@ namespace DoAnLTTQ
 
         private void DrawSpaceInit()
         {
-            if (drawSpace == null)
-            {
-                drawSpace = new DrawSpace();
-                drawSpace.Location = new System.Drawing.Point(0, 0);
-                drawSpace.Name = "workspace";
-                drawSpace.Size = bmpSize;
-                drawSpace.Init();
-                drawSpace.Event.MouseDown += DS_MouseDown;
-                drawSpace.Event.MouseLeave += DS_MouseLeave;
-                drawSpace.Event.MouseMove += DS_MouseMove;
-                drawSpace.Event.MouseUp += DS_MouseUp;
-                workPanel.Controls.Add(drawSpace);
+            Current.DrawSpace.Location = new System.Drawing.Point(0, 0);
+            Current.DrawSpace.Name = "workspace";
+            Current.DrawSpace.Size = bmpSize;
+            Current.DrawSpace.Init();
+            Current.DrawSpace.Event.MouseDown += DS_MouseDown;
+            Current.DrawSpace.Event.MouseLeave += DS_MouseLeave;
+            Current.DrawSpace.Event.MouseMove += DS_MouseMove;
+            Current.DrawSpace.Event.MouseUp += DS_MouseUp;
 
-                drawSpace.ColorUpdate(mainColorPic.BackColor);
-                drawSpace.LineSizeUpdate((float)numericUpDown1.Value);
-            }
+            Current.DrawSpace.ColorUpdate(mainColorPic.BackColor);
+            Current.DrawSpace.LineSizeUpdate((float)numericUpDown1.Value);
         }
 
         public void DSProcessUpdate(HistoryEvent e)
         {
-            saved = false;
+            Current.Saved = false;
             saveToolStripMenuItem.Enabled = true;
             if (e == HistoryEvent.Draw || e == HistoryEvent.DrawFilter || e == HistoryEvent.Erase)
             {
-                layerContainer.ProcessUpdate((Bitmap)drawSpace.ProcessBoxImage);
-                drawSpace.ClearProcess();
+                Current.LayerContainer.ProcessUpdate((Bitmap)Current.DrawSpace.ProcessBoxImage);
+                Current.DrawSpace.ClearProcess();
             }
-            history.Add(e, layerContainer.Current);
+            Current.History.Add(e, Current.LayerContainer.Current);
         }
 
         public void DSUpdate()
         {
-            layerContainer.BackUpdate();
-            drawSpace.BackBoxImage = layerContainer.Back;
-            layerContainer.FrontUpdate();
-            drawSpace.FrontBoxImage = layerContainer.Front;
-            layerContainer.FinalUpdate();
-            drawSpace.Final = layerContainer.Final;
-            drawSpace.CurrentVisible = layerContainer.Current.Layer.Visible;
+            Current.LayerContainer.BackUpdate();
+            Current.DrawSpace.BackBoxImage = Current.LayerContainer.Back;
+            Current.LayerContainer.FrontUpdate();
+            Current.DrawSpace.FrontBoxImage = Current.LayerContainer.Front;
+            Current.LayerContainer.FinalUpdate();
+            Current.DrawSpace.Final = Current.LayerContainer.Final;
+            Current.DrawSpace.CurrentVisible = Current.LayerContainer.Current.Layer.Visible;
         }
 
         private void DS_MouseDown(object sender, MouseEventArgs e)
         {
-            drawSpace.Event_Mouse_Down(e, currentTool);
+            Current.DrawSpace.Event_Mouse_Down(e, currentTool);
 
             if (currentTool == Tool.Picker)
             {
-                mainColorPic.BackColor = drawSpace.GetColor();
+                mainColorPic.BackColor = Current.DrawSpace.GetColor();
             }
         }
 
         private void DS_MouseMove(object sender, MouseEventArgs e)
         {
-            drawSpace.Event_Mouse_Move(e, currentTool);
+            Current.DrawSpace.Event_Mouse_Move(e, currentTool);
             mouseLocation.Text = e.Location.ToString();
         }
         private void DS_MouseLeave(object sender, EventArgs e)
@@ -488,7 +482,7 @@ namespace DoAnLTTQ
 
         private void DS_MouseUp(object sender, MouseEventArgs e)
         {
-            drawSpace.Event_Mouse_Up(e, currentTool);
+            Current.DrawSpace.Event_Mouse_Up(e, currentTool);
             switch(currentTool)
             {
                 case Tool.Pen:
@@ -503,16 +497,9 @@ namespace DoAnLTTQ
 
         #endregion
 
-        #region TopPanel
-        private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            if (drawSpace != null)
-                drawSpace.LineSizeUpdate((float)numericUpDown1.Value);
-        }
+        #region LeftPanel
 
-        #endregion
-
-        #region ColorTabPage
+        #region ColorPanel
 
         private bool colorIsPicking = false;
         private void ColorGradian_MouseDown(object sender, MouseEventArgs e)
@@ -574,8 +561,8 @@ namespace DoAnLTTQ
             label8.Text = greenVal.ToString();
             label9.Text = blueVal.ToString();
 
-            if (drawSpace != null)
-                drawSpace.ColorUpdate(mainColorPic.BackColor);
+            if (Current.DrawSpace != null)
+                Current.DrawSpace.ColorUpdate(mainColorPic.BackColor);
         }
         private void BarUpdate(ref PictureBox bar, Color c, int val)
         {
@@ -584,18 +571,18 @@ namespace DoAnLTTQ
                 using (Graphics g = bar.CreateGraphics())
                 {
                     g.Clear(bar.BackColor);
-                    g.FillRectangle(b, new Rectangle(0, 0, val/2 , bar.Height));
+                    g.FillRectangle(b, new Rectangle(0, 0, val / 2, bar.Height));
                 }
             }
         }
-        
+
         private void ValCheck(ref int n)
         {
             if (n > 255) n = 255;
             if (n < 0) n = 0;
         }
 
-        private void BarVal(ref int val, ref PictureBox bar ,ref  MouseEventArgs e)
+        private void BarVal(ref int val, ref PictureBox bar, ref MouseEventArgs e)
         {
             val = (int)(((double)e.Location.X / bar.Width) * 255);
             ValCheck(ref val);
@@ -628,22 +615,80 @@ namespace DoAnLTTQ
 
         #endregion
 
+        #region ToolPanel
+
+        private void MToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            UncheckAll();
+        }
+        private void PToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            UncheckAll();
+            if (e.ClickedItem.GetType() == typeof(ToolStripButton))
+            {
+                ToolStripButton button = (ToolStripButton)e.ClickedItem;
+                button.Checked = true;
+                button.CheckState = CheckState.Checked;
+                if (button.Text == penStripButton.Text)
+                {
+                    currentTool = Tool.Pen;
+                }
+                else if (button.Text == eraserStripButton.Text)
+                {
+                    currentTool = Tool.Eraser;
+                }
+                else if (button.Text == pickerStripButton.Text)
+                {
+                    currentTool = Tool.Picker;
+                }
+            }
+        }
+
+        private void SToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            UncheckAll();
+        }
+
+        private void UncheckAll()
+        {
+            foreach (ToolStripButton button in mToolStrip.Items)
+            {
+                button.Checked = false;
+                button.CheckState = CheckState.Unchecked;
+            }
+            foreach (ToolStripButton button in pToolStrip.Items)
+            {
+                button.Checked = false;
+                button.CheckState = CheckState.Unchecked;
+            }
+            foreach (ToolStripButton button in sToolStrip.Items)
+            {
+                button.Checked = false;
+                button.CheckState = CheckState.Unchecked;
+            }
+        }
+        #endregion
+
+        private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            if (Current.DrawSpace != null)
+                Current.DrawSpace.LineSizeUpdate((float)numericUpDown1.Value);
+        }
+
+        #endregion
+
         #region Layer
 
         private void LayerContainerInit()
         {
-            if (layerContainer == null)
-            {
-                layerContainer = new LayerContainer();
-                layerContainer.AutoScroll = true;
-                layerContainer.Location = new System.Drawing.Point(4, 55);
-                layerContainer.Name = "layerContainer";
-                layerContainer.Size = new System.Drawing.Size(201, 230);
-                layerPanel.Controls.Add(layerContainer);
-                layerPanel.Enabled = true;
-                opacityVal = 100f;
-                OpacityBarUpdate();
-            }
+            Current.LayerContainer.AutoScroll = true;
+            Current.LayerContainer.Location = new System.Drawing.Point(4, 55);
+            Current.LayerContainer.Name = "Current.LayerContainer";
+            Current.LayerContainer.Size = new System.Drawing.Size(201, layerPanel.Width - 12);
+            layerPanel.Controls.Add(Current.LayerContainer);
+            layerPanel.Enabled = true;
+            opacityVal = 100f;
+            OpacityBarUpdate();
         }
 
         private void LayerMenuStripEnable(bool enable)
@@ -658,7 +703,7 @@ namespace DoAnLTTQ
         {
             using (Forms.NewLayer nlf = new Forms.NewLayer())
             {
-                nlf.SetDefaultName(layerContainer.Count);
+                nlf.SetDefaultName(Current.LayerContainer.Count);
                 if (nlf.ShowDialog() == DialogResult.OK)
                 {
                     string name = nlf.LayerName;
@@ -667,8 +712,10 @@ namespace DoAnLTTQ
                     {
                         newBmp.MakeTransparent();
                         Layer layer = new Layer(newBmp, name, visible);
-                        layerContainer.AddLayerRow(ref layer);
+                        Current.LayerContainer.AddLayerRow(ref layer);
                         LayerButtonCheck();
+                        opacityVal = Current.LayerContainer.Current.Layer.Opacity;
+                        OpacityBarUpdate();
                         DSProcessUpdate(HistoryEvent.NewL);
                         DSUpdate();
                     }
@@ -678,7 +725,7 @@ namespace DoAnLTTQ
 
         private void DeleteLStripButton_Click(object sender, EventArgs e)
         {
-            layerContainer.RemoveLayerRow();
+            Current.LayerContainer.RemoveLayerRow();
             LayerButtonCheck();
             DSProcessUpdate(HistoryEvent.DeleteL);
             DSUpdate();
@@ -687,18 +734,18 @@ namespace DoAnLTTQ
         {
             using (Forms.LayerRename lr = new Forms.LayerRename())
             {
-                lr.DefaultName = layerContainer.Current.Name;
+                lr.DefaultName = Current.LayerContainer.Current.Name;
                 if (lr.ShowDialog() == DialogResult.OK)
                 {
-                    layerContainer.Current.Name = lr.NewName;
-                    layerContainer.UpdateName();
+                    Current.LayerContainer.Current.Name = lr.NewName;
+                    Current.LayerContainer.UpdateName();
                 }
             }
         }
 
         private void ClearLStripButton_Click(object sender, EventArgs e)
         {
-            using (Graphics g = Graphics.FromImage(layerContainer.Current.Layer.Image))
+            using (Graphics g = Graphics.FromImage(Current.LayerContainer.Current.Layer.Image))
             {
                 g.Clear(Color.Transparent);
             }
@@ -708,7 +755,7 @@ namespace DoAnLTTQ
 
         private void DownLStripButton_Click(object sender, EventArgs e)
         {
-            layerContainer.MoveDown();
+            Current.LayerContainer.MoveDown();
             LayerButtonCheck();
             DSProcessUpdate(HistoryEvent.Ldown);
             DSUpdate();
@@ -716,7 +763,7 @@ namespace DoAnLTTQ
 
         private void UpLStripButton_Click(object sender, EventArgs e)
         {
-            layerContainer.MoveUp();
+            Current.LayerContainer.MoveUp();
             LayerButtonCheck();
             DSProcessUpdate(HistoryEvent.Lup);
             DSUpdate();
@@ -724,14 +771,14 @@ namespace DoAnLTTQ
 
         public void LayerButtonCheck()
         {
-            if (layerContainer.CurrentIndex == layerContainer.Count - 1)
+            if (Current.LayerContainer.CurrentIndex == Current.LayerContainer.Count - 1)
             {
 
                 mergeLStripButton.Enabled = true;
                 downLStripButton.Enabled = true;
                 upLStripButton.Enabled = false;
             }
-            else if (layerContainer.CurrentIndex == 0)
+            else if (Current.LayerContainer.CurrentIndex == 0)
             {
                 downLStripButton.Enabled = false;
                 mergeLStripButton.Enabled = false;
@@ -744,7 +791,7 @@ namespace DoAnLTTQ
                 upLStripButton.Enabled = true;
             }
 
-            if (layerContainer.Count > 1)
+            if (Current.LayerContainer.Count > 1)
             {
                 deleteLStripButton.Enabled = true;
                 duplicateLStripButton.Enabled = true;
@@ -761,7 +808,7 @@ namespace DoAnLTTQ
 
         private void MergeLStripButton_Click(object sender, EventArgs e)
         {
-            layerContainer.Merge();
+            Current.LayerContainer.Merge();
             LayerButtonCheck();
             DSProcessUpdate(HistoryEvent.MergeL);
             DSUpdate();
@@ -769,7 +816,7 @@ namespace DoAnLTTQ
 
         private void DuplicateLStripButton_Click(object sender, EventArgs e)
         {
-            layerContainer.Duplicate();
+            Current.LayerContainer.Duplicate();
             LayerButtonCheck();
             DSProcessUpdate(HistoryEvent.DuplicateL);
             DSUpdate();
@@ -803,13 +850,12 @@ namespace DoAnLTTQ
 
         private void OpacityBar_MouseUp(object sender, MouseEventArgs e)
         {
-            layerContainer.Current.Opacity = opacityVal;
-            layerContainer.Current.Layer.Opacity = opacityVal;
+            Current.LayerContainer.Current.Opacity = opacityVal;
+            Current.LayerContainer.Current.Layer.Opacity = opacityVal;
             DSProcessUpdate(HistoryEvent.Opacity);
             DSUpdate();
         }
 
         #endregion
-
     }
 }

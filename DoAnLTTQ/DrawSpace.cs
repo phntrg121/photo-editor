@@ -68,8 +68,7 @@ namespace DoAnLTTQ
         {
             set
             {
-                processing = (Bitmap)value;
-                g = Graphics.FromImage(processing);
+                g.DrawImage(value, 0, 0);
             }
             get
             {
