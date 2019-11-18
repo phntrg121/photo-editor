@@ -406,6 +406,10 @@ namespace DoAnLTTQ
                 {
                     currentTool = Tool.Picker;
                 }
+                else if (button.Text == toolStripButton.Text)
+                {
+                    currentTool = Tool.Select;
+                }
             }
         }
 

@@ -13,7 +13,7 @@ namespace DoAnLTTQ
 
     public enum Tool
     {
-        Pen, Eraser, Picker
+        Pen, Eraser, Picker, Select
     }
     public partial class DrawSpace : UserControl
     {
@@ -24,6 +24,7 @@ namespace DoAnLTTQ
         private Tools.PenTools pen;
         private Tools.Picker picker;
         private Tools.Eraser eraser;
+        private Tools.Select select;
         Graphics g;
 
         public DrawSpace()
@@ -32,6 +33,7 @@ namespace DoAnLTTQ
             pen = new Tools.PenTools();
             picker = new Tools.Picker();
             eraser = new Tools.Eraser();
+            select = new Tools.Select();
         }
 
         public void Init()
@@ -169,6 +171,11 @@ namespace DoAnLTTQ
                         eraser.GetLocation(ref e);
                     }
                     break;
+                case Tool.Select:
+                    {
+                        select.GetLocation(ref e);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -193,6 +200,14 @@ namespace DoAnLTTQ
                     case Tool.Eraser:
                         {
                             eraser.Draw(g, e);
+                            if (CurrentVisible)
+                                processBox.Image = processing;
+                            
+                        }
+                        break;
+                    case Tool.Select:
+                        {
+                            select.SelectField(this, e);
                             if (CurrentVisible)
                                 processBox.Image = processing;
                         }

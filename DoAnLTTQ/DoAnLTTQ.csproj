@@ -125,6 +125,7 @@
     <Compile Include="Layer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Select.cs" />
     <Compile Include="Tools\Eraser.cs" />
     <Compile Include="Tools\PenTools.cs" />
     <Compile Include="Tools\Picker.cs" />
