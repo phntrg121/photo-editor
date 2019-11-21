@@ -13,8 +13,8 @@ namespace DoAnLTTQ
     public partial class Form1 : Form
     {
         private Size bmpSize;
-        private Tool currentTool;
         private WorkSpace Current;
+        private Tools.Tools tools;
 
         #region Form
 
@@ -32,6 +32,8 @@ namespace DoAnLTTQ
                 Current.LayerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 3;
             bottomPanel.Location = new Point(190, workSpaceTabControl.Location.Y + workSpaceTabControl.Height);
             bottomPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
+            toolPanel.Height = statusStrip1.Location.Y - toolPanel.Location.Y - 27;
+            propertiesPanel.Height = statusStrip1.Location.Y - propertiesPanel.Location.Y - 226;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,7 +44,9 @@ namespace DoAnLTTQ
             saveToolStripMenuItem.Enabled = false;
             saveAsToolStripMenuItem.Enabled = false;
             closeToolStripMenuItem.Enabled = false;
-            currentTool = Tool.Pen;
+            tools = new Tools.Tools();
+            propertiesPanel.Controls.Add(tools.Current);
+            hexCode.Text = ColorTranslator.ToHtml(mainColorPic.BackColor);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -110,6 +114,7 @@ namespace DoAnLTTQ
                     bmpSize = bmp.Size;
                     AddWorkTab(bmp, Color.Transparent);
                     Current.FilePath = ofd.FileName;
+                    Current.Parent.Text = Current.FileName;
                     DSUpdate();
                     Current.Saved = true;
                     Current.Stored = true;
@@ -134,6 +139,7 @@ namespace DoAnLTTQ
                     bmpSize = bmp.Size;
                     AddWorkTab(bmp, nff.BGColor);
                     Current.FileName = nff.FileName;
+                    Current.Parent.Text = Current.FileName;
                     DSUpdate();
                     Current.Saved = true;
                     working = true;
@@ -159,6 +165,7 @@ namespace DoAnLTTQ
                     SaveAsToolStripMenuItem_Click(this, e);
                     Current.Stored = true;
                 }
+                Current.Parent.Text = Current.FileName;
             }
         }
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -209,8 +216,9 @@ namespace DoAnLTTQ
                     closeToolStripMenuItem.Enabled = false;
                     saveToolStripMenuItem.Enabled = false;
                     saveAsToolStripMenuItem.Enabled = false;
-                    Current.FileName = Current.FilePath = null;
+                    Current.FileName = Current.FilePath = "";
                 }
+                Current = null;
             }
         }       
 
@@ -392,7 +400,6 @@ namespace DoAnLTTQ
             WorkSpace newWS = new WorkSpace(drawSpace, layerContainer, history);
             TabPage tab = new TabPage();
             tab.Controls.Add(newWS);
-            tab.Text = "new";
             workSpaceTabControl.TabPages.Add(tab);
             Current = newWS;
 
@@ -427,19 +434,18 @@ namespace DoAnLTTQ
             Current.DrawSpace.Location = new System.Drawing.Point(0, 0);
             Current.DrawSpace.Name = "workspace";
             Current.DrawSpace.Size = bmpSize;
+            Current.DrawSpace.Tools = tools;
             Current.DrawSpace.Init();
             Current.DrawSpace.Event.MouseDown += DS_MouseDown;
             Current.DrawSpace.Event.MouseLeave += DS_MouseLeave;
             Current.DrawSpace.Event.MouseMove += DS_MouseMove;
             Current.DrawSpace.Event.MouseUp += DS_MouseUp;
-
-            Current.DrawSpace.ColorUpdate(mainColorPic.BackColor);
-            Current.DrawSpace.LineSizeUpdate((float)numericUpDown1.Value);
         }
 
         public void DSProcessUpdate(HistoryEvent e)
         {
             Current.Saved = false;
+            Current.Parent.Text = Current.FileName + "*";
             saveToolStripMenuItem.Enabled = true;
             if (e == HistoryEvent.Draw || e == HistoryEvent.DrawFilter || e == HistoryEvent.Erase)
             {
@@ -462,17 +468,17 @@ namespace DoAnLTTQ
 
         private void DS_MouseDown(object sender, MouseEventArgs e)
         {
-            Current.DrawSpace.Event_Mouse_Down(e, currentTool);
+            Current.DrawSpace.Event_Mouse_Down(e);
 
-            if (currentTool == Tool.Picker)
+            if (tools.Tool == Tool.Picker)
             {
-                mainColorPic.BackColor = Current.DrawSpace.GetColor();
+                mainColorPic.BackColor = tools.Picker.Color;
             }
         }
 
         private void DS_MouseMove(object sender, MouseEventArgs e)
         {
-            Current.DrawSpace.Event_Mouse_Move(e, currentTool);
+            Current.DrawSpace.Event_Mouse_Move(e);
             mouseLocation.Text = e.Location.ToString();
         }
         private void DS_MouseLeave(object sender, EventArgs e)
@@ -482,8 +488,8 @@ namespace DoAnLTTQ
 
         private void DS_MouseUp(object sender, MouseEventArgs e)
         {
-            Current.DrawSpace.Event_Mouse_Up(e, currentTool);
-            switch(currentTool)
+            Current.DrawSpace.Event_Mouse_Up(e);
+            switch(tools.Tool)
             {
                 case Tool.Pen:
                     DSProcessUpdate(HistoryEvent.Draw);
@@ -502,37 +508,39 @@ namespace DoAnLTTQ
         #region ColorPanel
 
         private bool colorIsPicking = false;
-        private void ColorGradian_MouseDown(object sender, MouseEventArgs e)
+        private void ColorWheel_MouseDown(object sender, MouseEventArgs e)
         {
             colorIsPicking = true;
         }
 
-        private void ColorGradian_MouseMove(object sender, MouseEventArgs e)
+        private void ColorWheel_MouseMove(object sender, MouseEventArgs e)
         {
             if (colorIsPicking)
             {
-                using (Bitmap bmp = new Bitmap(colorGradian.Image))
+                using (Bitmap bmp = new Bitmap(colorWheel.Image))
                 {
-                    if (e.X > 0 && e.Y > 0 && e.X < colorGradian.Width && e.Y < colorGradian.Height)
+                    if (e.X > 0 && e.Y > 0 && e.X < colorWheel.Width && e.Y < colorWheel.Height)
                     {
                         Color c = bmp.GetPixel(e.X, e.Y);
-                        mainColorPic.BackColor = c;
+                        if (c.A == 255)
+                            mainColorPic.BackColor = c;
                     }
                 }
             }
         }
 
-        private void ColorGradian_MouseUp(object sender, MouseEventArgs e)
+        private void ColorWheel_MouseUp(object sender, MouseEventArgs e)
         {
             colorIsPicking = false;
         }
 
-        private void ColorGradian_MouseClick(object sender, MouseEventArgs e)
+        private void ColorWheel_MouseClick(object sender, MouseEventArgs e)
         {
-            using (Bitmap bmp = new Bitmap(colorGradian.Image))
+            using (Bitmap bmp = new Bitmap(colorWheel.Image))
             {
                 Color c = bmp.GetPixel(e.X, e.Y);
-                mainColorPic.BackColor = c;
+                if (c.A == 255)
+                    mainColorPic.BackColor = c;
             }
         }
 
@@ -561,9 +569,10 @@ namespace DoAnLTTQ
             label8.Text = greenVal.ToString();
             label9.Text = blueVal.ToString();
 
-            if (Current.DrawSpace != null)
-                Current.DrawSpace.ColorUpdate(mainColorPic.BackColor);
+            hexCode.Text = ColorTranslator.ToHtml(mainColorPic.BackColor);
+            tools.Color = mainColorPic.BackColor;
         }
+
         private void BarUpdate(ref PictureBox bar, Color c, int val)
         {
             using (SolidBrush b = new SolidBrush(c))
@@ -631,17 +640,18 @@ namespace DoAnLTTQ
                 button.CheckState = CheckState.Checked;
                 if (button.Text == penStripButton.Text)
                 {
-                    currentTool = Tool.Pen;
+                    tools.Tool = Tool.Pen;
                 }
                 else if (button.Text == eraserStripButton.Text)
                 {
-                    currentTool = Tool.Eraser;
+                    tools.Tool = Tool.Eraser;
                 }
                 else if (button.Text == pickerStripButton.Text)
                 {
-                    currentTool = Tool.Picker;
+                    tools.Tool = Tool.Picker;
                 }
             }
+            ChangeTool();
         }
 
         private void SToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -667,13 +677,18 @@ namespace DoAnLTTQ
                 button.CheckState = CheckState.Unchecked;
             }
         }
-        #endregion
 
-        private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
+        private void ChangeTool()
         {
-            if (Current.DrawSpace != null)
-                Current.DrawSpace.LineSizeUpdate((float)numericUpDown1.Value);
+            if(propertiesPanel.Controls.Count !=0)
+            {
+                propertiesPanel.Controls.Remove(propertiesPanel.Controls[0]);
+                propertiesPanel.Controls.Add(tools.Current);
+            }
+            else propertiesPanel.Controls.Add(tools.Current);
         }
+
+        #endregion
 
         #endregion
 
@@ -836,15 +851,12 @@ namespace DoAnLTTQ
 
         public void OpacityBarUpdate()
         {
-            using (SolidBrush b = new SolidBrush(Color.Gray))
+            using (Graphics g = opacityBar.CreateGraphics())
             {
-                using (Graphics g = opacityBar.CreateGraphics())
-                {
-                    label10.Text = ((int)opacityVal).ToString();
-                    int w = (int)Math.Ceiling(((float)opacityVal / 100) * opacityBar.Width);
-                    g.Clear(opacityBar.BackColor);
-                    g.FillRectangle(b, new Rectangle(0, 0, w, opacityBar.Height));
-                }
+                label10.Text = ((int)opacityVal).ToString();
+                int w = (int)Math.Ceiling(((float)opacityVal / 100) * opacityBar.Width);
+                g.Clear(opacityBar.BackColor);
+                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, opacityBar.Height));
             }
         }
 

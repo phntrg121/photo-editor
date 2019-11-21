@@ -19,19 +19,13 @@ namespace DoAnLTTQ
     {
         private Bitmap processing;
         private Bitmap final;
-        private Color color;
-        private float lineSize;
-        private Tools.PenTools pen;
-        private Tools.Picker picker;
-        private Tools.Eraser eraser;
         Graphics g;
+
+        public Tools.Tools Tools { get; set; }
 
         public DrawSpace()
         {
             InitializeComponent();
-            pen = new Tools.PenTools();
-            picker = new Tools.Picker();
-            eraser = new Tools.Eraser();
         }
 
         public void Init()
@@ -94,24 +88,6 @@ namespace DoAnLTTQ
             }
         }
 
-        public void ColorUpdate(Color c)
-        {
-            color = c;
-            pen.Color = color;
-        }
-
-        public void LineSizeUpdate(float n)
-        {
-            lineSize = n;
-            pen.Size = lineSize;
-            eraser.Size = lineSize;
-        }
-
-        public Color GetColor()
-        {
-            return color;
-        }
-
         public void BGGenerator(Color c)
         {
             if(c==Color.Transparent)
@@ -143,7 +119,7 @@ namespace DoAnLTTQ
             }
         }
 
-        public void Event_Mouse_Down(MouseEventArgs e, Tool current)
+        public void Event_Mouse_Down(MouseEventArgs e)
         {
             if (processing == null)
             {
@@ -151,21 +127,21 @@ namespace DoAnLTTQ
                 g = Graphics.FromImage(processing);
             }
 
-            switch (current)
+            switch (Tools.Tool)
             {
                 case Tool.Pen:
                     {
-                        pen.GetLocation(ref e);
+                        Tools.Pen.GetLocation(ref e);
                     }
                     break;
                 case Tool.Picker:
                     {
-                        color = picker.GetColor(ref final, ref e);
+                        Tools.Picker.GetColor(ref final, ref e);
                     }
                     break;
                 case Tool.Eraser:
                     {
-                        eraser.GetLocation(ref e);
+                        Tools.Eraser.GetLocation(ref e);
                     }
                     break;
                 default:
@@ -173,25 +149,25 @@ namespace DoAnLTTQ
             }
         }
 
-        public void Event_Mouse_Move(MouseEventArgs e, Tool current)
+        public void Event_Mouse_Move(MouseEventArgs e)
         {
             if (processing == null)
                 return;
 
             if (e.Button == MouseButtons.Left)
             {
-                switch (current)
+                switch (Tools.Tool)
                 {
                     case Tool.Pen:
                         {
-                            pen.Draw(g, e);
+                            Tools.Pen.Draw(g, e);
                             if (CurrentVisible)
                                 processBox.Image = processing;
                         }
                         break;
                     case Tool.Eraser:
                         {
-                            eraser.Draw(g, e);
+                            Tools.Eraser.Draw(g, e);
                             if (CurrentVisible)
                                 processBox.Image = processing;
                         }
@@ -202,7 +178,7 @@ namespace DoAnLTTQ
             }
         }
 
-        public void Event_Mouse_Up(MouseEventArgs e, Tool current)
+        public void Event_Mouse_Up(MouseEventArgs e)
         {
         }
     }
