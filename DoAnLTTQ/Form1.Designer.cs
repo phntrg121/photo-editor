@@ -113,6 +113,8 @@
             this.eraserStripButton = new System.Windows.Forms.ToolStripButton();
             this.pickerStripButton = new System.Windows.Forms.ToolStripButton();
             this.workSpaceTabControl = new System.Windows.Forms.TabControl();
+            this.blendModeBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.rightPanel.SuspendLayout();
@@ -137,6 +139,7 @@
             // 
             // menuStrip
             // 
+            this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
@@ -226,32 +229,32 @@
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // cutToolStripMenuItem
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cutToolStripMenuItem.Text = "Cut";
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // undoToolStripMenuItem
             // 
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl + Z";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             this.undoToolStripMenuItem.Click += new System.EventHandler(this.UndoToolStripMenuItem_Click);
             // 
@@ -268,19 +271,19 @@
             // penToolStripMenuItem
             // 
             this.penToolStripMenuItem.Name = "penToolStripMenuItem";
-            this.penToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.penToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.penToolStripMenuItem.Text = "Pen";
             // 
             // eraserToolStripMenuItem
             // 
             this.eraserToolStripMenuItem.Name = "eraserToolStripMenuItem";
-            this.eraserToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.eraserToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.eraserToolStripMenuItem.Text = "Eraser";
             // 
             // colorPickerToolStripMenuItem
             // 
             this.colorPickerToolStripMenuItem.Name = "colorPickerToolStripMenuItem";
-            this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.colorPickerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.colorPickerToolStripMenuItem.Text = "Color Picker";
             // 
             // viewToolStripMenuItem
@@ -444,9 +447,9 @@
             this.layerPanel.BackColor = System.Drawing.SystemColors.ControlLight;
             this.layerPanel.Controls.Add(this.layerToolStrip);
             this.layerPanel.Controls.Add(this.panel5);
-            this.layerPanel.Location = new System.Drawing.Point(7, 259);
+            this.layerPanel.Location = new System.Drawing.Point(7, 215);
             this.layerPanel.Name = "layerPanel";
-            this.layerPanel.Size = new System.Drawing.Size(186, 412);
+            this.layerPanel.Size = new System.Drawing.Size(186, 456);
             this.layerPanel.TabIndex = 2;
             // 
             // layerToolStrip
@@ -461,7 +464,7 @@
             this.renameLStripButton,
             this.mergeLStripButton,
             this.duplicateLStripButton});
-            this.layerToolStrip.Location = new System.Drawing.Point(0, 27);
+            this.layerToolStrip.Location = new System.Drawing.Point(0, 56);
             this.layerToolStrip.Name = "layerToolStrip";
             this.layerToolStrip.Size = new System.Drawing.Size(186, 25);
             this.layerToolStrip.TabIndex = 1;
@@ -555,19 +558,21 @@
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.SystemColors.Control;
+            this.panel5.Controls.Add(this.label2);
+            this.panel5.Controls.Add(this.blendModeBox);
             this.panel5.Controls.Add(this.label1);
             this.panel5.Controls.Add(this.opacityBar);
             this.panel5.Controls.Add(this.label10);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(186, 27);
+            this.panel5.Size = new System.Drawing.Size(186, 56);
             this.panel5.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 4);
+            this.label1.Location = new System.Drawing.Point(3, 31);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
             this.label1.TabIndex = 0;
@@ -576,7 +581,7 @@
             // opacityBar
             // 
             this.opacityBar.BackColor = System.Drawing.Color.Gainsboro;
-            this.opacityBar.Location = new System.Drawing.Point(51, 5);
+            this.opacityBar.Location = new System.Drawing.Point(50, 34);
             this.opacityBar.Name = "opacityBar";
             this.opacityBar.Size = new System.Drawing.Size(104, 10);
             this.opacityBar.TabIndex = 4;
@@ -588,7 +593,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(160, 4);
+            this.label10.Location = new System.Drawing.Point(160, 31);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(25, 13);
             this.label10.TabIndex = 3;
@@ -601,7 +606,7 @@
             this.tabControl1.Location = new System.Drawing.Point(7, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(186, 250);
+            this.tabControl1.Size = new System.Drawing.Size(186, 206);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage2
@@ -609,7 +614,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(178, 224);
+            this.tabPage2.Size = new System.Drawing.Size(178, 180);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Filters";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -925,6 +930,29 @@
             this.workSpaceTabControl.TabIndex = 0;
             this.workSpaceTabControl.SelectedIndexChanged += new System.EventHandler(this.WorkSpaceTabControl_SelectedIndexChanged);
             // 
+            // blendModeBox
+            // 
+            this.blendModeBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.blendModeBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.blendModeBox.FormattingEnabled = true;
+            this.blendModeBox.Items.AddRange(new object[] {
+            "Normal",
+            "Multiply",
+            "Screen"});
+            this.blendModeBox.Location = new System.Drawing.Point(72, 5);
+            this.blendModeBox.Name = "blendModeBox";
+            this.blendModeBox.Size = new System.Drawing.Size(110, 21);
+            this.blendModeBox.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 8);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Blend mode";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1063,5 +1091,7 @@
         private System.Windows.Forms.TabControl workSpaceTabControl;
         private System.Windows.Forms.Panel propertiesPanel;
         private System.Windows.Forms.TextBox hexCode;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox blendModeBox;
     }
 }

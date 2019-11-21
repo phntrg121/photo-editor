@@ -27,9 +27,9 @@ namespace DoAnLTTQ
         {
             workSpaceTabControl.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
             workSpaceTabControl.Height = this.Height - bottomPanel.Height - statusStrip1.Height - menuStrip.Height - 39;
-            layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 34;
+            layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 26;
             if (Current != null && Current.LayerContainer != null)
-                Current.LayerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 3;
+                Current.LayerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 7;
             bottomPanel.Location = new Point(190, workSpaceTabControl.Location.Y + workSpaceTabControl.Height);
             bottomPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
             toolPanel.Height = statusStrip1.Location.Y - toolPanel.Location.Y - 27;
@@ -89,6 +89,14 @@ namespace DoAnLTTQ
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.D):
                     DeleteLayerToolStripMenuItem_Click(deleteLayerToolStripMenuItem, null);
+                    return true;
+                case (Keys.Up):
+                    if (upLStripButton.Enabled)
+                        UpLStripButton_Click(upLStripButton, null);
+                    return true;
+                case (Keys.Down):
+                    if (downLStripButton.Enabled)
+                        DownLStripButton_Click(downLStripButton, null);
                     return true;
                 default:
                     return base.ProcessCmdKey(ref msg, keyData);
@@ -468,8 +476,6 @@ namespace DoAnLTTQ
 
         private void DS_MouseDown(object sender, MouseEventArgs e)
         {
-            Current.DrawSpace.Event_Mouse_Down(e);
-
             if (tools.Tool == Tool.Picker)
             {
                 mainColorPic.BackColor = tools.Picker.Color;
@@ -478,7 +484,6 @@ namespace DoAnLTTQ
 
         private void DS_MouseMove(object sender, MouseEventArgs e)
         {
-            Current.DrawSpace.Event_Mouse_Move(e);
             mouseLocation.Text = e.Location.ToString();
         }
         private void DS_MouseLeave(object sender, EventArgs e)
@@ -488,7 +493,6 @@ namespace DoAnLTTQ
 
         private void DS_MouseUp(object sender, MouseEventArgs e)
         {
-            Current.DrawSpace.Event_Mouse_Up(e);
             switch(tools.Tool)
             {
                 case Tool.Pen:
@@ -697,9 +701,9 @@ namespace DoAnLTTQ
         private void LayerContainerInit()
         {
             Current.LayerContainer.AutoScroll = true;
-            Current.LayerContainer.Location = new System.Drawing.Point(4, 55);
+            Current.LayerContainer.Location = new System.Drawing.Point(3, 85);
             Current.LayerContainer.Name = "Current.LayerContainer";
-            Current.LayerContainer.Size = new System.Drawing.Size(201, layerPanel.Width - 12);
+            Current.LayerContainer.Size = new System.Drawing.Size(layerPanel.Width - 6, layerPanel.Height - 87);
             layerPanel.Controls.Add(Current.LayerContainer);
             layerPanel.Enabled = true;
             opacityVal = 100f;
@@ -749,11 +753,14 @@ namespace DoAnLTTQ
         {
             using (Forms.LayerRename lr = new Forms.LayerRename())
             {
-                lr.DefaultName = Current.LayerContainer.Current.Name;
+                lr.DefaultName = Current.LayerContainer.Current.Text;
                 if (lr.ShowDialog() == DialogResult.OK)
                 {
-                    Current.LayerContainer.Current.Name = lr.NewName;
-                    Current.LayerContainer.UpdateName();
+                    if (lr.NewName != "")
+                    {
+                        Current.LayerContainer.Current.Text = lr.NewName;
+                        Current.LayerContainer.UpdateName();
+                    }
                 }
             }
         }

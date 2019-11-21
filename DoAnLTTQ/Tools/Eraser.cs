@@ -17,14 +17,17 @@ namespace DoAnLTTQ.Tools
         Pen pen;
         Color color;
         int size;
+        Graphics gSize;
         public Eraser()
         {
             InitializeComponent();
             color = Color.FromArgb(255, 253, 254, 255);
-            pen = new Pen(color, 1);
+            pen = new Pen(color, 10);
             pen.SetLineCap(System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.DashCap.Round);
             Dock = DockStyle.Fill;
             size = 10;
+            sizeBar.Image = new Bitmap(sizeBar.Width, sizeBar.Height);
+            gSize = Graphics.FromImage(sizeBar.Image);
         }
 
         public void GetLocation(ref MouseEventArgs e)
@@ -40,6 +43,8 @@ namespace DoAnLTTQ.Tools
             oldPoint = currentPoint;
         }
 
+        public int ToolSize { get => size; }
+
         private void Bar_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -49,24 +54,24 @@ namespace DoAnLTTQ.Tools
                 if (size < 0) size = 1;
                 label3.Text = size.ToString();
                 pen.Width = size;
-                BarUpdate(sender as Control, size);
+                if (sender == sizeBar)
+                    BarUpdate(sizeBar, gSize, size);
+
             }
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            BarUpdate(sizeBar, size);
+            BarUpdate(sizeBar, gSize, size);
         }
 
-        private void BarUpdate(Control sender, int val)
+        private void BarUpdate(Control sender, Graphics g, int val)
         {
-            using (Graphics g = sender.CreateGraphics())
-            {
-                int w = (int)Math.Ceiling(((float)val / 100) * sender.Width);
-                g.Clear(sender.BackColor);
-                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
-            }
+            int w = (int)Math.Ceiling(((float)val / 100) * sender.Width);
+            g.Clear(sender.BackColor);
+            g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
+            sender.Invalidate();
         }
     }
 }

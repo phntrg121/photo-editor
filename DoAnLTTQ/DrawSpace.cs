@@ -20,6 +20,7 @@ namespace DoAnLTTQ
         private Bitmap processing;
         private Bitmap final;
         Graphics g;
+        Graphics gTop;
 
         public Tools.Tools Tools { get; set; }
 
@@ -32,13 +33,16 @@ namespace DoAnLTTQ
         {
             processing = new Bitmap(this.Size.Width, this.Size.Height);
             g = Graphics.FromImage(processing);
+
+            topBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
+            gTop = Graphics.FromImage(topBox.Image);
         }
 
         public PictureBox Event
         {
             get
             {
-                return frontBox;
+                return topBox;
             }
         }
 
@@ -119,7 +123,7 @@ namespace DoAnLTTQ
             }
         }
 
-        public void Event_Mouse_Down(MouseEventArgs e)
+        public void Mouse_Down(object sender, MouseEventArgs e)
         {
             if (processing == null)
             {
@@ -149,7 +153,7 @@ namespace DoAnLTTQ
             }
         }
 
-        public void Event_Mouse_Move(MouseEventArgs e)
+        public void Mouse_Move(object sender, MouseEventArgs e)
         {
             if (processing == null)
                 return;
@@ -176,10 +180,27 @@ namespace DoAnLTTQ
                         break;
                 }
             }
+
+            if (Tools.Tool == Tool.Pen || Tools.Tool == Tool.Eraser)
+            {
+                float n = Tools.Size;
+                if (n != 0)
+                {
+                    gTop.Clear(Color.Transparent);
+                    gTop.DrawEllipse(Pens.Black, new RectangleF(e.X - n / 2, e.Y - n / 2, n, n));
+                    topBox.Invalidate();
+                }
+            }
         }
 
-        public void Event_Mouse_Up(MouseEventArgs e)
+        public void Mouse_Up(object sender, MouseEventArgs e)
         {
+        }
+
+        private void Mouse_Leave(object sender, EventArgs e)
+        {
+            gTop.Clear(Color.Transparent);
+            topBox.Invalidate();
         }
     }
 }

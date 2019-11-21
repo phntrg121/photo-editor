@@ -18,16 +18,22 @@ namespace DoAnLTTQ.Tools
         Color color;
         int size;
         int opacity;
+        Graphics gSize;
+        Graphics gOpacity;
 
         public PenTool()
         {
             InitializeComponent();
             color = Color.Black;
-            pen = new Pen(color, 1);
+            pen = new Pen(color, 10);
             pen.SetLineCap(System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.DashCap.Round);
             this.Dock = DockStyle.Fill;
             size = 10;
             opacity = 100;
+            sizeBar.Image = new Bitmap(sizeBar.Width, sizeBar.Height);
+            opacityBar.Image = new Bitmap(sizeBar.Width, sizeBar.Height);
+            gSize = Graphics.FromImage(sizeBar.Image);
+            gOpacity = Graphics.FromImage(opacityBar.Image);
         }
 
         public void GetLocation(ref MouseEventArgs e)
@@ -41,6 +47,8 @@ namespace DoAnLTTQ.Tools
             g.DrawLine(pen, oldPoint, currentPoint);
             oldPoint = currentPoint;
         }
+
+        public int ToolSize { get => size; }
 
         public Color Color
         {
@@ -65,32 +73,30 @@ namespace DoAnLTTQ.Tools
                     size = val;
                     label3.Text = size.ToString();
                     pen.Width = size;
-                    BarUpdate(sender as Control, size);
+                    BarUpdate(sizeBar, gSize, size);
                 }
                 else if(c == opacityBar)
                 {
                     opacity = val;
                     label4.Text = opacity.ToString();
                     pen.Color = Color.FromArgb((int)(255 * (float)opacity / 100), pen.Color);
-                    BarUpdate(sender as Control, opacity);
+                    BarUpdate(opacityBar, gOpacity, opacity);
                 }
             }
         }
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            BarUpdate(sizeBar, size);
-            BarUpdate(opacityBar, opacity);
+            BarUpdate(sizeBar, gSize, size);
+            BarUpdate(opacityBar, gOpacity, opacity);
         }
 
-        private void BarUpdate(Control sender, int val)
+        private void BarUpdate(Control sender, Graphics g, int val)
         {
-            using (Graphics g = sender.CreateGraphics())
-            {
-                int w = (int)Math.Ceiling(((float)val / 100) * sender.Width);
-                g.Clear(sender.BackColor);
-                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
-            }
+            int w = (int)Math.Ceiling(((float)val / 100) * sender.Width);
+            g.Clear(sender.BackColor);
+            g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
+            sender.Invalidate();
         }
     }
 }

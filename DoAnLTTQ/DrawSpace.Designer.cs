@@ -33,11 +33,14 @@
             this.backBox = new System.Windows.Forms.PictureBox();
             this.processBox = new System.Windows.Forms.PictureBox();
             this.frontBox = new System.Windows.Forms.PictureBox();
+            this.topBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
             this.backBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processBox)).BeginInit();
             this.processBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.frontBox)).BeginInit();
+            this.frontBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.topBox)).BeginInit();
             this.SuspendLayout();
             // 
             // backBox
@@ -62,12 +65,27 @@
             // 
             // frontBox
             // 
+            this.frontBox.Controls.Add(this.topBox);
             this.frontBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.frontBox.Location = new System.Drawing.Point(0, 0);
             this.frontBox.Name = "frontBox";
             this.frontBox.Size = new System.Drawing.Size(150, 150);
             this.frontBox.TabIndex = 2;
             this.frontBox.TabStop = false;
+            // 
+            // topBox
+            // 
+            this.topBox.BackColor = System.Drawing.Color.Transparent;
+            this.topBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.topBox.Location = new System.Drawing.Point(0, 0);
+            this.topBox.Name = "topBox";
+            this.topBox.Size = new System.Drawing.Size(150, 150);
+            this.topBox.TabIndex = 3;
+            this.topBox.TabStop = false;
+            this.topBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Mouse_Down);
+            this.topBox.MouseLeave += new System.EventHandler(this.Mouse_Leave);
+            this.topBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Mouse_Move);
+            this.topBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Mouse_Up);
             // 
             // DrawSpace
             // 
@@ -81,6 +99,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.processBox)).EndInit();
             this.processBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.frontBox)).EndInit();
+            this.frontBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.topBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -90,5 +110,6 @@
         private System.Windows.Forms.PictureBox backBox;
         private System.Windows.Forms.PictureBox processBox;
         private System.Windows.Forms.PictureBox frontBox;
+        private System.Windows.Forms.PictureBox topBox;
     }
 }

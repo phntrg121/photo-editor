@@ -58,6 +58,16 @@ namespace DoAnLTTQ.Tools
             }
         }
 
-
+        public int Size
+        {
+            get
+            {
+                if (tool == Tool.Pen)
+                    return Pen.ToolSize;
+                if (tool == Tool.Eraser)
+                    return Eraser.ToolSize;
+                return 0;
+            }
+        }
     }
 }

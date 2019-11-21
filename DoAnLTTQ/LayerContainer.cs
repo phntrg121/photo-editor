@@ -135,9 +135,12 @@ namespace DoAnLTTQ
                 current = -1;
                 layerSize = layer.Image.Size;
                 final = new Bitmap(layerSize.Width, layerSize.Height);
+
                 gFinal = Graphics.FromImage(final);
+
                 back = new Bitmap(layerSize.Width, layerSize.Height);
                 gBack = Graphics.FromImage(back);
+
                 front = new Bitmap(layerSize.Width, layerSize.Height);
                 gFront = Graphics.FromImage(front);
 
@@ -200,7 +203,7 @@ namespace DoAnLTTQ
 
         public void UpdateName()
         {
-            layers[current].Text = layers[current].Layer.Name;
+             layers[current].Layer.Name = layers[current].Text;
         }
 
         public void MoveUp()
