@@ -10,24 +10,30 @@ using System.Windows.Forms;
 
 namespace DoAnLTTQ.Tools
 {
-    public partial class Eraser : UserControl
+    public partial class PenTool : UserControl
     {
         Point oldPoint;
         Point currentPoint;
         Pen pen;
         Color color;
         int size;
+        int opacity;
         Graphics gSize;
-        public Eraser()
+        Graphics gOpacity;
+
+        public PenTool()
         {
             InitializeComponent();
-            color = Color.FromArgb(255, 253, 254, 255);
+            color = Color.Black;
             pen = new Pen(color, 10);
             pen.SetLineCap(System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.DashCap.Round);
-            Dock = DockStyle.Fill;
+            this.Dock = DockStyle.Fill;
             size = 10;
+            opacity = 100;
             sizeBar.Image = new Bitmap(sizeBar.Width, sizeBar.Height);
+            opacityBar.Image = new Bitmap(sizeBar.Width, sizeBar.Height);
             gSize = Graphics.FromImage(sizeBar.Image);
+            gOpacity = Graphics.FromImage(opacityBar.Image);
         }
 
         public void GetLocation(ref MouseEventArgs e)
@@ -37,7 +43,6 @@ namespace DoAnLTTQ.Tools
 
         public void Draw(Graphics g, MouseEventArgs e)
         {
-            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             currentPoint = e.Location;
             g.DrawLine(pen, oldPoint, currentPoint);
             oldPoint = currentPoint;
@@ -45,25 +50,45 @@ namespace DoAnLTTQ.Tools
 
         public int ToolSize { get => size; }
 
+        public Color Color
+        {
+            set
+            {
+                pen.Color = Color.FromArgb((int)(255 * (float)opacity / 100), value);
+            }
+        }
+
         private void Bar_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                size = (int)((float)e.Location.X / (sender as Control).Width * 100);
-                if (size > 100) size = 100;
-                if (size < 0) size = 1;
-                label3.Text = size.ToString();
-                pen.Width = size;
-                if (sender == sizeBar)
-                    BarUpdate(sizeBar, gSize, size);
+                Control c = sender as Control;
 
+                int val = (int)((float)e.Location.X / c.Width * 100);
+                if (val > 100) val = 100;
+                if (val < 0) val = 1;
+
+                if (c == sizeBar)
+                {
+                    size = val;
+                    label3.Text = size.ToString();
+                    pen.Width = size;
+                    BarUpdate(sizeBar, gSize, size);
+                }
+                else if(c == opacityBar)
+                {
+                    opacity = val;
+                    label4.Text = opacity.ToString();
+                    pen.Color = Color.FromArgb((int)(255 * (float)opacity / 100), pen.Color);
+                    BarUpdate(opacityBar, gOpacity, opacity);
+                }
             }
         }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             BarUpdate(sizeBar, gSize, size);
+            BarUpdate(opacityBar, gOpacity, opacity);
         }
 
         private void BarUpdate(Control sender, Graphics g, int val)

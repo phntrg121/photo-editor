@@ -20,6 +20,7 @@ namespace DoAnLTTQ
         public History()
         {
             InitializeComponent();
+            Dock = DockStyle.Fill;
             events = new Stack<KeyValuePair<HistoryEvent, LayerRow>>();
         }
 
