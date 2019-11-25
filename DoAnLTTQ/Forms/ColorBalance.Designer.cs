@@ -111,35 +111,38 @@
             // magentaTrack
             // 
             this.magentaTrack.LargeChange = 10;
-            this.magentaTrack.Location = new System.Drawing.Point(70, 48);
+            this.magentaTrack.Location = new System.Drawing.Point(70, 56);
             this.magentaTrack.Maximum = 100;
             this.magentaTrack.Minimum = -100;
             this.magentaTrack.Name = "magentaTrack";
             this.magentaTrack.Size = new System.Drawing.Size(300, 45);
             this.magentaTrack.TabIndex = 6;
+            this.magentaTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.magentaTrack.Scroll += new System.EventHandler(this.TrackBar2_Scroll);
             // 
             // cyanTrack
             // 
             this.cyanTrack.AutoSize = false;
             this.cyanTrack.LargeChange = 1;
-            this.cyanTrack.Location = new System.Drawing.Point(70, 12);
+            this.cyanTrack.Location = new System.Drawing.Point(70, 20);
             this.cyanTrack.Maximum = 100;
             this.cyanTrack.Minimum = -100;
             this.cyanTrack.Name = "cyanTrack";
             this.cyanTrack.Size = new System.Drawing.Size(300, 45);
             this.cyanTrack.TabIndex = 7;
+            this.cyanTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.cyanTrack.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
             // 
             // yellowTrack
             // 
             this.yellowTrack.LargeChange = 10;
-            this.yellowTrack.Location = new System.Drawing.Point(70, 84);
+            this.yellowTrack.Location = new System.Drawing.Point(70, 92);
             this.yellowTrack.Maximum = 100;
             this.yellowTrack.Minimum = -100;
             this.yellowTrack.Name = "yellowTrack";
             this.yellowTrack.Size = new System.Drawing.Size(300, 45);
             this.yellowTrack.TabIndex = 6;
+            this.yellowTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.yellowTrack.Scroll += new System.EventHandler(this.TrackBar3_Scroll);
             // 
             // label5

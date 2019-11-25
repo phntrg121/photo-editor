@@ -10,23 +10,22 @@ using System.Windows.Forms;
 
 namespace DoAnLTTQ.Forms
 {
-    public partial class Threshold : Form
+    public partial class Pixelate : Form
     {
-        private LayerContainer lc;
         private Form1 f;
+        private LayerContainer lc;
         private Bitmap origin;
         private Bitmap adjusted;
         private System.Drawing.Imaging.BitmapData bmpData;
         private byte[] imagePixels;
         private int dataSize;
 
-        public Threshold(Form1 f, LayerContainer lc)
+        public Pixelate(Form1 f, LayerContainer lc)
         {
             InitializeComponent();
             this.f = f;
             this.lc = lc;
         }
-
         public Bitmap Image
         {
             set
@@ -48,10 +47,9 @@ namespace DoAnLTTQ.Forms
             imagePixels = new byte[dataSize];
             System.Runtime.InteropServices.Marshal.Copy(ptr, imagePixels, 0, dataSize);
             origin.UnlockBits(bmpData);
-            Adjust();
         }
 
-        int level = 128;
+        int pixel = 1;
         private void Adjust()
         {
             if (adjusted != null)
@@ -60,41 +58,34 @@ namespace DoAnLTTQ.Forms
                 adjusted = null;
             }
             adjusted = new Bitmap(origin);
-            bmpData = adjusted.LockBits(new Rectangle(0, 0, adjusted.Width, adjusted.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, adjusted.PixelFormat);
-            IntPtr ptr = bmpData.Scan0;
-            byte[] pixels = new byte[dataSize];
 
-            for (int i = 0; i < dataSize; i += 4)
+            if (pixel != 1)
             {
-                int n = (int)((float)imagePixels[i] * 0.4f + (float)imagePixels[i + 1] * 0.4f + (float)imagePixels[i + 2] * 0.2f);
-
-                if (n < level)
+                int k = pixel / 2;
+                using (Graphics g = Graphics.FromImage(adjusted))
                 {
-                    pixels[i] = 0;
-                    pixels[i + 1] = 0;
-                    pixels[i + 2] = 0;
+                    for (int y = 0; y < adjusted.Height; y += pixel)
+                    {
+                        for (int x = 0; x < adjusted.Width; x += pixel)
+                        {
+                            int i = x + k;
+                            int j = y + k;
+                            if (x + k >= adjusted.Width) i = x;
+                            if (y + k >= adjusted.Height) j = y;
+                            g.FillRectangle(new SolidBrush(adjusted.GetPixel(i, j)), x, y, pixel, pixel);
+                        }
+                    }
                 }
-                else
-                {
-                    pixels[i] = 255;
-                    pixels[i + 1] = 255;
-                    pixels[i + 2] = 255;
-                }
-                pixels[i + 3] = imagePixels[i + 3];
-
             }
-
-            System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, dataSize);
-            adjusted.UnlockBits(bmpData);
 
             lc.ProcessUpdate(adjusted, true);
             f.DSUpdate();
         }
 
-        private void LevelTrack_Scroll(object sender, EventArgs e)
+        private void PixelTrack_Scroll(object sender, EventArgs e)
         {
-            label3.Text = levelTrack.Value.ToString();
-            level = levelTrack.Value;
+            pixel = pixelTrack.Value;
+            label3.Text = pixelTrack.Value.ToString();
             Adjust();
         }
 

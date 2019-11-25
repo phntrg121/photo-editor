@@ -40,6 +40,7 @@ namespace DoAnLTTQ
         {
             LayerMenuStripEnable(false);
             ColorMenuStripEnable(false);
+            FilterMenuStripEnable(false);
             layerPanel.Enabled = false;
             saveToolStripMenuItem.Enabled = false;
             saveAsToolStripMenuItem.Enabled = false;
@@ -219,6 +220,7 @@ namespace DoAnLTTQ
                 {
                     LayerMenuStripEnable(false);
                     ColorMenuStripEnable(false);
+                    FilterMenuStripEnable(false);
                     layerPanel.Enabled = false;
                     working = false;
                     closeToolStripMenuItem.Enabled = false;
@@ -364,17 +366,71 @@ namespace DoAnLTTQ
 
         private void ColorBalanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (Forms.ColorBalance hs = new Forms.ColorBalance(this, Current.LayerContainer))
+            using (Forms.ColorBalance cb = new Forms.ColorBalance(this, Current.LayerContainer))
             {
-                hs.Image = Current.LayerContainer.Current.Layer.Image;
+                cb.Image = Current.LayerContainer.Current.Layer.Image;
 
-                if (hs.ShowDialog() == DialogResult.OK)
+                if (cb.ShowDialog() == DialogResult.OK)
                 {
-                    Current.DrawSpace.ProcessBoxImage = hs.Image;
+                    Current.DrawSpace.ProcessBoxImage = cb.Image;
                     DSProcessUpdate(HistoryEvent.DrawFilter);
                     DSUpdate();
                 }
             }
+        }
+
+        #endregion
+
+        #region Filter menu
+
+        private void FilterMenuStripEnable(bool enable)
+        {
+            foreach (ToolStripMenuItem item in filterToolStripMenuItem.DropDownItems)
+            {
+                item.Enabled = enable;
+            }
+        }
+
+        private void NoiseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (Forms.Noise ns = new Forms.Noise(this, Current.LayerContainer))
+            {
+                ns.Image = Current.LayerContainer.Current.Layer.Image;
+                ns.Initialize();
+
+                if (ns.ShowDialog() == DialogResult.OK)
+                {
+                    Current.DrawSpace.ProcessBoxImage = ns.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
+                }
+            }
+        }
+
+        private void PixelateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (Forms.Pixelate px = new Forms.Pixelate(this, Current.LayerContainer))
+            {
+                px.Image = Current.LayerContainer.Current.Layer.Image;
+                px.Initialize();
+
+                if (px.ShowDialog() == DialogResult.OK)
+                {
+                    Current.DrawSpace.ProcessBoxImage = px.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
+                }
+            }
+        }
+
+        private void BlurToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SharpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion
@@ -387,6 +443,7 @@ namespace DoAnLTTQ
         {
             LayerMenuStripEnable(true);
             ColorMenuStripEnable(true);
+            FilterMenuStripEnable(true);
 
             if (Current != null)
             {
@@ -876,5 +933,6 @@ namespace DoAnLTTQ
         }
 
         #endregion
+
     }
 }

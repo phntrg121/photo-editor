@@ -10,23 +10,22 @@ using System.Windows.Forms;
 
 namespace DoAnLTTQ.Forms
 {
-    public partial class Threshold : Form
+    public partial class Noise : Form
     {
-        private LayerContainer lc;
         private Form1 f;
+        private LayerContainer lc;
         private Bitmap origin;
         private Bitmap adjusted;
         private System.Drawing.Imaging.BitmapData bmpData;
         private byte[] imagePixels;
         private int dataSize;
 
-        public Threshold(Form1 f, LayerContainer lc)
+        public Noise(Form1 f, LayerContainer lc)
         {
             InitializeComponent();
             this.f = f;
             this.lc = lc;
         }
-
         public Bitmap Image
         {
             set
@@ -48,10 +47,9 @@ namespace DoAnLTTQ.Forms
             imagePixels = new byte[dataSize];
             System.Runtime.InteropServices.Marshal.Copy(ptr, imagePixels, 0, dataSize);
             origin.UnlockBits(bmpData);
-            Adjust();
         }
 
-        int level = 128;
+        int amount = 0;
         private void Adjust()
         {
             if (adjusted != null)
@@ -64,37 +62,38 @@ namespace DoAnLTTQ.Forms
             IntPtr ptr = bmpData.Scan0;
             byte[] pixels = new byte[dataSize];
 
+            Random rand = new Random();
+
             for (int i = 0; i < dataSize; i += 4)
             {
-                int n = (int)((float)imagePixels[i] * 0.4f + (float)imagePixels[i + 1] * 0.4f + (float)imagePixels[i + 2] * 0.2f);
+                int R = imagePixels[i + 0] + rand.Next(-amount, amount + 1);
+                int G = imagePixels[i + 1] + rand.Next(-amount, amount + 1);
+                int B = imagePixels[i + 2] + rand.Next(-amount, amount + 1);
 
-                if (n < level)
-                {
-                    pixels[i] = 0;
-                    pixels[i + 1] = 0;
-                    pixels[i + 2] = 0;
-                }
-                else
-                {
-                    pixels[i] = 255;
-                    pixels[i + 1] = 255;
-                    pixels[i + 2] = 255;
-                }
+                if (R > 255) R = 255;
+                if (G > 255) G = 255;
+                if (B > 255) B = 255;
+
+                if (R < 0) R = 0;
+                if (G < 0) G = 0;
+                if (B < 0) B = 0;
+
+                pixels[i + 0] = (byte)R;
+                pixels[i + 1] = (byte)G;
+                pixels[i + 2] = (byte)B;
                 pixels[i + 3] = imagePixels[i + 3];
-
             }
 
             System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, dataSize);
             adjusted.UnlockBits(bmpData);
-
             lc.ProcessUpdate(adjusted, true);
             f.DSUpdate();
         }
 
-        private void LevelTrack_Scroll(object sender, EventArgs e)
+        private void NoiseTrack_Scroll(object sender, EventArgs e)
         {
-            label3.Text = levelTrack.Value.ToString();
-            level = levelTrack.Value;
+            amount = noiseTrack.Value;
+            label3.Text = noiseTrack.Value.ToString();
             Adjust();
         }
 

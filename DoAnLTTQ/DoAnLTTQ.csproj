@@ -98,6 +98,18 @@
     <Compile Include="Forms\NewFile.Designer.cs">
       <DependentUpon>NewFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Noise.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Noise.Designer.cs">
+      <DependentUpon>Noise.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Pixelate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Pixelate.Designer.cs">
+      <DependentUpon>Pixelate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Threshold.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +185,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewLayer.resx">
       <DependentUpon>NewLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Noise.resx">
+      <DependentUpon>Noise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pixelate.resx">
+      <DependentUpon>Pixelate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Threshold.resx">
       <DependentUpon>Threshold.cs</DependentUpon>
