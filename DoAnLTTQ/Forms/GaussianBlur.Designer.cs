@@ -1,6 +1,6 @@
 ﻿namespace DoAnLTTQ.Forms
 {
-    partial class Pixelate
+    partial class GaussianBlur
     {
         /// <summary>
         /// Required designer variable.
@@ -42,7 +42,7 @@
             this.button2.Location = new System.Drawing.Point(298, 46);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
+            this.button2.TabIndex = 10;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button1_Click);
@@ -53,7 +53,7 @@
             this.button1.Location = new System.Drawing.Point(217, 46);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 9;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
@@ -64,8 +64,8 @@
             this.label3.Location = new System.Drawing.Point(360, 19);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(13, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "1";
+            this.label3.TabIndex = 8;
+            this.label3.Text = "0";
             // 
             // label1
             // 
@@ -73,7 +73,7 @@
             this.label1.Location = new System.Drawing.Point(15, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 6;
             this.label1.Text = "Pixel";
             // 
             // pixelTrack
@@ -81,16 +81,14 @@
             this.pixelTrack.AutoSize = false;
             this.pixelTrack.LargeChange = 1;
             this.pixelTrack.Location = new System.Drawing.Point(54, 17);
-            this.pixelTrack.Maximum = 32;
-            this.pixelTrack.Minimum = 1;
+            this.pixelTrack.Maximum = 20;
             this.pixelTrack.Name = "pixelTrack";
             this.pixelTrack.Size = new System.Drawing.Size(300, 43);
-            this.pixelTrack.TabIndex = 2;
+            this.pixelTrack.TabIndex = 7;
             this.pixelTrack.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.pixelTrack.Value = 1;
             this.pixelTrack.Scroll += new System.EventHandler(this.PixelTrack_Scroll);
             // 
-            // Pixelate
+            // GaussianBlur
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -102,11 +100,11 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pixelTrack);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "Pixelate";
+            this.Name = "GaussianBlur";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Pixelate";
+            this.Text = "GaussianBlur";
             ((System.ComponentModel.ISupportInitialize)(this.pixelTrack)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

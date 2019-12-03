@@ -64,15 +64,12 @@ namespace DoAnLTTQ.Forms
                 int k = pixel / 2;
                 using (Graphics g = Graphics.FromImage(adjusted))
                 {
+                    g.Clear(Color.Transparent);
                     for (int y = 0; y < adjusted.Height; y += pixel)
                     {
                         for (int x = 0; x < adjusted.Width; x += pixel)
                         {
-                            int i = x + k;
-                            int j = y + k;
-                            if (x + k >= adjusted.Width) i = x;
-                            if (y + k >= adjusted.Height) j = y;
-                            g.FillRectangle(new SolidBrush(adjusted.GetPixel(i, j)), x, y, pixel, pixel);
+                            g.FillRectangle(new SolidBrush(origin.GetPixel(x, y)), x - k, y - k, pixel, pixel);
                         }
                     }
                 }

@@ -425,12 +425,22 @@ namespace DoAnLTTQ
 
         private void BlurToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            using (Forms.GaussianBlur gb = new Forms.GaussianBlur(this, Current.LayerContainer))
+            {
+                gb.Image = Current.LayerContainer.Current.Layer.Image;
+                gb.Initialize();
 
+                if (gb.ShowDialog() == DialogResult.OK)
+                {
+                    Current.DrawSpace.ProcessBoxImage = gb.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
+                }
+            }
         }
 
         private void SharpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
         }
 
         #endregion
@@ -512,9 +522,14 @@ namespace DoAnLTTQ
             Current.Saved = false;
             Current.Parent.Text = Current.FileName + "*";
             saveToolStripMenuItem.Enabled = true;
-            if (e == HistoryEvent.Draw || e == HistoryEvent.DrawFilter || e == HistoryEvent.Erase)
+            if (e == HistoryEvent.Draw || e == HistoryEvent.Erase)
             {
                 Current.LayerContainer.ProcessUpdate((Bitmap)Current.DrawSpace.ProcessBoxImage);
+                Current.DrawSpace.ClearProcess();
+            }
+            else if (e == HistoryEvent.DrawFilter )
+            {
+                Current.LayerContainer.ProcessUpdate((Bitmap)Current.DrawSpace.ProcessBoxImage, filter: true);
                 Current.DrawSpace.ClearProcess();
             }
             Current.History.Add(e, Current.LayerContainer.Current);

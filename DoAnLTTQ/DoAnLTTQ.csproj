@@ -74,6 +74,12 @@
     <Compile Include="Forms\ColorBalance.Designer.cs">
       <DependentUpon>ColorBalance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\GaussianBlur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GaussianBlur.Designer.cs">
+      <DependentUpon>GaussianBlur.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\HueSaturation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorBalance.resx">
       <DependentUpon>ColorBalance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GaussianBlur.resx">
+      <DependentUpon>GaussianBlur.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\HueSaturation.resx">
       <DependentUpon>HueSaturation.cs</DependentUpon>

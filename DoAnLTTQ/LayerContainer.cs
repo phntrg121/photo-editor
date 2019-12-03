@@ -83,13 +83,14 @@ namespace DoAnLTTQ
             }
         }
 
-        public void ProcessUpdate(Bitmap processing, bool preview = false)
+        public void ProcessUpdate(Bitmap processing, bool preview = false, bool filter = false)
         {
             if (processing != null)
             {
                 if (!preview) layers[current].Layer.Stacking();
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
                 {
+                    if (preview || filter) g.Clear(Color.Transparent);
                     g.DrawImageUnscaled(processing, 0, 0, layerSize.Width, layerSize.Height);
                 }
 

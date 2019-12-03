@@ -123,6 +123,7 @@
             this.eraserStripButton = new System.Windows.Forms.ToolStripButton();
             this.pickerStripButton = new System.Windows.Forms.ToolStripButton();
             this.workSpaceTabControl = new System.Windows.Forms.TabControl();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.rightPanel.SuspendLayout();
@@ -131,6 +132,7 @@
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacityBar)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.bottomPanel.SuspendLayout();
             this.mToolStrip.SuspendLayout();
             this.leftPanel.SuspendLayout();
             this.colorPanel.SuspendLayout();
@@ -779,6 +781,7 @@
             // 
             // bottomPanel
             // 
+            this.bottomPanel.Controls.Add(this.comboBox1);
             this.bottomPanel.Location = new System.Drawing.Point(190, 667);
             this.bottomPanel.Name = "bottomPanel";
             this.bottomPanel.Size = new System.Drawing.Size(891, 31);
@@ -1025,6 +1028,21 @@
             this.workSpaceTabControl.TabIndex = 0;
             this.workSpaceTabControl.SelectedIndexChanged += new System.EventHandler(this.WorkSpaceTabControl_SelectedIndexChanged);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "25%",
+            "50%",
+            "100%",
+            "150%",
+            "200%"});
+            this.comboBox1.Location = new System.Drawing.Point(6, 6);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(64, 21);
+            this.comboBox1.TabIndex = 0;
+            this.comboBox1.Text = "100%";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1056,6 +1074,7 @@
             this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opacityBar)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.bottomPanel.ResumeLayout(false);
             this.mToolStrip.ResumeLayout(false);
             this.mToolStrip.PerformLayout();
             this.leftPanel.ResumeLayout(false);
@@ -1173,5 +1192,6 @@
         private System.Windows.Forms.ToolStripMenuItem noiseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sharpenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pixelateToolStripMenuItem;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
