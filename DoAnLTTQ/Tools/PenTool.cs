@@ -12,8 +12,8 @@ namespace DoAnLTTQ.Tools
 {
     public partial class PenTool : UserControl
     {
-        Point oldPoint;
-        Point currentPoint;
+        PointF oldPoint;
+        PointF currentPoint;
         Pen pen;
         Color color;
         int size;
@@ -36,14 +36,14 @@ namespace DoAnLTTQ.Tools
             gOpacity = Graphics.FromImage(opacityBar.Image);
         }
 
-        public void GetLocation(ref MouseEventArgs e)
+        public void GetLocation(PointF p)
         {
-            oldPoint = e.Location;
+            oldPoint = p;
         }
 
-        public void Draw(Graphics g, MouseEventArgs e)
+        public void Draw(Graphics g, PointF p)
         {
-            currentPoint = e.Location;
+            currentPoint = p;
             g.DrawLine(pen, oldPoint, currentPoint);
             oldPoint = currentPoint;
         }

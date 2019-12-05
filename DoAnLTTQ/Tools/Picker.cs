@@ -19,9 +19,9 @@ namespace DoAnLTTQ.Tools
             Dock = DockStyle.Fill;
         }
 
-        public void GetColor(ref Bitmap bmp, ref MouseEventArgs e)
+        public void GetColor(Bitmap bmp, PointF p)
         {
-            Color = bmp.GetPixel(e.X, e.Y);
+            Color = bmp.GetPixel((int)p.X, (int)p.Y);
         }
     }
 }
