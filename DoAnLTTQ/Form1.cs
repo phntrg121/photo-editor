@@ -28,8 +28,10 @@ namespace DoAnLTTQ
             workSpaceTabControl.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
             workSpaceTabControl.Height = this.Height - bottomPanel.Height - statusStrip1.Height - menuStrip.Height - 39;
             layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 26;
-            if (Current != null && Current.LayerContainer != null)
+            if (Current != null)
+            {
                 Current.LayerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 7;
+            }
             bottomPanel.Location = new Point(190, workSpaceTabControl.Location.Y + workSpaceTabControl.Height);
             bottomPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
             toolPanel.Height = statusStrip1.Location.Y - toolPanel.Location.Y - 27;
@@ -42,6 +44,7 @@ namespace DoAnLTTQ
             ColorMenuStripEnable(false);
             FilterMenuStripEnable(false);
             layerPanel.Enabled = false;
+            bottomPanel.Enabled = false;
             saveToolStripMenuItem.Enabled = false;
             saveAsToolStripMenuItem.Enabled = false;
             closeToolStripMenuItem.Enabled = false;
@@ -56,7 +59,7 @@ namespace DoAnLTTQ
             if (Current!= null && !Current.Saved)
             {
                 DialogResult dialog = MessageBox.Show("Your work haven't saved yet.\nDo you want to save it", "Photo Editor",
-                                                       MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                                                       MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (dialog == DialogResult.Yes)
                     SaveToolStripMenuItem_Click(this, e);
             }
@@ -172,7 +175,6 @@ namespace DoAnLTTQ
                 else
                 {
                     SaveAsToolStripMenuItem_Click(this, e);
-                    Current.Stored = true;
                 }
                 Current.Parent.Text = Current.FileName;
             }
@@ -193,6 +195,7 @@ namespace DoAnLTTQ
                         Current.FilePath = sfd.FileName;
                         Current.Saved = true;
                         saveToolStripMenuItem.Enabled = false;
+                        Current.Stored = true;
                     }
                 }
             }
@@ -208,6 +211,8 @@ namespace DoAnLTTQ
                                                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                     if (dialog == DialogResult.Yes)
                         SaveToolStripMenuItem_Click(sender, e);
+                    else if (dialog == DialogResult.Cancel)
+                        return;
                 }
 
                 workSpaceTabControl.SelectedTab.Controls.Remove(Current);
@@ -222,13 +227,15 @@ namespace DoAnLTTQ
                     ColorMenuStripEnable(false);
                     FilterMenuStripEnable(false);
                     layerPanel.Enabled = false;
+                    bottomPanel.Enabled = false;
                     working = false;
                     closeToolStripMenuItem.Enabled = false;
                     saveToolStripMenuItem.Enabled = false;
                     saveAsToolStripMenuItem.Enabled = false;
                     Current.FileName = Current.FilePath = "";
+                    Current = null;
                 }
-                Current = null;
+                else Current = (WorkSpace)workSpaceTabControl.SelectedTab.Controls[0];
             }
         }       
 
@@ -454,11 +461,12 @@ namespace DoAnLTTQ
             LayerMenuStripEnable(true);
             ColorMenuStripEnable(true);
             FilterMenuStripEnable(true);
+            bottomPanel.Enabled = true;
 
             if (Current != null)
             {
                 layerPanel.Controls.Remove(Current.LayerContainer);
-                tabPage3.Controls.Remove(Current.History);
+                historyTabPage.Controls.Remove(Current.History);
             }
 
             DrawSpace drawSpace = new DrawSpace();
@@ -466,11 +474,12 @@ namespace DoAnLTTQ
             LayerContainer layerContainer = new LayerContainer();
             Layer firstLayer = new Layer(bmp, "Layer1", true);
             layerContainer.AddLayerRow(ref firstLayer);
+            layerContainer.ScaleMatrix = drawSpace.ScaleMatrix;
 
-            if (tabPage3.Controls.Count != 0)
-                tabPage3.Controls.Clear();
+            if (historyTabPage.Controls.Count != 0)
+                historyTabPage.Controls.Clear();
             History history = new History();
-            tabPage3.Controls.Add(history);
+            historyTabPage.Controls.Add(history);
 
             WorkSpace newWS = new WorkSpace(drawSpace, layerContainer, history);
             TabPage tab = new TabPage();
@@ -490,13 +499,13 @@ namespace DoAnLTTQ
                 return;
 
             layerPanel.Controls.Remove(Current.LayerContainer);
-            tabPage3.Controls.Remove(Current.History);
+            historyTabPage.Controls.Remove(Current.History);
             Current = (WorkSpace)workSpaceTabControl.SelectedTab.Controls[0];
             layerPanel.Controls.Add(Current.LayerContainer);
             LayerButtonCheck();
             opacityVal = Current.LayerContainer.Current.Layer.Opacity;
             OpacityBarUpdate();
-            tabPage3.Controls.Add(Current.History);
+            historyTabPage.Controls.Add(Current.History);
             saveToolStripMenuItem.Enabled = !Current.Saved;
         }
 
@@ -515,6 +524,8 @@ namespace DoAnLTTQ
             Current.DrawSpace.Event.MouseLeave += DS_MouseLeave;
             Current.DrawSpace.Event.MouseMove += DS_MouseMove;
             Current.DrawSpace.Event.MouseUp += DS_MouseUp;
+
+            CenterBtn_Click(centerBtn, null);
         }
 
         public void DSProcessUpdate(HistoryEvent e)
@@ -537,13 +548,9 @@ namespace DoAnLTTQ
 
         public void DSUpdate()
         {
-            Current.LayerContainer.BackUpdate();
-            Current.DrawSpace.BackBoxImage = Current.LayerContainer.Back;
-            Current.LayerContainer.FrontUpdate();
-            Current.DrawSpace.FrontBoxImage = Current.LayerContainer.Front;
-            Current.LayerContainer.FinalUpdate();
-            Current.DrawSpace.Final = Current.LayerContainer.Final;
+            Current.LayerContainer.FinalUpdate(Current.DrawSpace.Final_Graphics);
             Current.DrawSpace.CurrentVisible = Current.LayerContainer.Current.Layer.Visible;
+            Current.DrawSpace.Invalidate();
         }
 
         private void DS_MouseDown(object sender, MouseEventArgs e)
@@ -949,5 +956,103 @@ namespace DoAnLTTQ
 
         #endregion
 
+        #region BottomPanel
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Current == null) return;
+
+            float zoom = 0;
+            switch (comboBox1.SelectedIndex)
+            {
+                //50%
+                case 0:
+                    zoom = 50;
+                    break;
+                //75%
+                case 1:
+                    zoom = 75;
+                    break;
+                //100%
+                case 2:
+                    zoom = 100;
+                    break;
+                //150%
+                case 3:
+                    zoom = 150;
+                    break;
+                //200%
+                case 4:
+                    zoom = 200;
+                    break; 
+                //200%
+                case 5:
+                    zoom = 300;
+                    break; 
+                //200%
+                case 6:
+                    zoom = 400;
+                    break;
+            }
+
+            Current.DrawSpace.Scaling(zoom / 100);
+            comboBox1.Text = ((int)(Current.DrawSpace.Zoom * 100)).ToString() + '%';
+            DSUpdate();
+        }
+
+        private void ZoomOutBtn_Click(object sender, EventArgs e)
+        {
+            float zoom = float.Parse(comboBox1.Text.Substring(0, comboBox1.Text.Length - 1));
+            if (zoom <= 50) return;
+
+            float n;
+            float m = zoom;
+            foreach (string text in comboBox1.Items)
+            {
+                n = float.Parse(text.Substring(0, text.Length - 1));
+                if (n < zoom)
+                {
+                    m = n;
+                }
+                else
+                {
+                    zoom = m;
+                    break;
+                }
+            }
+
+            Current.DrawSpace.Scaling(zoom / 100);
+            comboBox1.Text = ((int)(Current.DrawSpace.Zoom * 100)).ToString() + '%';
+            DSUpdate();
+        }
+
+        private void ZoomInBtn_Click(object sender, EventArgs e)
+        {
+            float zoom = float.Parse(comboBox1.Text.Substring(0, comboBox1.Text.Length - 1));
+            if (zoom >= 400) return;
+
+            float n;
+            foreach (string text in comboBox1.Items)
+            {
+                n = float.Parse(text.Substring(0, text.Length - 1));
+                if(zoom <n)
+                {
+                    zoom = n;
+                    break;
+                }
+            }
+
+            Current.DrawSpace.Scaling(zoom / 100);
+            comboBox1.Text = ((int)(Current.DrawSpace.Zoom * 100)).ToString() + '%';
+            DSUpdate();
+        }
+
+        private void CenterBtn_Click(object sender, EventArgs e)
+        {
+            Current.DrawSpace.SetCenter();
+            comboBox1.Text = ((int)(Current.DrawSpace.Zoom * 100)).ToString() + '%';
+            DSUpdate();
+        }
+
+        #endregion
     }
 }

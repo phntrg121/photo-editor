@@ -12,8 +12,8 @@ namespace DoAnLTTQ.Tools
 {
     public partial class Eraser : UserControl
     {
-        Point oldPoint;
-        Point currentPoint;
+        PointF oldPoint;
+        PointF currentPoint;
         Pen pen;
         Color color;
         int size;
@@ -30,15 +30,15 @@ namespace DoAnLTTQ.Tools
             gSize = Graphics.FromImage(sizeBar.Image);
         }
 
-        public void GetLocation(ref MouseEventArgs e)
+        public void GetLocation(PointF p)
         {
-            oldPoint = e.Location;
+            oldPoint = p;
         }
 
-        public void Draw(Graphics g, MouseEventArgs e)
+        public void Draw(Graphics g, PointF p)
         {
             g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-            currentPoint = e.Location;
+            currentPoint = p;
             g.DrawLine(pen, oldPoint, currentPoint);
             oldPoint = currentPoint;
         }
