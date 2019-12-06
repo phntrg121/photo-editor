@@ -16,9 +16,6 @@ namespace DoAnLTTQ.Forms
         private LayerContainer lc;
         private Bitmap origin;
         private Bitmap adjusted;
-        private System.Drawing.Imaging.BitmapData bmpData;
-        private byte[] imagePixels;
-        private int dataSize;
 
         public Pixelate(Form1 f, LayerContainer lc)
         {
@@ -37,16 +34,6 @@ namespace DoAnLTTQ.Forms
             {
                 return adjusted;
             }
-        }
-
-        public void Initialize()
-        {
-            bmpData = origin.LockBits(new Rectangle(0, 0, origin.Width, origin.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, origin.PixelFormat);
-            IntPtr ptr = bmpData.Scan0;
-            dataSize = Math.Abs(bmpData.Stride) * origin.Height;
-            imagePixels = new byte[dataSize];
-            System.Runtime.InteropServices.Marshal.Copy(ptr, imagePixels, 0, dataSize);
-            origin.UnlockBits(bmpData);
         }
 
         int pixel = 1;

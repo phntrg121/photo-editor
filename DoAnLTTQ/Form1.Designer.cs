@@ -314,25 +314,28 @@
             // zoomInToolStripMenuItem
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
+            this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.ZoomInToolStripMenuItem_Click);
             // 
             // zoomOutToolStripMenuItem
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
+            this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.ZoomOutToolStripMenuItem_Click);
             // 
             // centerToolStripMenuItem
             // 
             this.centerToolStripMenuItem.Name = "centerToolStripMenuItem";
-            this.centerToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.centerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.centerToolStripMenuItem.Text = "Center";
+            this.centerToolStripMenuItem.Click += new System.EventHandler(this.CenterToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem1
             // 
             this.viewToolStripMenuItem1.Name = "viewToolStripMenuItem1";
-            this.viewToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.viewToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.viewToolStripMenuItem1.Text = "View";
             // 
             // layerToolStripMenuItem
@@ -490,8 +493,9 @@
             // aboutPhotoEditorToolStripMenuItem
             // 
             this.aboutPhotoEditorToolStripMenuItem.Name = "aboutPhotoEditorToolStripMenuItem";
-            this.aboutPhotoEditorToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.aboutPhotoEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutPhotoEditorToolStripMenuItem.Text = "About Photo Editor";
+            this.aboutPhotoEditorToolStripMenuItem.Click += new System.EventHandler(this.AboutPhotoEditorToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -663,11 +667,16 @@
             this.blendModeBox.Items.AddRange(new object[] {
             "Normal",
             "Multiply",
-            "Screen"});
+            "Screen",
+            "Darken",
+            "Lighten",
+            "Overlay"});
             this.blendModeBox.Location = new System.Drawing.Point(72, 5);
             this.blendModeBox.Name = "blendModeBox";
             this.blendModeBox.Size = new System.Drawing.Size(110, 21);
             this.blendModeBox.TabIndex = 5;
+            this.blendModeBox.SelectedIndexChanged += new System.EventHandler(this.BlendModeBox_SelectedIndexChanged);
+            this.blendModeBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NoKeyPress);
             // 
             // label1
             // 
@@ -843,6 +852,7 @@
             this.comboBox1.TabIndex = 0;
             this.comboBox1.Text = "100%";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
+            this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NoKeyPress);
             // 
             // mToolStrip
             // 

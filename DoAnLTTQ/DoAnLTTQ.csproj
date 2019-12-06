@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlendMode.cs" />
     <Compile Include="DrawSpace.cs">
       <SubType>UserControl</SubType>
     </Compile>

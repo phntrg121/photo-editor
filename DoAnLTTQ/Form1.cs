@@ -12,7 +12,6 @@ namespace DoAnLTTQ
 {
     public partial class Form1 : Form
     {
-        private Size bmpSize;
         private WorkSpace Current;
         private Tools.Tools tools;
 
@@ -23,6 +22,20 @@ namespace DoAnLTTQ
             InitializeComponent();
         }
 
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LayerMenuStripEnable(false);
+            ColorMenuStripEnable(false);
+            FilterMenuStripEnable(false);
+            ViewMenuStripEnable(false);
+            saveToolStripMenuItem.Enabled = false;
+            saveAsToolStripMenuItem.Enabled = false;
+            closeToolStripMenuItem.Enabled = false;
+            tools = new Tools.Tools();
+            propertiesPanel.Controls.Add(tools.Current);
+            hexCode.Text = ColorTranslator.ToHtml(mainColorPic.BackColor);
+        }
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
             workSpaceTabControl.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
@@ -38,21 +51,6 @@ namespace DoAnLTTQ
             propertiesPanel.Height = statusStrip1.Location.Y - propertiesPanel.Location.Y - 226;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            LayerMenuStripEnable(false);
-            ColorMenuStripEnable(false);
-            FilterMenuStripEnable(false);
-            layerPanel.Enabled = false;
-            bottomPanel.Enabled = false;
-            saveToolStripMenuItem.Enabled = false;
-            saveAsToolStripMenuItem.Enabled = false;
-            closeToolStripMenuItem.Enabled = false;
-            tools = new Tools.Tools();
-            propertiesPanel.Controls.Add(tools.Current);
-            hexCode.Text = ColorTranslator.ToHtml(mainColorPic.BackColor);
-        }
-
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
@@ -63,6 +61,10 @@ namespace DoAnLTTQ
                 if (dialog == DialogResult.Yes)
                     SaveToolStripMenuItem_Click(this, e);
             }
+        }
+        private void NoKeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
         }
 
         #endregion
@@ -123,7 +125,6 @@ namespace DoAnLTTQ
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     Bitmap bmp = new Bitmap(ofd.FileName);
-                    bmpSize = bmp.Size;
                     AddWorkTab(bmp, Color.Transparent);
                     Current.FilePath = ofd.FileName;
                     Current.Parent.Text = Current.FileName;
@@ -148,7 +149,6 @@ namespace DoAnLTTQ
                 if (nff.ShowDialog() == DialogResult.OK)
                 {
                     Bitmap bmp = new Bitmap(nff.ImageSize.Width, nff.ImageSize.Height);
-                    bmpSize = bmp.Size;
                     AddWorkTab(bmp, nff.BGColor);
                     Current.FileName = nff.FileName;
                     Current.Parent.Text = Current.FileName;
@@ -226,8 +226,7 @@ namespace DoAnLTTQ
                     LayerMenuStripEnable(false);
                     ColorMenuStripEnable(false);
                     FilterMenuStripEnable(false);
-                    layerPanel.Enabled = false;
-                    bottomPanel.Enabled = false;
+                    ViewMenuStripEnable(false);
                     working = false;
                     closeToolStripMenuItem.Enabled = false;
                     saveToolStripMenuItem.Enabled = false;
@@ -251,6 +250,28 @@ namespace DoAnLTTQ
         {
             if (Current.History.Remove())
                 DSUpdate();
+        }
+
+        #endregion
+
+        #region Tool menu
+
+        #endregion
+
+        #region View menu
+        private void ZoomInToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ZoomInBtn_Click(zoomInBtn, null);
+        }
+
+        private void ZoomOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ZoomOutBtn_Click(zoomInBtn, null);
+        }
+
+        private void CenterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CenterBtn_Click(centerBtn, null);
         }
 
         #endregion
@@ -282,11 +303,11 @@ namespace DoAnLTTQ
 
         private void FillToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(bmpSize.Width, bmpSize.Height);
+            Bitmap bmp = new Bitmap(Current.BmpSize.Width, Current.BmpSize.Height);
             using (Graphics g = Graphics.FromImage(bmp))
             using (SolidBrush brush = new SolidBrush(mainColorPic.BackColor))
             {
-                g.FillRectangle(brush, 0, 0, bmpSize.Width, bmpSize.Height);
+                g.FillRectangle(brush, 0, 0, Current.BmpSize.Width, Current.BmpSize.Height);
             }
             Current.DrawSpace.ProcessBoxImage = bmp;
             DSProcessUpdate(HistoryEvent.Draw);
@@ -345,8 +366,8 @@ namespace DoAnLTTQ
                 using (System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes())
                 {
                     attributes.SetColorMatrix(matrix);
-                    g.DrawImage(Current.LayerContainer.Current.Layer.Image, new Rectangle(0, 0, bmpSize.Width, bmpSize.Height),
-                        0, 0, bmpSize.Width, bmpSize.Height, GraphicsUnit.Pixel, attributes);
+                    g.DrawImage(Current.LayerContainer.Current.Layer.Image, new Rectangle(0, 0, Current.BmpSize.Width, Current.BmpSize.Height),
+                        0, 0, Current.BmpSize.Width, Current.BmpSize.Height, GraphicsUnit.Pixel, attributes);
 
                     Current.DrawSpace.ProcessBoxImage = new Bitmap(bmp);
                 }
@@ -419,7 +440,6 @@ namespace DoAnLTTQ
             using (Forms.Pixelate px = new Forms.Pixelate(this, Current.LayerContainer))
             {
                 px.Image = Current.LayerContainer.Current.Layer.Image;
-                px.Initialize();
 
                 if (px.ShowDialog() == DialogResult.OK)
                 {
@@ -452,6 +472,13 @@ namespace DoAnLTTQ
 
         #endregion
 
+        #region Tool menu
+        private void AboutPhotoEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
+
+        #endregion
+
         #endregion
 
         #region WorkSpace
@@ -461,7 +488,7 @@ namespace DoAnLTTQ
             LayerMenuStripEnable(true);
             ColorMenuStripEnable(true);
             FilterMenuStripEnable(true);
-            bottomPanel.Enabled = true;
+            ViewMenuStripEnable(true);
 
             if (Current != null)
             {
@@ -486,7 +513,7 @@ namespace DoAnLTTQ
             tab.Controls.Add(newWS);
             workSpaceTabControl.TabPages.Add(tab);
             Current = newWS;
-
+            Current.BmpSize = bmp.Size;
             DrawSpaceInit();
             LayerContainerInit();
             Current.DrawSpace.BGGenerator(color);
@@ -507,6 +534,7 @@ namespace DoAnLTTQ
             OpacityBarUpdate();
             historyTabPage.Controls.Add(Current.History);
             saveToolStripMenuItem.Enabled = !Current.Saved;
+            BlendModeBoxUpdate(Current.LayerContainer.Current.Blend);
         }
 
         #endregion
@@ -517,7 +545,7 @@ namespace DoAnLTTQ
         {
             Current.DrawSpace.Location = new System.Drawing.Point(0, 0);
             Current.DrawSpace.Name = "workspace";
-            Current.DrawSpace.Size = bmpSize;
+            Current.DrawSpace.Size = Current.BmpSize;
             Current.DrawSpace.Tools = tools;
             Current.DrawSpace.Init();
             Current.DrawSpace.Event.MouseDown += DS_MouseDown;
@@ -548,7 +576,8 @@ namespace DoAnLTTQ
 
         public void DSUpdate()
         {
-            Current.LayerContainer.FinalUpdate(Current.DrawSpace.Final_Graphics);
+            Current.LayerContainer.FinalUpdate(Current.DrawSpace.Final_Graphics, Current.DrawSpace.Final);
+            Current.DrawSpace.FinalDisplay();
             Current.DrawSpace.CurrentVisible = Current.LayerContainer.Current.Layer.Visible;
             Current.DrawSpace.Invalidate();
         }
@@ -784,7 +813,8 @@ namespace DoAnLTTQ
             Current.LayerContainer.Name = "Current.LayerContainer";
             Current.LayerContainer.Size = new System.Drawing.Size(layerPanel.Width - 6, layerPanel.Height - 87);
             layerPanel.Controls.Add(Current.LayerContainer);
-            layerPanel.Enabled = true;
+            blendModeBox.SelectedIndex = 0;
+            BlendModeBox_Select();
             opacityVal = 100f;
             OpacityBarUpdate();
         }
@@ -795,6 +825,7 @@ namespace DoAnLTTQ
             {
                 item.Enabled = enable;
             }
+            layerPanel.Enabled = enable;
         }
 
         private void NewLStripButton_Click(object sender, EventArgs e)
@@ -806,12 +837,14 @@ namespace DoAnLTTQ
                 {
                     string name = nlf.LayerName;
                     bool visible = nlf.IsVisible;
-                    using (Bitmap newBmp = new Bitmap(bmpSize.Width, bmpSize.Height))
+                    using (Bitmap newBmp = new Bitmap(Current.BmpSize.Width, Current.BmpSize.Height))
                     {
                         newBmp.MakeTransparent();
                         Layer layer = new Layer(newBmp, name, visible);
                         Current.LayerContainer.AddLayerRow(ref layer);
                         LayerButtonCheck();
+                        blendModeBox.SelectedIndex = 0;
+                        BlendModeBox_Select();
                         opacityVal = Current.LayerContainer.Current.Layer.Opacity;
                         OpacityBarUpdate();
                         DSProcessUpdate(HistoryEvent.NewL);
@@ -954,9 +987,75 @@ namespace DoAnLTTQ
             DSUpdate();
         }
 
+        private void BlendModeBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BlendModeBox_Select();
+            DSUpdate();
+        }
+
+        private void BlendModeBox_Select()
+        {
+            switch(blendModeBox.SelectedIndex)
+            {
+                case 0:
+                    Current.LayerContainer.Current.Blend = Blend.Normal;
+                    break;
+                case 1:
+                    Current.LayerContainer.Current.Blend = Blend.Multiply;
+                    break;
+                case 2:
+                    Current.LayerContainer.Current.Blend = Blend.Screen;
+                    break;
+                case 3:
+                    Current.LayerContainer.Current.Blend = Blend.Darken;
+                    break;
+                case 4:
+                    Current.LayerContainer.Current.Blend = Blend.Lighten;
+                    break;
+                case 5:
+                    Current.LayerContainer.Current.Blend = Blend.Overlay;
+                    break;
+            }
+        }
+
+        public void BlendModeBoxUpdate(Blend mode)
+        {
+            switch (mode)
+            {
+                case Blend.Normal:
+                    blendModeBox.SelectedIndex = 0;
+                    break;
+                case Blend.Multiply:
+                    blendModeBox.SelectedIndex = 1;
+                    break;
+                case Blend.Screen:
+                    blendModeBox.SelectedIndex = 2;
+                    break;
+                case Blend.Darken:
+                    blendModeBox.SelectedIndex = 3;
+                    break;
+                case Blend.Lighten:
+                    blendModeBox.SelectedIndex = 4;
+                    break;
+                case Blend.Overlay:
+                    blendModeBox.SelectedIndex = 5;
+                    break;
+            }
+        }
+
         #endregion
 
         #region BottomPanel
+
+        private void ViewMenuStripEnable(bool enable)
+        {
+            foreach (ToolStripMenuItem item in viewToolStripMenuItem.DropDownItems)
+            {
+                item.Enabled = enable;
+            }
+            bottomPanel.Enabled = enable;
+        }
+
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (Current == null) return;
@@ -1054,5 +1153,6 @@ namespace DoAnLTTQ
         }
 
         #endregion
+
     }
 }

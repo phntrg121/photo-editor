@@ -20,6 +20,7 @@ namespace DoAnLTTQ
     {
         private Bitmap processing;
         Graphics gFinal;
+        Graphics gF;
         Graphics gProcess;
         Graphics gTop;
         Graphics g;
@@ -39,8 +40,11 @@ namespace DoAnLTTQ
         public void Init()
         {
             processing = new Bitmap(this.Size.Width, this.Size.Height);
+            Final = new Bitmap(this.Size.Width, this.Size.Height);
             g = Graphics.FromImage(processing);
-
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+            gF = Graphics.FromImage(Final);
+            gF.InterpolationMode = InterpolationMode.NearestNeighbor;
             InitGraphic();
 
             originalSize = this.Size;
@@ -52,11 +56,9 @@ namespace DoAnLTTQ
 
             float z = 1f;
             float a = (float)originalSize.Width / originalSize.Height;
+            float b = (float)ws.Width / ws.Height;
 
-            if(a > 1)
-            {
-                z = (float)(ws.Width - 40) / originalSize.Width;
-            }
+            if (a > b) z = (float)(ws.Width - 40) / originalSize.Width;
             else z = (float)(ws.Height - 40) / originalSize.Height;
 
             Scaling(z);
@@ -69,10 +71,13 @@ namespace DoAnLTTQ
         {
             finalBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
             gFinal = Graphics.FromImage(finalBox.Image);
+            gFinal.InterpolationMode = InterpolationMode.NearestNeighbor;
             processBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
             gProcess = Graphics.FromImage(processBox.Image);
+            gProcess.InterpolationMode = InterpolationMode.NearestNeighbor;
             topBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
             gTop = Graphics.FromImage(topBox.Image);
+            gTop.InterpolationMode = InterpolationMode.NearestNeighbor;
         }
 
         public void Scaling(float scale)
@@ -99,20 +104,22 @@ namespace DoAnLTTQ
             }
         }
 
-        public Bitmap Final
-        {
-            get
-            {
-                return (Bitmap)finalBox.Image;
-            }
-        }
+        public Bitmap Final { get; set; }
 
         public Graphics Final_Graphics
         {
             get
             {
-                return gFinal;
+                return gF;
             }
+        }
+
+        public void FinalDisplay()
+        {
+            gFinal.MultiplyTransform(ScaleMatrix);
+            gFinal.Clear(Color.Transparent);
+            gFinal.DrawImageUnscaled(Final, 0, 0, finalBox.Width, finalBox.Height);
+            gFinal.ResetTransform();
         }
 
         public bool CurrentVisible { get; set; }
@@ -121,6 +128,7 @@ namespace DoAnLTTQ
             set
             {
                 g.DrawImage(value, 0, 0);
+                value.Dispose();
             }
             get
             {
@@ -185,12 +193,6 @@ namespace DoAnLTTQ
 
         public void Mouse_Down(object sender, MouseEventArgs e)
         {
-            if (processing == null)
-            {
-                processing = new Bitmap(this.Size.Width, this.Size.Height);
-                g = Graphics.FromImage(processing);
-            }
-
             switch (Tools.Tool)
             {
                 case Tool.Pen:
@@ -201,7 +203,7 @@ namespace DoAnLTTQ
                     break;
                 case Tool.Picker:
                     {
-                        Tools.Picker.GetColor((Bitmap)finalBox.Image, ScaledPoint(e.Location));
+                        Tools.Picker.GetColor(Final, ScaledPoint(e.Location));
                     }
                     break;
                 case Tool.Eraser:
