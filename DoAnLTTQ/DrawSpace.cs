@@ -13,7 +13,7 @@ namespace DoAnLTTQ
 
     public enum Tool
     {
-        Pen, Eraser, Picker
+        Pen, Eraser, Picker, Select, Drag, Move
     }
     public partial class DrawSpace : UserControl
     {
@@ -148,6 +148,11 @@ namespace DoAnLTTQ
                         Tools.Eraser.GetLocation(ref e);
                     }
                     break;
+                case Tool.Drag:
+                    {
+                        Tools.Drag.GetLocation(ref e);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -174,6 +179,11 @@ namespace DoAnLTTQ
                             Tools.Eraser.Draw(g, e);
                             if (CurrentVisible)
                                 processBox.Image = processing;
+                        }
+                        break;
+                    case Tool.Drag:
+                        {
+                            Tools.Drag.Dragging(this, e);
                         }
                         break;
                     default:
