@@ -108,35 +108,38 @@
             // saturationTrack
             // 
             this.saturationTrack.LargeChange = 10;
-            this.saturationTrack.Location = new System.Drawing.Point(71, 48);
+            this.saturationTrack.Location = new System.Drawing.Point(71, 56);
             this.saturationTrack.Maximum = 100;
             this.saturationTrack.Minimum = -100;
             this.saturationTrack.Name = "saturationTrack";
             this.saturationTrack.Size = new System.Drawing.Size(300, 45);
             this.saturationTrack.TabIndex = 6;
+            this.saturationTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.saturationTrack.Scroll += new System.EventHandler(this.TrackBar2_Scroll);
             // 
             // hueTrack
             // 
             this.hueTrack.AutoSize = false;
             this.hueTrack.LargeChange = 1;
-            this.hueTrack.Location = new System.Drawing.Point(71, 12);
+            this.hueTrack.Location = new System.Drawing.Point(71, 20);
             this.hueTrack.Maximum = 180;
             this.hueTrack.Minimum = -180;
             this.hueTrack.Name = "hueTrack";
             this.hueTrack.Size = new System.Drawing.Size(300, 45);
             this.hueTrack.TabIndex = 7;
+            this.hueTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.hueTrack.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
             // 
             // luminosityTrack
             // 
             this.luminosityTrack.LargeChange = 10;
-            this.luminosityTrack.Location = new System.Drawing.Point(71, 84);
+            this.luminosityTrack.Location = new System.Drawing.Point(71, 92);
             this.luminosityTrack.Maximum = 100;
             this.luminosityTrack.Minimum = -100;
             this.luminosityTrack.Name = "luminosityTrack";
             this.luminosityTrack.Size = new System.Drawing.Size(300, 45);
             this.luminosityTrack.TabIndex = 6;
+            this.luminosityTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.luminosityTrack.Scroll += new System.EventHandler(this.TrackBar3_Scroll);
             // 
             // label5

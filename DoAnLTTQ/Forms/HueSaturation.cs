@@ -18,7 +18,6 @@ namespace DoAnLTTQ.Forms
         private Bitmap adjusted;
         private System.Drawing.Imaging.BitmapData bmpData;
         private byte[] imagePixels;
-        private IntPtr ptr;
         private int dataSize;
 
         public HueSaturation(Form1 f, LayerContainer lc)
@@ -43,8 +42,8 @@ namespace DoAnLTTQ.Forms
 
         public void Initialize()
         {
-            bmpData = origin.LockBits(new Rectangle(0, 0, origin.Width, origin.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, origin.PixelFormat);
-            ptr = bmpData.Scan0;
+            bmpData = origin.LockBits(new Rectangle(0, 0, origin.Width, origin.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, origin.PixelFormat);
+            IntPtr ptr = bmpData.Scan0;
             dataSize = Math.Abs(bmpData.Stride) * origin.Height;
             imagePixels = new byte[dataSize];
             System.Runtime.InteropServices.Marshal.Copy(ptr, imagePixels, 0, dataSize);
@@ -62,8 +61,9 @@ namespace DoAnLTTQ.Forms
             }
             adjusted = new Bitmap(origin);
             bmpData = adjusted.LockBits(new Rectangle(0, 0, adjusted.Width, adjusted.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, adjusted.PixelFormat);
-            ptr = bmpData.Scan0;
+            IntPtr ptr = bmpData.Scan0;
             byte[] pixels = new byte[dataSize];
+
             for (int i = 0; i < dataSize; i += 4)
             {
                 Color c = Color.FromArgb(imagePixels[i + 3], imagePixels[i + 0], imagePixels[i + 1], imagePixels[i + 2]);
@@ -73,9 +73,9 @@ namespace DoAnLTTQ.Forms
                 pixels[i + 1] = c.G;
                 pixels[i + 2] = c.B;
             }
+
             System.Runtime.InteropServices.Marshal.Copy(pixels, 0, ptr, dataSize);
             adjusted.UnlockBits(bmpData);
-
             lc.ProcessUpdate(adjusted, true);
             f.DSUpdate();
         }

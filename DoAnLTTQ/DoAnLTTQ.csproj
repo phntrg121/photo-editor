@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlendMode.cs" />
     <Compile Include="DrawSpace.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -74,6 +75,12 @@
     <Compile Include="Forms\ColorBalance.Designer.cs">
       <DependentUpon>ColorBalance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\GaussianBlur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GaussianBlur.Designer.cs">
+      <DependentUpon>GaussianBlur.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\HueSaturation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +104,18 @@
     </Compile>
     <Compile Include="Forms\NewFile.Designer.cs">
       <DependentUpon>NewFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Noise.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Noise.Designer.cs">
+      <DependentUpon>Noise.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Pixelate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Pixelate.Designer.cs">
+      <DependentUpon>Pixelate.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Threshold.cs">
       <SubType>Form</SubType>
@@ -180,6 +199,9 @@
     <EmbeddedResource Include="Forms\ColorBalance.resx">
       <DependentUpon>ColorBalance.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GaussianBlur.resx">
+      <DependentUpon>GaussianBlur.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\HueSaturation.resx">
       <DependentUpon>HueSaturation.cs</DependentUpon>
     </EmbeddedResource>
@@ -191,6 +213,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewLayer.resx">
       <DependentUpon>NewLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Noise.resx">
+      <DependentUpon>Noise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Pixelate.resx">
+      <DependentUpon>Pixelate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Threshold.resx">
       <DependentUpon>Threshold.cs</DependentUpon>

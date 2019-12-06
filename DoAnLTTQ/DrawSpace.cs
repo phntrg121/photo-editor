@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace DoAnLTTQ
 {
@@ -18,24 +19,81 @@ namespace DoAnLTTQ
     public partial class DrawSpace : UserControl
     {
         private Bitmap processing;
-        private Bitmap final;
-        Graphics g;
+        Graphics gFinal;
+        Graphics gF;
+        Graphics gProcess;
         Graphics gTop;
-
+        Graphics g;
+        Size originalSize;
+        float zoom;
+        public float Zoom { get => zoom; }
+        public Matrix ScaleMatrix { get; set; }
         public Tools.Tools Tools { get; set; }
 
         public DrawSpace()
         {
             InitializeComponent();
+            ScaleMatrix = new Matrix();
+            zoom = 1f;
         }
 
         public void Init()
         {
             processing = new Bitmap(this.Size.Width, this.Size.Height);
+            Final = new Bitmap(this.Size.Width, this.Size.Height);
             g = Graphics.FromImage(processing);
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+            gF = Graphics.FromImage(Final);
+            gF.InterpolationMode = InterpolationMode.NearestNeighbor;
+            InitGraphic();
 
+            originalSize = this.Size;
+        }
+
+        public void SetCenter()
+        {
+            WorkSpace ws = (WorkSpace)this.Parent;
+
+            float z = 1f;
+            float a = (float)originalSize.Width / originalSize.Height;
+            float b = (float)ws.Width / ws.Height;
+
+            if (a > b) z = (float)(ws.Width - 40) / originalSize.Width;
+            else z = (float)(ws.Height - 40) / originalSize.Height;
+
+            Scaling(z);
+
+            this.Left = ws.Width / 2 - this.Width / 2;
+            this.Top = ws.Height / 2 - this.Height / 2;
+        }
+
+        void InitGraphic()
+        {
+            finalBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
+            gFinal = Graphics.FromImage(finalBox.Image);
+            gFinal.InterpolationMode = InterpolationMode.NearestNeighbor;
+            processBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
+            gProcess = Graphics.FromImage(processBox.Image);
+            gProcess.InterpolationMode = InterpolationMode.NearestNeighbor;
             topBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
             gTop = Graphics.FromImage(topBox.Image);
+            gTop.InterpolationMode = InterpolationMode.NearestNeighbor;
+        }
+
+        public void Scaling(float scale)
+        {
+            zoom = scale;
+            Size newSize = new Size((int)(originalSize.Width * zoom), (int)(originalSize.Height * zoom));
+            this.Size = newSize;
+            InitGraphic();
+            ScaleMatrix.Reset();
+            ScaleMatrix.Scale(scale, scale);
+            Invalidate();
+        }
+
+        PointF ScaledPoint(PointF p)
+        {
+            return new PointF(p.X / zoom, p.Y / zoom);
         }
 
         public PictureBox Event
@@ -46,27 +104,31 @@ namespace DoAnLTTQ
             }
         }
 
-        public bool CurrentVisible { get; set; }
+        public Bitmap Final { get; set; }
 
-        public Image BackBoxImage
+        public Graphics Final_Graphics
         {
-            set
+            get
             {
-                backBox.Image = value;
+                return gF;
             }
         }
-        public Image FrontBoxImage
+
+        public void FinalDisplay()
         {
-            set
-            {
-                frontBox.Image = value;
-            }
+            gFinal.MultiplyTransform(ScaleMatrix);
+            gFinal.Clear(Color.Transparent);
+            gFinal.DrawImageUnscaled(Final, 0, 0, finalBox.Width, finalBox.Height);
+            gFinal.ResetTransform();
         }
+
+        public bool CurrentVisible { get; set; }
         public Image ProcessBoxImage
         {
             set
             {
                 g.DrawImage(value, 0, 0);
+                value.Dispose();
             }
             get
             {
@@ -78,18 +140,6 @@ namespace DoAnLTTQ
         {
             if (processing == null) return;
             g.Clear(Color.Transparent);
-        }
-
-        public Image Final
-        {
-            set
-            {
-                final = (Bitmap)value;
-            }
-            get
-            {
-                return final;
-            }
         }
 
         public void BGGenerator(Color c)
@@ -123,29 +173,43 @@ namespace DoAnLTTQ
             }
         }
 
+        RectangleF displayRect;
+        PointF p1;
+        PointF p2;
+        void processDisplay()
+        {
+            PointF p = new PointF(Math.Min(p1.X - (float)Tools.Size / 2 - 1, p2.X - (float)Tools.Size / 2 - 1),
+                                Math.Min(p1.Y - (float)Tools.Size / 2 - 1, p2.Y - (float)Tools.Size / 2 - 1));
+
+            displayRect = new RectangleF(p.X,
+                                        p.Y,
+                                        Math.Abs(p2.X - p1.X) + Tools.Size + 2,
+                                        Math.Abs(p2.Y - p1.Y) + Tools.Size + 2);
+
+            gProcess.MultiplyTransform(ScaleMatrix);
+            gProcess.DrawImage(processing, p.X, p.Y, displayRect, GraphicsUnit.Pixel);
+            gProcess.ResetTransform();
+        }
+
         public void Mouse_Down(object sender, MouseEventArgs e)
         {
-            if (processing == null)
-            {
-                processing = new Bitmap(this.Size.Width, this.Size.Height);
-                g = Graphics.FromImage(processing);
-            }
-
             switch (Tools.Tool)
             {
                 case Tool.Pen:
                     {
-                        Tools.Pen.GetLocation(ref e);
+                        p1 = ScaledPoint(e.Location);
+                        Tools.Pen.GetLocation(ScaledPoint(e.Location));
                     }
                     break;
                 case Tool.Picker:
                     {
-                        Tools.Picker.GetColor(ref final, ref e);
+                        Tools.Picker.GetColor(Final, ScaledPoint(e.Location));
                     }
                     break;
                 case Tool.Eraser:
                     {
-                        Tools.Eraser.GetLocation(ref e);
+                        p1 = ScaledPoint(e.Location);
+                        Tools.Eraser.GetLocation(ScaledPoint(e.Location));
                     }
                     break;
                 case Tool.Drag:
@@ -156,6 +220,7 @@ namespace DoAnLTTQ
                 default:
                     break;
             }
+
         }
 
         public void Mouse_Move(object sender, MouseEventArgs e)
@@ -169,16 +234,20 @@ namespace DoAnLTTQ
                 {
                     case Tool.Pen:
                         {
-                            Tools.Pen.Draw(g, e);
+                            p2 = ScaledPoint(e.Location);
+                            Tools.Pen.Draw(g, ScaledPoint(e.Location));
                             if (CurrentVisible)
-                                processBox.Image = processing;
+                                processDisplay();
+                            p1 = p2;
                         }
                         break;
                     case Tool.Eraser:
                         {
-                            Tools.Eraser.Draw(g, e);
+                            p2 = ScaledPoint(e.Location);
+                            Tools.Eraser.Draw(g, ScaledPoint(e.Location));
                             if (CurrentVisible)
-                                processBox.Image = processing;
+                                processDisplay();
+                            p1 = p2;
                         }
                         break;
                     case Tool.Drag:
@@ -193,7 +262,7 @@ namespace DoAnLTTQ
 
             if (Tools.Tool == Tool.Pen || Tools.Tool == Tool.Eraser)
             {
-                float n = Tools.Size;
+                float n = Tools.Size * zoom;
                 if (n != 0)
                 {
                     gTop.Clear(Color.Transparent);
@@ -205,6 +274,7 @@ namespace DoAnLTTQ
 
         public void Mouse_Up(object sender, MouseEventArgs e)
         {
+            gProcess.Clear(Color.Transparent);
         }
 
         private void Mouse_Leave(object sender, EventArgs e)

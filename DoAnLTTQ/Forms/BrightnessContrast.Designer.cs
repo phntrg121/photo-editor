@@ -47,23 +47,25 @@
             // 
             this.brightnessTrack.AutoSize = false;
             this.brightnessTrack.LargeChange = 1;
-            this.brightnessTrack.Location = new System.Drawing.Point(70, 12);
+            this.brightnessTrack.Location = new System.Drawing.Point(70, 20);
             this.brightnessTrack.Maximum = 100;
             this.brightnessTrack.Minimum = -100;
             this.brightnessTrack.Name = "brightnessTrack";
             this.brightnessTrack.Size = new System.Drawing.Size(300, 43);
             this.brightnessTrack.TabIndex = 1;
+            this.brightnessTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.brightnessTrack.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
             // 
             // contrastTrack
             // 
             this.contrastTrack.LargeChange = 10;
-            this.contrastTrack.Location = new System.Drawing.Point(70, 48);
+            this.contrastTrack.Location = new System.Drawing.Point(70, 56);
             this.contrastTrack.Maximum = 100;
             this.contrastTrack.Minimum = -100;
             this.contrastTrack.Name = "contrastTrack";
             this.contrastTrack.Size = new System.Drawing.Size(300, 45);
             this.contrastTrack.TabIndex = 1;
+            this.contrastTrack.TickStyle = System.Windows.Forms.TickStyle.None;
             this.contrastTrack.Scroll += new System.EventHandler(this.TrackBar2_Scroll);
             // 
             // label1

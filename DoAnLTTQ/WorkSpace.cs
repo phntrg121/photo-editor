@@ -15,12 +15,15 @@ namespace DoAnLTTQ
         public History History { get; set; }
         public DrawSpace DrawSpace { get; set; }
         public LayerContainer LayerContainer { get; set; }
+        public Size BmpSize { get; set; }
+
         string filename;
         public string FileName
         {
             get => filename;
             set => filename = value;
         }
+
         string filepath;
         public string FilePath
         {
