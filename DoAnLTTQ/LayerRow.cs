@@ -13,6 +13,7 @@ namespace DoAnLTTQ
     public partial class LayerRow : UserControl
     {
         private Layer layer;
+        Blend blend;
         public LayerRow(bool visible = true)
         {
             InitializeComponent();
@@ -20,6 +21,30 @@ namespace DoAnLTTQ
                 pictureBox1.Image = Properties.Resources.visible;
             else
                 pictureBox1.Image = Properties.Resources.not_visible;
+        }
+
+        public Blend Blend
+        {
+            get
+            {
+                return blend;
+            }
+            set
+            {
+                blend = value;
+                if (value == Blend.Normal)
+                    label3.Text = "Normal";
+                else if (value == Blend.Multiply)
+                    label3.Text = "Multiply";
+                else if (value == Blend.Screen)
+                    label3.Text = "Screen";
+                else if (value == Blend.Darken)
+                    label3.Text = "Darken";
+                else if (value == Blend.Lighten)
+                    label3.Text = "Lighten";
+                else if (value == Blend.Overlay)
+                    label3.Text = "Overlay";
+            }
         }
 
         public Layer Layer
@@ -76,12 +101,7 @@ namespace DoAnLTTQ
             form.LayerButtonCheck();
             form.opacityVal = layer.Opacity;
             form.OpacityBarUpdate();
-            form.DSUpdate();
-        }
-
-        private void Label1_Click(object sender, EventArgs e)
-        {
-            LayerRow_Click(sender, e);
+            form.BlendModeBoxUpdate(blend);
         }
     }
 }

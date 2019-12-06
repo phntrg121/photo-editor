@@ -73,16 +73,42 @@ namespace DoAnLTTQ
             }
         }
 
-        public void FinalUpdate(Graphics g)
+        public void FinalUpdate(Graphics g, Bitmap source)
         {
-            g.ResetTransform();
-            g.MultiplyTransform(ScaleMatrix);
             g.Clear(Color.Transparent);
             for (int i = 0; i < layers.Count; i++)
             {
                 if (layers[i].Layer.Visible)
                 {
-                    g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
+                    if (i == 0 || layers[i].Blend == Blend.Normal)
+                    {
+                        g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                    else if (layers[i].Blend == Blend.Multiply)
+                    {
+                        using (Bitmap bmp = BlendMode.Multiply(layers[i].Layer.ImageWithOpacity, source))
+                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                    else if (layers[i].Blend == Blend.Screen)
+                    {
+                        using (Bitmap bmp = BlendMode.Screen(layers[i].Layer.ImageWithOpacity, source))
+                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                    else if (layers[i].Blend == Blend.Darken)
+                    {
+                        using (Bitmap bmp = BlendMode.Darken(layers[i].Layer.ImageWithOpacity, source))
+                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                    else if (layers[i].Blend == Blend.Lighten)
+                    {
+                        using (Bitmap bmp = BlendMode.Lighten(layers[i].Layer.ImageWithOpacity, source))
+                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                    }
+                    else if (layers[i].Blend == Blend.Overlay)
+                    {
+                        using (Bitmap bmp = BlendMode.Overlay(layers[i].Layer.ImageWithOpacity, source))
+                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                    }
                 }
             }
         }
@@ -189,7 +215,7 @@ namespace DoAnLTTQ
             layers[current - 1].Layer.Stacking();
             using (Graphics g = Graphics.FromImage(layers[current -1].Layer.Image))
             {
-                g.DrawImage(layers[current].Layer.Image, 0, 0, layerSize.Width, layerSize.Height);
+                g.DrawImage(layers[current].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
             }
             RemoveLayerRow();
         }
