@@ -633,6 +633,25 @@ namespace DoAnLTTQ
         private void MToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             UncheckAll();
+            if (e.ClickedItem.GetType() == typeof(ToolStripButton))
+            {
+                ToolStripButton button = (ToolStripButton)e.ClickedItem;
+                button.Checked = true;
+                button.CheckState = CheckState.Checked;
+                if (button.Text == moveStripButton.Text)
+                {
+                    tools.Tool = Tool.Move;
+                }
+                else if (button.Text == toolStripButton.Text)
+                {
+                    tools.Tool = Tool.Select;
+                }
+                else if (button.Text == dragStripButton.Text)
+                {
+                    tools.Tool = Tool.Drag;
+                }
+            }
+            ChangeTool();
         }
         private void PToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -876,5 +895,7 @@ namespace DoAnLTTQ
         }
 
         #endregion
+
+       
     }
 }
