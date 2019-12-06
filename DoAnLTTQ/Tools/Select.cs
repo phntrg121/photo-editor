@@ -12,16 +12,16 @@ namespace DoAnLTTQ.Tools
 {
     public partial class Select : UserControl
     {
-        bool selecting = false;
-        Rectangle selection;
+        public bool Selected { get; set; }
+        Rectangle select_rect;
+        PointF startP;
         public Select()
         {
             InitializeComponent();
         }
-        public void GetLocation(ref MouseEventArgs e)
+        public void GetLocation(PointF p)
         {
-            selecting = true;
-            selection = new Rectangle(new Point(e.X, e.Y), new Size());
+            startP = p;
         }
 
     }

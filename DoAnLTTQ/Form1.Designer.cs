@@ -250,7 +250,7 @@
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(150, 22
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // cutToolStripMenuItem

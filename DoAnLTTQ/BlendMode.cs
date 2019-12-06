@@ -76,9 +76,9 @@ namespace DoAnLTTQ
                     g = (float)((255 - pixels1[i + 1]) * (255 - pixels2[i + 1])) / 255;
                     b = (float)((255 - pixels1[i + 2]) * (255 - pixels2[i + 2])) / 255;
 
-                    pixels1[i + 0] = (byte)(255 - r);
-                    pixels1[i + 1] = (byte)(255 - g);
-                    pixels1[i + 2] = (byte)(255 - b);
+                    pixels2[i + 0] = (byte)(255 - r);
+                    pixels2[i + 1] = (byte)(255 - g);
+                    pixels2[i + 2] = (byte)(255 - b);
                 }
             }
 

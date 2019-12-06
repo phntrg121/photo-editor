@@ -334,8 +334,5 @@
   <ItemGroup>
     <None Include="Resources\color_wheel.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="MetroFramework.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
