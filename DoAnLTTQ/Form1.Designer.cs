@@ -551,91 +551,100 @@
             this.duplicateLStripButton});
             this.layerToolStrip.Location = new System.Drawing.Point(0, 56);
             this.layerToolStrip.Name = "layerToolStrip";
-            this.layerToolStrip.Size = new System.Drawing.Size(186, 27);
+            this.layerToolStrip.Size = new System.Drawing.Size(186, 25);
+            this.layerToolStrip.Stretch = true;
             this.layerToolStrip.TabIndex = 1;
             this.layerToolStrip.Text = "toolStrip2";
             // 
             // newLStripButton
             // 
+            this.newLStripButton.AutoSize = false;
             this.newLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.newLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newLStripButton.Image")));
             this.newLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newLStripButton.Name = "newLStripButton";
-            this.newLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.newLStripButton.Size = new System.Drawing.Size(21, 20);
             this.newLStripButton.Text = "new layer";
             this.newLStripButton.Click += new System.EventHandler(this.NewLStripButton_Click);
             // 
             // deleteLStripButton
             // 
+            this.deleteLStripButton.AutoSize = false;
             this.deleteLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.deleteLStripButton.Enabled = false;
             this.deleteLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteLStripButton.Image")));
             this.deleteLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.deleteLStripButton.Name = "deleteLStripButton";
-            this.deleteLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.deleteLStripButton.Size = new System.Drawing.Size(21, 20);
             this.deleteLStripButton.Text = "delete layer";
             this.deleteLStripButton.Click += new System.EventHandler(this.DeleteLStripButton_Click);
             // 
             // downLStripButton
             // 
+            this.downLStripButton.AutoSize = false;
             this.downLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.downLStripButton.Enabled = false;
             this.downLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("downLStripButton.Image")));
             this.downLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.downLStripButton.Name = "downLStripButton";
-            this.downLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.downLStripButton.Size = new System.Drawing.Size(21, 20);
             this.downLStripButton.Text = "move down";
             this.downLStripButton.Click += new System.EventHandler(this.DownLStripButton_Click);
             // 
             // upLStripButton
             // 
+            this.upLStripButton.AutoSize = false;
             this.upLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.upLStripButton.Enabled = false;
             this.upLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("upLStripButton.Image")));
             this.upLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.upLStripButton.Name = "upLStripButton";
-            this.upLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.upLStripButton.Size = new System.Drawing.Size(21, 20);
             this.upLStripButton.Text = "move up";
             this.upLStripButton.Click += new System.EventHandler(this.UpLStripButton_Click);
             // 
             // clearLStripButton
             // 
+            this.clearLStripButton.AutoSize = false;
             this.clearLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.clearLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("clearLStripButton.Image")));
             this.clearLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.clearLStripButton.Name = "clearLStripButton";
-            this.clearLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.clearLStripButton.Size = new System.Drawing.Size(21, 20);
             this.clearLStripButton.Text = "clean";
             this.clearLStripButton.Click += new System.EventHandler(this.ClearLStripButton_Click);
             // 
             // renameLStripButton
             // 
+            this.renameLStripButton.AutoSize = false;
             this.renameLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.renameLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("renameLStripButton.Image")));
             this.renameLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.renameLStripButton.Name = "renameLStripButton";
-            this.renameLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.renameLStripButton.Size = new System.Drawing.Size(21, 20);
             this.renameLStripButton.Text = "rename";
             this.renameLStripButton.Click += new System.EventHandler(this.RenameLStripButton_Click);
             // 
             // mergeLStripButton
             // 
+            this.mergeLStripButton.AutoSize = false;
             this.mergeLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.mergeLStripButton.Enabled = false;
             this.mergeLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("mergeLStripButton.Image")));
             this.mergeLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.mergeLStripButton.Name = "mergeLStripButton";
-            this.mergeLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.mergeLStripButton.Size = new System.Drawing.Size(21, 20);
             this.mergeLStripButton.Text = "merge";
             this.mergeLStripButton.Click += new System.EventHandler(this.MergeLStripButton_Click);
             // 
             // duplicateLStripButton
             // 
+            this.duplicateLStripButton.AutoSize = false;
             this.duplicateLStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.duplicateLStripButton.Image = ((System.Drawing.Image)(resources.GetObject("duplicateLStripButton.Image")));
             this.duplicateLStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.duplicateLStripButton.Name = "duplicateLStripButton";
-            this.duplicateLStripButton.Size = new System.Drawing.Size(24, 24);
+            this.duplicateLStripButton.Size = new System.Drawing.Size(21, 20);
             this.duplicateLStripButton.Text = "toolStripButton2";
             this.duplicateLStripButton.ToolTipText = "duplicate";
             this.duplicateLStripButton.Click += new System.EventHandler(this.DuplicateLStripButton_Click);
@@ -877,36 +886,39 @@
             this.dragStripButton});
             this.mToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mToolStrip.Name = "mToolStrip";
-            this.mToolStrip.Size = new System.Drawing.Size(182, 27);
+            this.mToolStrip.Size = new System.Drawing.Size(182, 25);
             this.mToolStrip.TabIndex = 6;
             this.mToolStrip.Text = "toolStrip1";
             this.mToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MToolStrip_ItemClicked);
             // 
             // moveStripButton
             // 
+            this.moveStripButton.AutoSize = false;
             this.moveStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.moveStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveStripButton.Image")));
             this.moveStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.moveStripButton.Name = "moveStripButton";
-            this.moveStripButton.Size = new System.Drawing.Size(24, 24);
+            this.moveStripButton.Size = new System.Drawing.Size(22, 20);
             this.moveStripButton.Text = "Move";
             // 
             // toolStripButton
             // 
+            this.toolStripButton.AutoSize = false;
             this.toolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton.Image")));
             this.toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton.Name = "toolStripButton";
-            this.toolStripButton.Size = new System.Drawing.Size(24, 24);
+            this.toolStripButton.Size = new System.Drawing.Size(22, 20);
             this.toolStripButton.Text = "Select";
             // 
             // dragStripButton
             // 
+            this.dragStripButton.AutoSize = false;
             this.dragStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.dragStripButton.Image = ((System.Drawing.Image)(resources.GetObject("dragStripButton.Image")));
             this.dragStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.dragStripButton.Name = "dragStripButton";
-            this.dragStripButton.Size = new System.Drawing.Size(24, 24);
+            this.dragStripButton.Size = new System.Drawing.Size(22, 20);
             this.dragStripButton.Text = "Drag";
             // 
             // leftPanel
@@ -1051,7 +1063,7 @@
             // 
             this.sToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.sToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.sToolStrip.Location = new System.Drawing.Point(0, 54);
+            this.sToolStrip.Location = new System.Drawing.Point(0, 50);
             this.sToolStrip.Name = "sToolStrip";
             this.sToolStrip.Size = new System.Drawing.Size(182, 25);
             this.sToolStrip.TabIndex = 8;
@@ -1066,40 +1078,43 @@
             this.penStripButton,
             this.eraserStripButton,
             this.pickerStripButton});
-            this.pToolStrip.Location = new System.Drawing.Point(0, 27);
+            this.pToolStrip.Location = new System.Drawing.Point(0, 25);
             this.pToolStrip.Name = "pToolStrip";
-            this.pToolStrip.Size = new System.Drawing.Size(182, 27);
+            this.pToolStrip.Size = new System.Drawing.Size(182, 25);
             this.pToolStrip.TabIndex = 7;
             this.pToolStrip.Text = "toolStrip1";
             this.pToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PToolStrip_ItemClicked);
             // 
             // penStripButton
             // 
+            this.penStripButton.AutoSize = false;
             this.penStripButton.Checked = true;
             this.penStripButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.penStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.penStripButton.Image = ((System.Drawing.Image)(resources.GetObject("penStripButton.Image")));
             this.penStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.penStripButton.Name = "penStripButton";
-            this.penStripButton.Size = new System.Drawing.Size(24, 24);
+            this.penStripButton.Size = new System.Drawing.Size(22, 20);
             this.penStripButton.Text = "Pen";
             // 
             // eraserStripButton
             // 
+            this.eraserStripButton.AutoSize = false;
             this.eraserStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.eraserStripButton.Image = ((System.Drawing.Image)(resources.GetObject("eraserStripButton.Image")));
             this.eraserStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.eraserStripButton.Name = "eraserStripButton";
-            this.eraserStripButton.Size = new System.Drawing.Size(24, 24);
+            this.eraserStripButton.Size = new System.Drawing.Size(22, 20);
             this.eraserStripButton.Text = "Eraser";
             // 
             // pickerStripButton
             // 
+            this.pickerStripButton.AutoSize = false;
             this.pickerStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.pickerStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pickerStripButton.Image")));
             this.pickerStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pickerStripButton.Name = "pickerStripButton";
-            this.pickerStripButton.Size = new System.Drawing.Size(24, 24);
+            this.pickerStripButton.Size = new System.Drawing.Size(22, 20);
             this.pickerStripButton.Text = "Picker";
             // 
             // workSpaceTabControl
