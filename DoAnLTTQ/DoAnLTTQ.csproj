@@ -34,8 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MetroFramework">
-      <HintPath>..\..\PhotoEditor\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll</HintPath>
+    <Reference Include="MetroFramework, Version=1.2.0.3, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MetroFramework.RunTime.1.2.0.3\lib\net40-Client\MetroFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -144,11 +144,23 @@
     <Compile Include="Layer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Drag.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\Drag.Designer.cs">
+      <DependentUpon>Drag.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Eraser.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Tools\Eraser.Designer.cs">
       <DependentUpon>Eraser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Move.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\Move.Designer.cs">
+      <DependentUpon>Move.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\PenTool.cs">
       <SubType>UserControl</SubType>
@@ -161,6 +173,12 @@
     </Compile>
     <Compile Include="Tools\Picker.Designer.cs">
       <DependentUpon>Picker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Select.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\Select.Designer.cs">
+      <DependentUpon>Select.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\Tools.cs" />
     <Compile Include="WorkSpace.cs">
@@ -236,6 +254,7 @@
     <EmbeddedResource Include="WorkSpace.resx">
       <DependentUpon>WorkSpace.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -314,6 +333,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\color_wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MetroFramework.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

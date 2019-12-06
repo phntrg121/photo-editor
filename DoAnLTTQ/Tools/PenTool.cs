@@ -98,5 +98,7 @@ namespace DoAnLTTQ.Tools
             g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
             sender.Invalidate();
         }
+
+
     }
 }
