@@ -686,7 +686,7 @@
             "Lighten",
             "Overlay"});
             this.blendModeBox.Location = new System.Drawing.Point(69, 3);
-            this.blendModeBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.blendModeBox.Margin = new System.Windows.Forms.Padding(2);
             this.blendModeBox.Name = "blendModeBox";
             this.blendModeBox.Size = new System.Drawing.Size(111, 21);
             this.blendModeBox.TabIndex = 5;
@@ -728,7 +728,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.historyTabPage);
             this.tabControl1.Location = new System.Drawing.Point(5, 2);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(186, 206);
@@ -738,7 +738,7 @@
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(178, 180);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Filters";
@@ -747,9 +747,9 @@
             // historyTabPage
             // 
             this.historyTabPage.Location = new System.Drawing.Point(4, 22);
-            this.historyTabPage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.historyTabPage.Margin = new System.Windows.Forms.Padding(2);
             this.historyTabPage.Name = "historyTabPage";
-            this.historyTabPage.Size = new System.Drawing.Size(178, 182);
+            this.historyTabPage.Size = new System.Drawing.Size(178, 180);
             this.historyTabPage.TabIndex = 2;
             this.historyTabPage.Text = "History";
             this.historyTabPage.UseVisualStyleBackColor = true;
@@ -815,7 +815,7 @@
             this.bottomPanel.Controls.Add(this.zoomOutBtn);
             this.bottomPanel.Controls.Add(this.comboBox1);
             this.bottomPanel.Location = new System.Drawing.Point(190, 664);
-            this.bottomPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bottomPanel.Margin = new System.Windows.Forms.Padding(2);
             this.bottomPanel.Name = "bottomPanel";
             this.bottomPanel.Size = new System.Drawing.Size(891, 31);
             this.bottomPanel.TabIndex = 5;
@@ -824,7 +824,7 @@
             // 
             this.centerBtn.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.centerBtn.Location = new System.Drawing.Point(98, 4);
-            this.centerBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.centerBtn.Margin = new System.Windows.Forms.Padding(2);
             this.centerBtn.Name = "centerBtn";
             this.centerBtn.Size = new System.Drawing.Size(20, 20);
             this.centerBtn.TabIndex = 3;
@@ -836,7 +836,7 @@
             // 
             this.zoomInBtn.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.zoomInBtn.Location = new System.Drawing.Point(77, 4);
-            this.zoomInBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.zoomInBtn.Margin = new System.Windows.Forms.Padding(2);
             this.zoomInBtn.Name = "zoomInBtn";
             this.zoomInBtn.Size = new System.Drawing.Size(20, 20);
             this.zoomInBtn.TabIndex = 2;
@@ -848,7 +848,7 @@
             // 
             this.zoomOutBtn.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.zoomOutBtn.Location = new System.Drawing.Point(57, 4);
-            this.zoomOutBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.zoomOutBtn.Margin = new System.Windows.Forms.Padding(2);
             this.zoomOutBtn.Name = "zoomOutBtn";
             this.zoomOutBtn.Size = new System.Drawing.Size(20, 20);
             this.zoomOutBtn.TabIndex = 1;
@@ -868,7 +868,7 @@
             "300%",
             "400%"});
             this.comboBox1.Location = new System.Drawing.Point(4, 4);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(49, 21);
             this.comboBox1.TabIndex = 0;
@@ -1122,7 +1122,7 @@
             this.workSpaceTabControl.Location = new System.Drawing.Point(190, 24);
             this.workSpaceTabControl.Name = "workSpaceTabControl";
             this.workSpaceTabControl.SelectedIndex = 0;
-            this.workSpaceTabControl.Size = new System.Drawing.Size(891, 643);
+            this.workSpaceTabControl.Size = new System.Drawing.Size(890, 643);
             this.workSpaceTabControl.TabIndex = 0;
             this.workSpaceTabControl.SelectedIndexChanged += new System.EventHandler(this.WorkSpaceTabControl_SelectedIndexChanged);
             // 

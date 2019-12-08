@@ -52,12 +52,16 @@ namespace DoAnLTTQ.Forms
                 using (Graphics g = Graphics.FromImage(adjusted))
                 {
                     g.Clear(Color.Transparent);
-                    for (int y = 0; y < adjusted.Height; y += pixel)
+                    for (int y = 0; y < adjusted.Height + pixel; y += pixel)
                     {
-                        for (int x = 0; x < adjusted.Width; x += pixel)
+                        if (y >= adjusted.Height) y = adjusted.Height - 1;
+                        for (int x = 0; x < adjusted.Width + pixel; x += pixel)
                         {
+                            if (x >= adjusted.Width) x = adjusted.Width - 1;
                             g.FillRectangle(new SolidBrush(origin.GetPixel(x, y)), x - k, y - k, pixel, pixel);
+                            if (x == adjusted.Width - 1) break;
                         }
+                        if (y == adjusted.Height - 1) break;
                     }
                 }
             }

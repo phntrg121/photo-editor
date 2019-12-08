@@ -215,6 +215,8 @@ namespace DoAnLTTQ
                         return;
                 }
 
+                tools.Select.Selected = false;
+
                 workSpaceTabControl.SelectedTab.Controls.Remove(Current);
                 Current.LayerContainer.Dispose();
                 Current.History.Dispose();
@@ -329,7 +331,11 @@ namespace DoAnLTTQ
         {
             using (Forms.BrightnessContrast bc = new Forms.BrightnessContrast(this, Current.LayerContainer))
             {
-                bc.Image = Current.LayerContainer.Current.Layer.Image;
+                if (!tools.Select.Selected)
+                    bc.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    bc.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
+
                 if (bc.ShowDialog() == DialogResult.OK)
                 {
                     Current.DrawSpace.ProcessBoxImage = bc.Image;
@@ -343,7 +349,11 @@ namespace DoAnLTTQ
         {
             using (Forms.HueSaturation hs = new Forms.HueSaturation(this, Current.LayerContainer))
             {
-                hs.Image = Current.LayerContainer.Current.Layer.Image;
+                if (!tools.Select.Selected)
+                    hs.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    hs.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
+
                 hs.Initialize();
 
                 if (hs.ShowDialog() == DialogResult.OK)
@@ -357,21 +367,28 @@ namespace DoAnLTTQ
 
         private void InvertToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using(Bitmap bmp = new Bitmap(Current.LayerContainer.Current.Layer.Image))
+            Bitmap bmp;
+            if (!tools.Select.Selected) bmp = (Bitmap)Current.DrawSpace.ProcessBoxImage.Clone();
+            else bmp = (Current.DrawSpace.ProcessBoxImage as Bitmap).Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
+
             using(Graphics g = Graphics.FromImage(bmp))
             {
                 System.Drawing.Imaging.ColorMatrix matrix = new System.Drawing.Imaging.ColorMatrix();
                 matrix.Matrix00 = matrix.Matrix11 = matrix.Matrix22 = -1f;
                 matrix.Matrix33 = matrix.Matrix40 = matrix.Matrix41 = matrix.Matrix42 = matrix.Matrix44 = 1f;
+
                 using (System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes())
                 {
                     attributes.SetColorMatrix(matrix);
-                    g.DrawImage(Current.LayerContainer.Current.Layer.Image, new Rectangle(0, 0, Current.BmpSize.Width, Current.BmpSize.Height),
-                        0, 0, Current.BmpSize.Width, Current.BmpSize.Height, GraphicsUnit.Pixel, attributes);
-
-                    Current.DrawSpace.ProcessBoxImage = new Bitmap(bmp);
+                    g.DrawImage(Current.LayerContainer.Current.Layer.Image, new Rectangle(0, 0, bmp.Width, bmp.Height),
+                        0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
                 }
+
+                Current.DrawSpace.ProcessBoxImage = new Bitmap(bmp);
             }
+
+            bmp.Dispose();
+
             DSProcessUpdate(HistoryEvent.DrawFilter);
             DSUpdate();
         }
@@ -380,7 +397,11 @@ namespace DoAnLTTQ
         {
             using (Forms.Threshold th = new Forms.Threshold(this, Current.LayerContainer))
             {
-                th.Image = Current.LayerContainer.Current.Layer.Image;
+                if (!tools.Select.Selected)
+                    th.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    th.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
+
                 th.Initialize();
 
                 if (th.ShowDialog() == DialogResult.OK)
@@ -396,7 +417,10 @@ namespace DoAnLTTQ
         {
             using (Forms.ColorBalance cb = new Forms.ColorBalance(this, Current.LayerContainer))
             {
-                cb.Image = Current.LayerContainer.Current.Layer.Image;
+                if (!tools.Select.Selected)
+                    cb.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    cb.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
 
                 if (cb.ShowDialog() == DialogResult.OK)
                 {
@@ -423,7 +447,11 @@ namespace DoAnLTTQ
         {
             using (Forms.Noise ns = new Forms.Noise(this, Current.LayerContainer))
             {
-                ns.Image = Current.LayerContainer.Current.Layer.Image;
+                if (!tools.Select.Selected)
+                    ns.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    ns.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
+
                 ns.Initialize();
 
                 if (ns.ShowDialog() == DialogResult.OK)
@@ -439,7 +467,10 @@ namespace DoAnLTTQ
         {
             using (Forms.Pixelate px = new Forms.Pixelate(this, Current.LayerContainer))
             {
-                px.Image = Current.LayerContainer.Current.Layer.Image;
+                if (!tools.Select.Selected)
+                    px.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    px.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
 
                 if (px.ShowDialog() == DialogResult.OK)
                 {
@@ -454,7 +485,11 @@ namespace DoAnLTTQ
         {
             using (Forms.GaussianBlur gb = new Forms.GaussianBlur(this, Current.LayerContainer))
             {
-                gb.Image = Current.LayerContainer.Current.Layer.Image;
+                if (!tools.Select.Selected)
+                    gb.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    gb.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
+
                 gb.Initialize();
 
                 if (gb.ShowDialog() == DialogResult.OK)
@@ -514,6 +549,7 @@ namespace DoAnLTTQ
             workSpaceTabControl.TabPages.Add(tab);
             Current = newWS;
             Current.BmpSize = bmp.Size;
+            Current.BmpPixelFormat = bmp.PixelFormat;
             DrawSpaceInit();
             LayerContainerInit();
             Current.DrawSpace.BGGenerator(color);
@@ -561,16 +597,23 @@ namespace DoAnLTTQ
             Current.Saved = false;
             Current.Parent.Text = Current.FileName + "*";
             saveToolStripMenuItem.Enabled = true;
+
+            Bitmap bmp;
+            if (!tools.Select.Selected) bmp = (Bitmap)Current.DrawSpace.ProcessBoxImage.Clone();
+            else bmp = (Current.DrawSpace.ProcessBoxImage as Bitmap).Clone(tools.Select.SelectRect, Current.BmpPixelFormat);
+
             if (e == HistoryEvent.Draw || e == HistoryEvent.Erase)
             {
-                Current.LayerContainer.ProcessUpdate((Bitmap)Current.DrawSpace.ProcessBoxImage);
-                Current.DrawSpace.ClearProcess();
+                Current.LayerContainer.ProcessUpdate(bmp);
             }
             else if (e == HistoryEvent.DrawFilter )
             {
-                Current.LayerContainer.ProcessUpdate((Bitmap)Current.DrawSpace.ProcessBoxImage, filter: true);
-                Current.DrawSpace.ClearProcess();
+                Current.LayerContainer.ProcessUpdate(bmp, filter: true);
             }
+
+            Current.DrawSpace.ClearProcess();
+            bmp.Dispose();
+
             Current.History.Add(e, Current.LayerContainer.Current);
         }
 
@@ -831,6 +874,7 @@ namespace DoAnLTTQ
             Current.LayerContainer.Location = new System.Drawing.Point(3, 85);
             Current.LayerContainer.Name = "Current.LayerContainer";
             Current.LayerContainer.Size = new System.Drawing.Size(layerPanel.Width - 6, layerPanel.Height - 87);
+            Current.LayerContainer.Tool = tools;
             layerPanel.Controls.Add(Current.LayerContainer);
             blendModeBox.SelectedIndex = 0;
             BlendModeBox_Select();

@@ -248,6 +248,9 @@
     <EmbeddedResource Include="Tools\Picker.resx">
       <DependentUpon>Picker.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Select.resx">
+      <DependentUpon>Select.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WorkSpace.resx">
       <DependentUpon>WorkSpace.cs</DependentUpon>
     </EmbeddedResource>

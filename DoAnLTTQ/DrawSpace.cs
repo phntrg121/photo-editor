@@ -11,11 +11,11 @@ using System.Drawing.Drawing2D;
 
 namespace DoAnLTTQ
 {
-
     public enum Tool
     {
         Pen, Eraser, Picker, Select, Drag, Move
     }
+
     public partial class DrawSpace : UserControl
     {
         private Bitmap processing;
@@ -89,6 +89,7 @@ namespace DoAnLTTQ
             ScaleMatrix.Reset();
             ScaleMatrix.Scale(scale, scale);
             Invalidate();
+            if (Tools.Select.Selected) SelectRectDisplay();
         }
 
         PointF ScaledPoint(PointF p)
@@ -116,9 +117,9 @@ namespace DoAnLTTQ
 
         public void FinalDisplay()
         {
-            gFinal.MultiplyTransform(ScaleMatrix);
             gFinal.Clear(Color.Transparent);
-            gFinal.DrawImageUnscaled(Final, 0, 0, finalBox.Width, finalBox.Height);
+            gFinal.MultiplyTransform(ScaleMatrix);
+            gFinal.DrawImageUnscaled(Final, 0, 0);
             gFinal.ResetTransform();
         }
 
@@ -127,7 +128,12 @@ namespace DoAnLTTQ
         {
             set
             {
-                g.DrawImage(value, 0, 0);
+                if (!Tools.Select.Selected)
+                    g.DrawImageUnscaled(value, 0, 0);
+                else
+                    g.DrawImageUnscaled(value, Tools.Select.SelectRect.X, Tools.Select.SelectRect.Y,
+                        Tools.Select.SelectRect.Width, Tools.Select.SelectRect.Height);
+
                 value.Dispose();
             }
             get
@@ -144,7 +150,7 @@ namespace DoAnLTTQ
 
         public void BGGenerator(Color c)
         {
-            if(c==Color.Transparent)
+            if (c == Color.Transparent)
             {
                 int m = (int)Math.Ceiling((double)Size.Width / 512);
                 int n = (int)Math.Ceiling((double)Size.Height / 512);
@@ -176,19 +182,27 @@ namespace DoAnLTTQ
         RectangleF displayRect;
         PointF p1;
         PointF p2;
-        void processDisplay()
+        void ProcessDisplay()
         {
             PointF p = new PointF(Math.Min(p1.X - (float)Tools.Size / 2 - 1, p2.X - (float)Tools.Size / 2 - 1),
                                 Math.Min(p1.Y - (float)Tools.Size / 2 - 1, p2.Y - (float)Tools.Size / 2 - 1));
 
-            displayRect = new RectangleF(p.X,
-                                        p.Y,
+            displayRect = new RectangleF(p.X, p.Y,
                                         Math.Abs(p2.X - p1.X) + Tools.Size + 2,
                                         Math.Abs(p2.Y - p1.Y) + Tools.Size + 2);
 
             gProcess.MultiplyTransform(ScaleMatrix);
             gProcess.DrawImage(processing, p.X, p.Y, displayRect, GraphicsUnit.Pixel);
             gProcess.ResetTransform();
+        }
+
+        void SelectRectDisplay()
+        {
+            gTop.Clear(Color.Transparent);
+            gTop.MultiplyTransform(ScaleMatrix);
+            gTop.DrawRectangle(Tools.Select.Pen, Tools.Select.SelectRect);
+            gTop.ResetTransform();
+            topBox.Invalidate();
         }
 
         public void Mouse_Down(object sender, MouseEventArgs e)
@@ -210,11 +224,22 @@ namespace DoAnLTTQ
                     {
                         p1 = ScaledPoint(e.Location);
                         Tools.Eraser.GetLocation(ScaledPoint(e.Location));
+                        using (Bitmap bmp = (Bitmap)(Parent as WorkSpace).LayerContainer.Current.Layer.Image.Clone())
+                            g.DrawImageUnscaled(bmp, 0, 0);
+                        gFinal.Clear(Color.Transparent);
                     }
                     break;
                 case Tool.Drag:
                     {
                         Tools.Drag.GetLocation(ref e);
+                    }
+                    break;
+                case Tool.Select:
+                    {
+                        if (!Tools.Select.Selected)
+                        {
+                            Tools.Select.GetLocation(ScaledPoint(e.Location));
+                        }
                     }
                     break;
                 default:
@@ -237,7 +262,7 @@ namespace DoAnLTTQ
                             p2 = ScaledPoint(e.Location);
                             Tools.Pen.Draw(g, ScaledPoint(e.Location));
                             if (CurrentVisible)
-                                processDisplay();
+                                ProcessDisplay();
                             p1 = p2;
                         }
                         break;
@@ -246,7 +271,12 @@ namespace DoAnLTTQ
                             p2 = ScaledPoint(e.Location);
                             Tools.Eraser.Draw(g, ScaledPoint(e.Location));
                             if (CurrentVisible)
-                                processDisplay();
+                            {
+                                gProcess.Clear(Color.Transparent);
+                                gProcess.MultiplyTransform(ScaleMatrix);
+                                gProcess.DrawImageUnscaled(processing, 0, 0);
+                                gProcess.ResetTransform();
+                            }
                             p1 = p2;
                         }
                         break;
@@ -255,32 +285,59 @@ namespace DoAnLTTQ
                             Tools.Drag.Dragging(this, e);
                         }
                         break;
+                    case Tool.Select:
+                        {
+                            if (!Tools.Select.Selected)
+                            {
+                                Tools.Select.Selecting(ScaledPoint(e.Location), originalSize.Width, originalSize.Height);
+                                SelectRectDisplay();
+                            }
+                        }
+                        break;
                     default:
                         break;
                 }
             }
 
-            if (Tools.Tool == Tool.Pen || Tools.Tool == Tool.Eraser)
-            {
-                float n = Tools.Size * zoom;
-                if (n != 0)
-                {
-                    gTop.Clear(Color.Transparent);
-                    gTop.DrawEllipse(Pens.Black, new RectangleF(e.X - n / 2, e.Y - n / 2, n, n));
-                    topBox.Invalidate();
-                }
-            }
+            //if (Tools.Tool == Tool.Pen || Tools.Tool == Tool.Eraser)
+            //{
+            //    float n = Tools.Size * zoom;
+            //    if (n != 0)
+            //    {
+            //        gTop.Clear(Color.Transparent);
+            //        gTop.DrawEllipse(Pens.Black, new RectangleF(e.X - n / 2, e.Y - n / 2, n, n));
+            //        topBox.Invalidate();
+            //    }
+            //}
+            Invalidate();
         }
 
         public void Mouse_Up(object sender, MouseEventArgs e)
         {
+            switch (Tools.Tool)
+            {
+                case Tool.Select:
+                    {
+                        if (!Tools.Select.Selected) Tools.Select.Selected = true;
+                        else
+                        {
+                            if (!Tools.Select.CheckInRect(ScaledPoint(e.Location)))
+                                Tools.Select.Selected = false;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if (!Tools.Select.Selected)
+                gTop.Clear(Color.Transparent);
+
             gProcess.Clear(Color.Transparent);
         }
 
         private void Mouse_Leave(object sender, EventArgs e)
         {
-            gTop.Clear(Color.Transparent);
-            topBox.Invalidate();
         }
     }
 }

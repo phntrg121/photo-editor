@@ -21,7 +21,7 @@ namespace DoAnLTTQ.Tools
         public Eraser()
         {
             InitializeComponent();
-            color = Color.FromArgb(255, 253, 254, 255);
+            color = Color.Transparent;
             pen = new Pen(color, 10);
             pen.SetLineCap(System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.DashCap.Round);
             Dock = DockStyle.Fill;
@@ -37,9 +37,10 @@ namespace DoAnLTTQ.Tools
 
         public void Draw(Graphics g, PointF p)
         {
-            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             currentPoint = p;
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             g.DrawLine(pen, oldPoint, currentPoint);
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
             oldPoint = currentPoint;
         }
 
