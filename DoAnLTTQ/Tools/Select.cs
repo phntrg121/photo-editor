@@ -13,10 +13,12 @@ namespace DoAnLTTQ.Tools
     public partial class Select : UserControl
     {
         public bool Selected { get; set; }
-        public Rectangle SelectRect { get; set; }
+        public Rectangle Rect { get; set; }
         PointF startP;
         PointF endP;
         public Pen Pen { get; set; }
+        public Rectangle FixedRect { get; set; }
+        public bool Move { get; set; }
         public Select()
         {
             InitializeComponent();
@@ -28,25 +30,44 @@ namespace DoAnLTTQ.Tools
             startP = p;
         }
 
-        public void Selecting(PointF p, int w_limit, int h_limit)
+        public void Selecting(PointF p, Rectangle limitRect)
         {
             endP = p;
 
             Point p1 = new Point((int)Math.Min(startP.X, endP.X), (int)Math.Min(startP.Y, endP.Y));
-            if (p1.X < 0) p1.X = 0;
-            if (p1.Y < 0) p1.Y = 0;
             Point p2 = new Point((int)Math.Max(startP.X, endP.X), (int)Math.Max(startP.Y, endP.Y));
-            if (p2.X > w_limit) p2.X = w_limit;
-            if (p2.Y > h_limit) p2.Y = h_limit;
             Size size = new Size(p2.X - p1.X, p2.Y - p1.Y);
 
-            SelectRect = new Rectangle(p1.X, p1.Y, size.Width, size.Height);
+            Rect = new Rectangle(p1.X, p1.Y, size.Width, size.Height);
+            FixedRect = Rectangle.Intersect(Rect, limitRect);
+        }
+
+        public void Moving(PointF p, Rectangle limitRect)
+        {
+            if(Move)
+            {
+                endP = p;
+                int x = Rect.X;
+                int y = Rect.Y;
+                x += (int)(endP.X - startP.X);
+                y += (int)(endP.Y - startP.Y);
+
+                Rect = new Rectangle(x, y, Rect.Width, Rect.Height);
+                FixedRect = Rectangle.Intersect(Rect, limitRect);
+
+                startP = endP;
+            }
         }
 
         public bool CheckInRect(PointF p)
         {
-            return p.X >= SelectRect.X && p.X <= SelectRect.X + SelectRect.Width &&
-                p.Y >= SelectRect.Y && p.Y <= SelectRect.Y + SelectRect.Height;
+            return p.X >= Rect.X && p.X <= Rect.X + Rect.Width &&
+                p.Y >= Rect.Y && p.Y <= Rect.Y + Rect.Height;
+        }
+
+        public void DrawRect(Graphics g)
+        {
+            g.DrawRectangle(Pen, Rect);
         }
 
     }

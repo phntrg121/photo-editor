@@ -64,12 +64,11 @@ namespace DoAnLTTQ
         {
             if (processing != null)
             {
-                if (!preview) layers[current].Layer.Stacking();
+                if (!preview && Tool.Tool != DoAnLTTQ.Tool.Transform) layers[current].Layer.Stacking();
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
                 {
                     if (preview || filter || Tool.Tool == DoAnLTTQ.Tool.Eraser)
                         g.CompositingMode = CompositingMode.SourceCopy;
-                    else g.CompositingMode = CompositingMode.SourceOver;
 
                     if (!Tool.Select.Selected)
                     {
@@ -77,8 +76,8 @@ namespace DoAnLTTQ
                     }
                     else
                     {
-                        g.DrawImageUnscaled(processing, Tool.Select.SelectRect.X, Tool.Select.SelectRect.Y,
-                            Tool.Select.SelectRect.Width, Tool.Select.SelectRect.Height);
+                        g.DrawImageUnscaled(processing, Tool.Select.FixedRect.X, Tool.Select.FixedRect.Y,
+                            Tool.Select.FixedRect.Width, Tool.Select.FixedRect.Height);
                     }
                 }
             }
@@ -242,8 +241,8 @@ namespace DoAnLTTQ
             {
                 bmp = new Bitmap(layerSize.Width, layerSize.Height);
                 using (Graphics g = Graphics.FromImage(bmp))
-                    g.DrawImage(layers[current].Layer.Image, Tool.Select.SelectRect.X, Tool.Select.SelectRect.Y,
-                            Tool.Select.SelectRect, GraphicsUnit.Pixel);
+                    g.DrawImage(layers[current].Layer.Image, Tool.Select.Rect.X, Tool.Select.Rect.Y,
+                            Tool.Select.Rect, GraphicsUnit.Pixel);
             }
             newRow.Layer = new Layer(bmp, newRow.Text, true);
             bmp.Dispose();

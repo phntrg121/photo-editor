@@ -74,5 +74,15 @@ namespace DoAnLTTQ.Tools
             g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
             sender.Invalidate();
         }
+
+        public void MakeTransparent(Bitmap bmp, Rectangle rect)
+        {
+            using (Bitmap b = new Bitmap(rect.Width, rect.Height))
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                g.DrawImageUnscaled(b, rect.X, rect.Y);
+            }
+        }
     }
 }

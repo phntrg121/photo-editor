@@ -106,7 +106,7 @@
             this.zoomOutBtn = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.mToolStrip = new System.Windows.Forms.ToolStrip();
-            this.moveStripButton = new System.Windows.Forms.ToolStripButton();
+            this.transformStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton = new System.Windows.Forms.ToolStripButton();
             this.dragStripButton = new System.Windows.Forms.ToolStripButton();
             this.leftPanel = new System.Windows.Forms.Panel();
@@ -881,7 +881,7 @@
             this.mToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.mToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.mToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.moveStripButton,
+            this.transformStripButton,
             this.toolStripButton,
             this.dragStripButton});
             this.mToolStrip.Location = new System.Drawing.Point(0, 0);
@@ -891,15 +891,15 @@
             this.mToolStrip.Text = "toolStrip1";
             this.mToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.MToolStrip_ItemClicked);
             // 
-            // moveStripButton
+            // transformStripButton
             // 
-            this.moveStripButton.AutoSize = false;
-            this.moveStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.moveStripButton.Image = ((System.Drawing.Image)(resources.GetObject("moveStripButton.Image")));
-            this.moveStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.moveStripButton.Name = "moveStripButton";
-            this.moveStripButton.Size = new System.Drawing.Size(22, 20);
-            this.moveStripButton.Text = "Move";
+            this.transformStripButton.AutoSize = false;
+            this.transformStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.transformStripButton.Image = ((System.Drawing.Image)(resources.GetObject("transformStripButton.Image")));
+            this.transformStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.transformStripButton.Name = "transformStripButton";
+            this.transformStripButton.Size = new System.Drawing.Size(22, 20);
+            this.transformStripButton.Text = "Transform";
             // 
             // toolStripButton
             // 
@@ -1210,7 +1210,7 @@
         private System.Windows.Forms.ToolStripButton upLStripButton;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolStripButton moveStripButton;
+        private System.Windows.Forms.ToolStripButton transformStripButton;
         private System.Windows.Forms.ToolStripButton toolStripButton;
         private System.Windows.Forms.ToolStripButton dragStripButton;
         private System.Windows.Forms.Panel leftPanel;
