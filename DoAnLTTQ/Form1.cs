@@ -667,6 +667,7 @@ namespace DoAnLTTQ
                     if(!tools.Select.Selected && tools.Transform.Done)
                     {
                         DSProcessUpdate(HistoryEvent.Draw);
+                        tools.Transform.Reset();
                         tools.Transform.Done = false;
                     }
                     break;
@@ -888,6 +889,7 @@ namespace DoAnLTTQ
                     tools.Select.Selected = false;
                     tools.Transform.Image.Dispose();
                     Current.DrawSpace.ClearTop();
+                    tools.Transform.Reset();
                 }
             }
         }

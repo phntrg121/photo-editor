@@ -58,8 +58,8 @@ namespace DoAnLTTQ.Tools
             Picker = new Picker();
             Eraser = new Eraser();
             Select = new Select();
-            Drag = new Drag();
             Transform = new Transform();
+            Drag = new Drag();
             tool = Tool.Pen;
             Current = Pen;
         }

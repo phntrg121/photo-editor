@@ -42,9 +42,7 @@ namespace DoAnLTTQ
             processing = new Bitmap(this.Size.Width, this.Size.Height);
             Final = new Bitmap(this.Size.Width, this.Size.Height);
             g = Graphics.FromImage(processing);
-            g.InterpolationMode = InterpolationMode.NearestNeighbor;
             gF = Graphics.FromImage(Final);
-            gF.InterpolationMode = InterpolationMode.NearestNeighbor;
             InitGraphic();
 
             originalSize = this.Size;
@@ -71,13 +69,10 @@ namespace DoAnLTTQ
         {
             finalBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
             gFinal = Graphics.FromImage(finalBox.Image);
-            gFinal.InterpolationMode = InterpolationMode.NearestNeighbor;
             processBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
             gProcess = Graphics.FromImage(processBox.Image);
-            gProcess.InterpolationMode = InterpolationMode.NearestNeighbor;
             topBox.Image = new Bitmap(this.Size.Width, this.Size.Height);
             gTop = Graphics.FromImage(topBox.Image);
-            gTop.InterpolationMode = InterpolationMode.NearestNeighbor;
         }
 
         public void Scaling(float scale)
@@ -268,7 +263,7 @@ namespace DoAnLTTQ
                         else
                         {
                             Tools.Select.GetLocation(ScaledPoint(e.Location));
-                            Tools.Select.Move = true;
+                            Tools.Select.Movable = true;
                         }
                     }
                     break;
@@ -276,11 +271,13 @@ namespace DoAnLTTQ
                     {
                         if (Tools.Select.Selected)
                         {
-                            if (Tools.Transform.CheckInRect(ScaledPoint(e.Location)))
-                            {
-                                Tools.Transform.GetLocation(ScaledPoint(e.Location));
-                                Tools.Transform.Move = true;
-                            }
+                            PointF p = Tools.Transform.RotatedPoint(ScaledPoint(e.Location));
+
+                            Tools.Transform.GetLocation(p);
+
+                            if (Tools.Transform.InSmallRect(p)) Tools.Transform.Resizing = true;
+                            else if (Tools.Transform.InRotateRect(p)) Tools.Transform.Rotating = true;
+                            else if (Tools.Transform.InRect(p)) Tools.Transform.Moving = true;
                             else
                             {
                                 Tools.Select.Selected = false;
@@ -353,11 +350,12 @@ namespace DoAnLTTQ
                         {
                             if (Tools.Select.Selected)
                             {
-                                if (Tools.Transform.CheckInRect(ScaledPoint(e.Location)))
-                                {
-                                    Tools.Transform.Moving(ScaledPoint(e.Location), (Parent as WorkSpace).Rect);
-                                    TransformRectDisplay();
-                                }
+                                PointF p = Tools.Transform.RotatedPoint(ScaledPoint(e.Location));
+
+                                Tools.Transform.Resize(p);
+                                Tools.Transform.Rotate(p);
+                                Tools.Transform.Translate(p);
+                                TransformRectDisplay();
                             }
                         }
                         break;
@@ -372,9 +370,9 @@ namespace DoAnLTTQ
         {
             if (!Tools.Select.Selected)
                 gTop.Clear(Color.Transparent);
-            else Tools.Select.Move = false;
+            else Tools.Select.Movable = false;
 
-            Tools.Transform.Move = false;
+            Tools.Transform.StartPoint = Tools.Transform.Rect.Location;
 
             if (Tools.Tool != Tool.Transform || !Tools.Select.Selected)
                 gProcess.Clear(Color.Transparent);

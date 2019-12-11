@@ -817,7 +817,7 @@
             this.bottomPanel.Location = new System.Drawing.Point(190, 664);
             this.bottomPanel.Margin = new System.Windows.Forms.Padding(2);
             this.bottomPanel.Name = "bottomPanel";
-            this.bottomPanel.Size = new System.Drawing.Size(891, 31);
+            this.bottomPanel.Size = new System.Drawing.Size(890, 31);
             this.bottomPanel.TabIndex = 5;
             // 
             // centerBtn

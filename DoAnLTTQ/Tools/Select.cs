@@ -18,7 +18,7 @@ namespace DoAnLTTQ.Tools
         PointF endP;
         public Pen Pen { get; set; }
         public Rectangle FixedRect { get; set; }
-        public bool Move { get; set; }
+        public bool Movable { get; set; }
         public Select()
         {
             InitializeComponent();
@@ -44,7 +44,7 @@ namespace DoAnLTTQ.Tools
 
         public void Moving(PointF p, Rectangle limitRect)
         {
-            if(Move)
+            if(Movable)
             {
                 endP = p;
                 int x = Rect.X;
