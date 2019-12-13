@@ -31,7 +31,7 @@ namespace DoAnLTTQ
 
             for (int i = 0; i < size1; i += 4)
             {
-                float r, g, b, a;
+                float r, g, b;
 
                 if (pixels1[i + 3] != 0 && pixels2[i + 3] != 0)
                 {
@@ -68,7 +68,7 @@ namespace DoAnLTTQ
 
             for (int i = 0; i < size1; i += 4)
             {
-                float r, g, b, a;
+                float r, g, b;
 
                 if (pixels1[i + 3] != 0 && pixels2[i + 3] != 0)
                 {
@@ -105,7 +105,7 @@ namespace DoAnLTTQ
 
             for (int i = 0; i < size1; i += 4)
             {
-                float r, g, b, a;
+                float r, g, b;
 
                 if (pixels1[i + 3] != 0 && pixels2[i + 3] != 0)
                 {
@@ -142,7 +142,7 @@ namespace DoAnLTTQ
 
             for (int i = 0; i < size1; i += 4)
             {
-                float r, g, b, a;
+                float r, g, b;
 
                 if (pixels1[i + 3] != 0 && pixels2[i + 3] != 0)
                 {
@@ -179,7 +179,7 @@ namespace DoAnLTTQ
 
             for (int i = 0; i < size1; i += 4)
             {
-                float r, g, b, a;
+                float r, g, b;
 
                 if (pixels1[i + 3] != 0 && pixels2[i + 3] != 0)
                 {

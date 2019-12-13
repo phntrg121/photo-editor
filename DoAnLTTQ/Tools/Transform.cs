@@ -23,7 +23,9 @@ namespace DoAnLTTQ.Tools
         PointF[] smallrectpos;
         PointF center;
         byte smallRectIndex;
+        byte rotateRectIndex;
         float angle;
+        float old_angle;
         public Bitmap Image { get; set; }
         public bool Moving { get; set; }
         public bool Resizing { get; set; }
@@ -55,6 +57,7 @@ namespace DoAnLTTQ.Tools
                 center = tmp;
 
                 Moving = Rotating = Resizing = false;
+                old_angle = angle;
             }
         }
 
@@ -67,7 +70,7 @@ namespace DoAnLTTQ.Tools
 
         public void Reset()
         {
-            angle = 0;
+            old_angle = angle = 0;
         }
 
         public void GetLocation(PointF p)
@@ -133,8 +136,37 @@ namespace DoAnLTTQ.Tools
                 double d1 = Math.Sqrt(v1.X * v1.X + v1.Y * v1.Y);
                 double d2 = Math.Sqrt(v2.X * v2.X + v2.Y * v2.Y);
 
-                double a = (float)Math.Acos((v1.X * v2.X + v1.Y * v2.Y) / (d1 * d2));
-                    angle += (float)a;
+                double cos_a = (v1.X * v2.X + v1.Y * v2.Y) / (d1 * d2);
+                double a = Math.Acos(cos_a) * 180 / Math.PI;
+
+                //goc lech
+                PointF t = new PointF(v1.X, 0);
+                double dt = Math.Sqrt(t.X * t.X + t.Y * t.Y);
+                double cos_t = (v1.X * t.X + v1.Y * t.Y) / (d1 * dt);
+                double tmp = Math.Acos(cos_t) * 180 / Math.PI;
+
+                if (rotateRectIndex == 0)
+                {
+                    PointF m = RotatedPoint(p, fix: (float)tmp);
+                    if (m.Y > center.Y) a = 360 - a;
+                }
+                else if(rotateRectIndex == 1)
+                {
+                    PointF m = RotatedPoint(p, true, fix: (float)tmp);
+                    if (m.Y < center.Y) a = 360 - a;
+                }
+                 else if (rotateRectIndex == 2)
+                {
+                    PointF m = RotatedPoint(p, true, fix: (float)tmp);
+                    if (m.Y > center.Y) a = 360 - a;
+                }
+                else
+                {
+                    PointF m = RotatedPoint(p, fix: (float)tmp);
+                    if (m.Y < center.Y) a = 360 - a;
+                }
+
+                angle = old_angle + (float)a;
                 angle = angle % 360;
             }
         }
@@ -168,12 +200,12 @@ namespace DoAnLTTQ.Tools
         }
         public bool InSmallRect(PointF p)
         {
-            for (int i = 0; i < 8; i++)
+            for (byte i = 0; i < 8; i++)
             {
                 if (p.X >= smallrects[i].X && p.X <= smallrects[i].X + smallrects[i].Width &&
                     p.Y >= smallrects[i].Y && p.Y <= smallrects[i].Y + smallrects[i].Height)
                 {
-                    smallRectIndex = (byte)i;
+                    smallRectIndex = i;
                     return true;
                 }
             }
@@ -182,19 +214,23 @@ namespace DoAnLTTQ.Tools
         }
         public bool InRotateRect(PointF p)
         {
-            for (int i = 0; i < 4; i++)
+            for (byte i = 0; i < 4; i++)
             {
                 if (p.X >= rotaterects[i].X && p.X <= rotaterects[i].X + rotaterects[i].Width &&
                     p.Y >= rotaterects[i].Y && p.Y <= rotaterects[i].Y + rotaterects[i].Height)
+                {
+                    rotateRectIndex = i;
                     return true;
+                }
             }
             return false;
         }
 
-        public PointF RotatedPoint(PointF p, bool re = false)
+        public PointF RotatedPoint(PointF p, bool re = false, float fix = 0)
         {
             PointF pp = new PointF();
-            double theta = ((re) ? angle : -angle) * Math.PI / 180;
+            if (fix == 0) fix = old_angle;
+            double theta = ((re) ? fix : -fix) * Math.PI / 180;
             pp.X = (float)(Math.Cos(theta) * (p.X - center.X) - Math.Sin(theta) * (p.Y - center.Y) + center.X);
             pp.Y = (float)(Math.Sin(theta) * (p.X - center.X) + Math.Cos(theta) * (p.Y - center.Y) + center.Y);
             return pp;

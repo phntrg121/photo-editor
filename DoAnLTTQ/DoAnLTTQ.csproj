@@ -239,6 +239,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Tools\Drag.resx">
+      <DependentUpon>Drag.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\Eraser.resx">
       <DependentUpon>Eraser.cs</DependentUpon>
     </EmbeddedResource>

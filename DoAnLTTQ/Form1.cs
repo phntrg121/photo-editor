@@ -22,7 +22,6 @@ namespace DoAnLTTQ
             InitializeComponent();
         }
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
             LayerMenuStripEnable(false);
@@ -74,7 +73,10 @@ namespace DoAnLTTQ
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
-            {
+            {   
+                //
+                //file
+                //
                 case (Keys.Control | Keys.N):
                     NewToolStripMenuItem_Click(newToolStripMenuItem, null);
                     return true;
@@ -82,19 +84,67 @@ namespace DoAnLTTQ
                     OpenToolStripMenuItem_Click(openToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.S):
-                    SaveToolStripMenuItem_Click(saveToolStripMenuItem, null);
+                    if (saveToolStripMenuItem.Enabled)
+                        SaveToolStripMenuItem_Click(saveToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.W):
-                    CloseToolStripMenuItem_Click(closeToolStripMenuItem, null);
+                    if (closeToolStripMenuItem.Enabled)
+                        CloseToolStripMenuItem_Click(closeToolStripMenuItem, null);
+                    return true;
+                //
+                //edit
+                //
+                case (Keys.Control | Keys.C):
+                    CopyToolStripMenuItem_Click(copyToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.V):
+                    PasteToolStripMenuItem_Click(pasteToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.X):
+                    CutToolStripMenuItem_Click(cutToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Z):
                     UndoToolStripMenuItem_Click(undoToolStripMenuItem, null);
                     return true;
+                //
+                //view
+                //
+                case (Keys.Control | Keys.Add):
+                    ZoomInToolStripMenuItem_Click(zoomInToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Subtract):
+                    ZoomOutToolStripMenuItem_Click(zoomOutToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.C):
+                    CenterToolStripMenuItem_Click(centerToolStripMenuItem, null);
+                    return true;
+                //
+                //tool
+                //
+
+                //
+                //layer
+                //
                 case (Keys.Control | Keys.Shift | Keys.N):
                     NewLayerToolStripMenuItem_Click(newLayerToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.D):
                     DeleteLayerToolStripMenuItem_Click(deleteLayerToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.Delete):
+                    DeleteLayerToolStripMenuItem_Click(deleteLayerToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.R):
+                    RenameToolStripMenuItem_Click(renameToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.J):
+                    DuplicateToolStripMenuItem_Click(duplicateToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.K):
+                    MergeToolStripMenuItem_Click(mergeToolStripMenuItem, null);
+                    return true;
+                case (Keys.Control | Keys.Shift | Keys.F):
+                    FillToolStripMenuItem_Click(fillToolStripMenuItem, null);
                     return true;
                 case (Keys.Up):
                     if (upLStripButton.Enabled)
@@ -104,6 +154,7 @@ namespace DoAnLTTQ
                     if (downLStripButton.Enabled)
                         DownLStripButton_Click(downLStripButton, null);
                     return true;
+
                 default:
                     return base.ProcessCmdKey(ref msg, keyData);
             }
@@ -248,8 +299,25 @@ namespace DoAnLTTQ
         #endregion
 
         #region Edit menu
+
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Current == null) return;
+        }
+
+        private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Current == null) return;
+        }
+
+        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Current == null) return;
+        }
+
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Current == null) return;
             if (Current.History.Remove())
                 DSUpdate();
         }
@@ -282,29 +350,42 @@ namespace DoAnLTTQ
 
         private void NewLayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewLStripButton_Click(sender, e);
+            if (Current != null)
+                NewLStripButton_Click(sender, e);
         }
 
         private void DeleteLayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteLStripButton_Click(sender, e);
+            if (Current != null && deleteLStripButton.Enabled)
+                DeleteLStripButton_Click(sender, e);
         }
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RenameLStripButton_Click(sender, e);
+            if (Current != null)
+                RenameLStripButton_Click(sender, e);
         }
 
         private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ClearLStripButton_Click(sender, e);
+            if (Current != null)
+                ClearLStripButton_Click(sender, e);
         }
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DuplicateLStripButton_Click(sender, e);
+            if (Current != null && duplicateLStripButton.Enabled)
+                DuplicateLStripButton_Click(sender, e);
+        }
+
+        private void MergeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Current != null && mergeLStripButton.Enabled)
+                MergeLStripButton_Click(sender, e);
         }
 
         private void FillToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Current == null) return;
+
             Bitmap bmp = new Bitmap(Current.BmpSize.Width, Current.BmpSize.Height);
             using (Graphics g = Graphics.FromImage(bmp))
             using (SolidBrush brush = new SolidBrush(mainColorPic.BackColor))
@@ -312,7 +393,7 @@ namespace DoAnLTTQ
                 g.FillRectangle(brush, 0, 0, Current.BmpSize.Width, Current.BmpSize.Height);
             }
             Current.DrawSpace.ProcessBoxImage = bmp;
-            DSProcessUpdate(HistoryEvent.Draw);
+            DSProcessUpdate(HistoryEvent.Fill);
             DSUpdate();
         }
 
@@ -613,11 +694,11 @@ namespace DoAnLTTQ
             if (!tools.Select.Selected) bmp = (Bitmap)Current.DrawSpace.ProcessBoxImage.Clone();
             else bmp = (Current.DrawSpace.ProcessBoxImage as Bitmap).Clone(tools.Select.FixedRect, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            if (e == HistoryEvent.Draw || e == HistoryEvent.Erase)
+            if (e == HistoryEvent.Draw || e == HistoryEvent.Transform ||e == HistoryEvent.Fill || e == HistoryEvent.Erase)
             {
                 Current.LayerContainer.ProcessUpdate(bmp);
             }
-            else if (e == HistoryEvent.DrawFilter )
+            else if (e == HistoryEvent.DrawFilter || e == HistoryEvent.Clear)
             {
                 Current.LayerContainer.ProcessUpdate(bmp, filter: true);
             }
@@ -822,6 +903,10 @@ namespace DoAnLTTQ
                         DSUpdate();
                         Current.DrawSpace.TransformRectDisplay();
                     }
+
+                    ColorMenuStripEnable(false);
+                    FilterMenuStripEnable(false);
+
                     tools.Tool = Tool.Transform;
                 }
                 else if (button.Text == toolStripButton.Text)
@@ -896,7 +981,13 @@ namespace DoAnLTTQ
 
         private void ChangeTool()
         {
-            if(propertiesPanel.Controls.Count !=0)
+            if (tools.Tool != Tool.Transform)
+            {
+                ColorMenuStripEnable(true);
+                FilterMenuStripEnable(true);
+            }
+
+            if (propertiesPanel.Controls.Count !=0)
             {
                 propertiesPanel.Controls.Remove(propertiesPanel.Controls[0]);
                 propertiesPanel.Controls.Add(tools.Current);
@@ -922,6 +1013,7 @@ namespace DoAnLTTQ
             BlendModeBox_Select();
             opacityVal = 100f;
             OpacityBarUpdate();
+            LayerButtonCheck();
         }
 
         private void LayerMenuStripEnable(bool enable)
@@ -984,11 +1076,9 @@ namespace DoAnLTTQ
 
         private void ClearLStripButton_Click(object sender, EventArgs e)
         {
-            using (Graphics g = Graphics.FromImage(Current.LayerContainer.Current.Layer.Image))
-            {
-                g.Clear(Color.Transparent);
-            }
-            DSProcessUpdate(HistoryEvent.Draw);
+            Bitmap bmp = new Bitmap(Current.BmpSize.Width, Current.BmpSize.Height);
+            Current.DrawSpace.ProcessBoxImage = bmp;
+            DSProcessUpdate(HistoryEvent.Clear);
             DSUpdate();
         }
 
@@ -1012,28 +1102,36 @@ namespace DoAnLTTQ
         {
             if (Current.LayerContainer.CurrentIndex == Current.LayerContainer.Count - 1)
             {
-
                 mergeLStripButton.Enabled = true;
                 downLStripButton.Enabled = true;
                 upLStripButton.Enabled = false;
+
+                mergeToolStripMenuItem.Enabled = true;
             }
             else if (Current.LayerContainer.CurrentIndex == 0)
             {
                 downLStripButton.Enabled = false;
                 mergeLStripButton.Enabled = false;
                 upLStripButton.Enabled = true;
+
+                mergeToolStripMenuItem.Enabled = false;
             }
             else
             {
                 mergeLStripButton.Enabled = true;
                 downLStripButton.Enabled = true;
                 upLStripButton.Enabled = true;
+
+                mergeToolStripMenuItem.Enabled = true;
             }
 
             if (Current.LayerContainer.Count > 1)
             {
                 deleteLStripButton.Enabled = true;
                 duplicateLStripButton.Enabled = true;
+
+                deleteLayerToolStripMenuItem.Enabled = true;
+                duplicateToolStripMenuItem.Enabled = true;
             }
             else
             {
@@ -1041,6 +1139,9 @@ namespace DoAnLTTQ
                 upLStripButton.Enabled = false;
                 downLStripButton.Enabled = false;
                 mergeLStripButton.Enabled = false;
+
+                deleteLayerToolStripMenuItem.Enabled = false;
+                mergeToolStripMenuItem.Enabled = false;
             }
 
         }
