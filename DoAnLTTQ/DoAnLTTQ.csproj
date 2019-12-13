@@ -153,11 +153,11 @@
     <Compile Include="Tools\Eraser.Designer.cs">
       <DependentUpon>Eraser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Move.cs">
+    <Compile Include="Tools\Transform.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Tools\Move.Designer.cs">
-      <DependentUpon>Move.cs</DependentUpon>
+    <Compile Include="Tools\Transform.Designer.cs">
+      <DependentUpon>Transform.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\PenTool.cs">
       <SubType>UserControl</SubType>
@@ -239,6 +239,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Tools\Drag.resx">
+      <DependentUpon>Drag.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\Eraser.resx">
       <DependentUpon>Eraser.cs</DependentUpon>
     </EmbeddedResource>
@@ -247,6 +250,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tools\Picker.resx">
       <DependentUpon>Picker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Select.resx">
+      <DependentUpon>Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Transform.resx">
+      <DependentUpon>Transform.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WorkSpace.resx">
       <DependentUpon>WorkSpace.cs</DependentUpon>

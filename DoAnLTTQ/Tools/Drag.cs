@@ -30,7 +30,6 @@ namespace DoAnLTTQ.Tools
             c.Left += e.X - p.X;
             c.Top += e.Y - p.Y;
 
-            p = e.Location;
             c.Refresh();
         }
     }

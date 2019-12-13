@@ -47,11 +47,11 @@ namespace DoAnLTTQ
             }
         }
 
-        public ref Bitmap Image
+        public Bitmap Image
         {
             get
             {
-                return ref image;
+                return image;
             }
         }
 

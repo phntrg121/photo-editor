@@ -19,6 +19,10 @@
             }
             if (processing != null) processing.Dispose();
             if (g != null) g.Dispose();
+            gF.Dispose();
+            gFinal.Dispose();
+            gTop.Dispose();
+            gProcess.Dispose();
             base.Dispose(disposing);
         }
 

@@ -21,7 +21,7 @@ namespace DoAnLTTQ.Tools
         public Eraser()
         {
             InitializeComponent();
-            color = Color.FromArgb(255, 253, 254, 255);
+            color = Color.Transparent;
             pen = new Pen(color, 10);
             pen.SetLineCap(System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.LineCap.Round, System.Drawing.Drawing2D.DashCap.Round);
             Dock = DockStyle.Fill;
@@ -37,9 +37,10 @@ namespace DoAnLTTQ.Tools
 
         public void Draw(Graphics g, PointF p)
         {
-            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             currentPoint = p;
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             g.DrawLine(pen, oldPoint, currentPoint);
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
             oldPoint = currentPoint;
         }
 
@@ -72,6 +73,16 @@ namespace DoAnLTTQ.Tools
             g.Clear(sender.BackColor);
             g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
             sender.Invalidate();
+        }
+
+        public void MakeTransparent(Bitmap bmp, Rectangle rect)
+        {
+            using (Bitmap b = new Bitmap(rect.Width, rect.Height))
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                g.DrawImageUnscaled(b, rect.X, rect.Y);
+            }
         }
     }
 }

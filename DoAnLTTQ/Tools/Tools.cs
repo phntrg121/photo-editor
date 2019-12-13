@@ -16,7 +16,7 @@ namespace DoAnLTTQ.Tools
         public Eraser Eraser;
         public Select Select;
         public Drag Drag;
-        public Move Move;
+        public Transform Transform;
 
         public Tool Tool
         {
@@ -38,8 +38,8 @@ namespace DoAnLTTQ.Tools
                     case Tool.Select:
                         Current = Select;
                         break;
-                    case Tool.Move:
-                        Current = Move;
+                    case Tool.Transform:
+                        Current = Transform;
                         break;
                     case Tool.Drag:
                         Current = Drag;
@@ -58,8 +58,8 @@ namespace DoAnLTTQ.Tools
             Picker = new Picker();
             Eraser = new Eraser();
             Select = new Select();
+            Transform = new Transform();
             Drag = new Drag();
-            Move = new Move();
             tool = Tool.Pen;
             Current = Pen;
         }

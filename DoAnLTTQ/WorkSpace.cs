@@ -15,7 +15,9 @@ namespace DoAnLTTQ
         public History History { get; set; }
         public DrawSpace DrawSpace { get; set; }
         public LayerContainer LayerContainer { get; set; }
+        public Rectangle Rect { get; set; }
         public Size BmpSize { get; set; }
+        public System.Drawing.Imaging.PixelFormat BmpPixelFormat { get; set; }
 
         string filename;
         public string FileName

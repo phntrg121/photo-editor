@@ -17,7 +17,7 @@ namespace DoAnLTTQ
         private int current;
         private Size layerSize;
         private Stack<KeyValuePair<int, LayerRow>> deletedRows;
-
+        
         public LayerContainer()
         {
             InitializeComponent();
@@ -58,18 +58,28 @@ namespace DoAnLTTQ
             }
         }
 
+        public Tools.Tools Tool { get; set; }
+
         public void ProcessUpdate(Bitmap processing, bool preview = false, bool filter = false)
         {
             if (processing != null)
             {
-                if (!preview) layers[current].Layer.Stacking();
+                if (!preview && Tool.Tool != DoAnLTTQ.Tool.Transform) layers[current].Layer.Stacking();
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
                 {
-                    if (preview || filter) g.Clear(Color.Transparent);
-                    g.DrawImageUnscaled(processing, 0, 0, layerSize.Width, layerSize.Height);
-                }
+                    if (preview || filter || Tool.Tool == DoAnLTTQ.Tool.Eraser)
+                        g.CompositingMode = CompositingMode.SourceCopy;
 
-                layers[current].Layer.Image.MakeTransparent(Color.FromArgb(255, 253, 254, 255));
+                    if (!Tool.Select.Selected)
+                    {
+                        g.DrawImageUnscaled(processing, 0, 0);
+                    }
+                    else
+                    {
+                        g.DrawImageUnscaled(processing, Tool.Select.FixedRect.X, Tool.Select.FixedRect.Y,
+                            Tool.Select.FixedRect.Width, Tool.Select.FixedRect.Height);
+                    }
+                }
             }
         }
 
@@ -82,32 +92,32 @@ namespace DoAnLTTQ
                 {
                     if (i == 0 || layers[i].Blend == Blend.Normal)
                     {
-                        g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0, layerSize.Width, layerSize.Height);
+                        g.DrawImageUnscaled(layers[i].Layer.ImageWithOpacity, 0, 0);
                     }
                     else if (layers[i].Blend == Blend.Multiply)
                     {
                         using (Bitmap bmp = BlendMode.Multiply(layers[i].Layer.ImageWithOpacity, source))
-                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                            g.DrawImageUnscaled(bmp, 0, 0);
                     }
                     else if (layers[i].Blend == Blend.Screen)
                     {
                         using (Bitmap bmp = BlendMode.Screen(layers[i].Layer.ImageWithOpacity, source))
-                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                            g.DrawImageUnscaled(bmp, 0, 0);
                     }
                     else if (layers[i].Blend == Blend.Darken)
                     {
                         using (Bitmap bmp = BlendMode.Darken(layers[i].Layer.ImageWithOpacity, source))
-                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                            g.DrawImageUnscaled(bmp, 0, 0);
                     }
                     else if (layers[i].Blend == Blend.Lighten)
                     {
                         using (Bitmap bmp = BlendMode.Lighten(layers[i].Layer.ImageWithOpacity, source))
-                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                            g.DrawImageUnscaled(bmp, 0, 0);
                     }
                     else if (layers[i].Blend == Blend.Overlay)
                     {
                         using (Bitmap bmp = BlendMode.Overlay(layers[i].Layer.ImageWithOpacity, source))
-                            g.DrawImageUnscaled(bmp, 0, 0, layerSize.Width, layerSize.Height);
+                            g.DrawImageUnscaled(bmp, 0, 0);
                     }
                 }
             }
@@ -224,7 +234,19 @@ namespace DoAnLTTQ
         {
             LayerRow newRow = new LayerRow();
             newRow.Text = layers[current].Text + "(Copy)";
-            newRow.Layer = new Layer(layers[current].Layer.Image, newRow.Text, true);
+
+            Bitmap bmp;
+            if (!Tool.Select.Selected) bmp = (Bitmap)layers[current].Layer.Image.Clone();
+            else
+            {
+                bmp = new Bitmap(layerSize.Width, layerSize.Height);
+                using (Graphics g = Graphics.FromImage(bmp))
+                    g.DrawImage(layers[current].Layer.Image, Tool.Select.Rect.X, Tool.Select.Rect.Y,
+                            Tool.Select.Rect, GraphicsUnit.Pixel);
+            }
+            newRow.Layer = new Layer(bmp, newRow.Text, true);
+            bmp.Dispose();
+
             current++;
             layers.Insert(current, newRow);
             panel.Controls.Add(newRow);

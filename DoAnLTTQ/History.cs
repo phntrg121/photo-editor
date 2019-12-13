@@ -12,7 +12,7 @@ namespace DoAnLTTQ
 {
     public enum HistoryEvent
     {
-        Draw, NewL, DeleteL, DuplicateL, MergeL, Lup, Ldown, Opacity, DrawFilter, Erase
+        Draw, NewL, DeleteL, DuplicateL, MergeL, Lup, Ldown, Opacity, DrawFilter, Erase, Clear, Fill, Transform, Blend
     }
     public partial class History : UserControl
     {
@@ -37,19 +37,19 @@ namespace DoAnLTTQ
                     eventName += "Erase";
                     break;
                 case HistoryEvent.DrawFilter:
-                    eventName += "Draw filter";
+                    eventName += "Filter";
                     break;
                 case HistoryEvent.NewL:
-                    eventName += "New layer";
+                    eventName += "New";
                     break;
                 case HistoryEvent.DuplicateL:
-                    eventName += "Duplicate layer";
+                    eventName += "Duplicate";
                     break;
                 case HistoryEvent.DeleteL:
-                    eventName += "Delete layer";
+                    eventName += "Delete";
                     break;
                 case HistoryEvent.MergeL:
-                    eventName += "Merge layer";
+                    eventName += "Merge";
                     break;
                 case HistoryEvent.Lup:
                     eventName += "Move up";
@@ -58,7 +58,19 @@ namespace DoAnLTTQ
                     eventName += "Move down";
                     break;
                 case HistoryEvent.Opacity:
-                    eventName += "Change opacity";
+                    eventName += "Opacity change";
+                    break;
+                case HistoryEvent.Clear:
+                    eventName += "Clear";
+                    break;
+                case HistoryEvent.Fill:
+                    eventName += "Fill";
+                    break;
+                case HistoryEvent.Transform:
+                    eventName += "Transform";
+                    break;
+                case HistoryEvent.Blend:
+                    eventName += "Blendmode change";
                     break;
                 default:
                     break;
@@ -79,6 +91,9 @@ namespace DoAnLTTQ
                 case HistoryEvent.Draw:
                 case HistoryEvent.DrawFilter:
                 case HistoryEvent.Erase:
+                case HistoryEvent.Clear:
+                case HistoryEvent.Fill:
+                case HistoryEvent.Transform:
                     events.Peek().Value.Layer.UnStacking();
                     break;
                 case HistoryEvent.NewL:
