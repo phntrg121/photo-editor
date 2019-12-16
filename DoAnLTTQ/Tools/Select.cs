@@ -42,6 +42,11 @@ namespace DoAnLTTQ.Tools
             FixedRect = Rectangle.Intersect(Rect, limitRect);
         }
 
+        public void Fix(Rectangle limitRect)
+        {
+            FixedRect = Rectangle.Intersect(Rect, limitRect);
+        }
+
         public void Moving(PointF p, Rectangle limitRect)
         {
             if(Movable)
