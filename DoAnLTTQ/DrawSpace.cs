@@ -281,7 +281,7 @@ namespace DoAnLTTQ
                         {
                             PointF p = Tools.Transform.RotatedPoint(ScaledPoint(e.Location));
 
-                            Tools.Transform.GetLocation(p);
+                            Tools.Transform.GetLocation(p, this);
 
                             if (Tools.Transform.InSmallRect(p)) Tools.Transform.Resizing = true;
                             else if (Tools.Transform.InRotateRect(p)) Tools.Transform.Rotating = true;

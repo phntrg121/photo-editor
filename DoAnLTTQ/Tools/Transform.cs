@@ -26,6 +26,7 @@ namespace DoAnLTTQ.Tools
         byte rotateRectIndex;
         float angle;
         float old_angle;
+        DrawSpace drawspace;
         public Bitmap Image { get; set; }
         public bool Moving { get; set; }
         public bool Resizing { get; set; }
@@ -66,6 +67,7 @@ namespace DoAnLTTQ.Tools
             InitializeComponent();
             rotate = new Matrix();
             angle = 0;
+            radioButton1.Checked = true;
         }
 
         public void Reset()
@@ -73,9 +75,10 @@ namespace DoAnLTTQ.Tools
             old_angle = angle = 0;
         }
 
-        public void GetLocation(PointF p)
+        public void GetLocation(PointF p , DrawSpace ds)
         {
             pos = p;
+            drawspace = ds;
         }
 
         public void Translate(PointF p)
@@ -96,33 +99,56 @@ namespace DoAnLTTQ.Tools
                 float x = p.X - pos.X;
                 float y = p.Y - pos.Y;
 
-                switch(smallRectIndex)
+                int X = baseR.X;
+                int Y = baseR.Y;
+                int W = baseR.Width;
+                int H = baseR.Height;
+
+                switch (smallRectIndex)
                 {
-                    case 0:
-                        Rect = new Rectangle(baseR.X, (int)(baseR.Y + y), baseR.Width, (int)(baseR.Height - y));
+                    case 0: // top
+                        Y = Math.Min((int)(baseR.Y + y), baseR.Y + baseR.Height);
+                        H = (int)(baseR.Height - y);
                         break;
-                    case 1:
-                        Rect = new Rectangle((int)(baseR.X + x), baseR.Y, (int)(baseR.Width - x), baseR.Height);
+                    case 1: // left
+                        X = Math.Min((int)(baseR.X + x), baseR.X + baseR.Width);
+                        W = (int)(baseR.Width - x);
                         break;
-                    case 2:
-                        Rect = new Rectangle(baseR.X, baseR.Y, (int)(baseR.Width + x), baseR.Height);
+                    case 2: // right
+                        W = (int)(baseR.Width + x);
+                        X = Math.Min(X, baseR.X + W);
                         break;
-                    case 3:
-                        Rect = new Rectangle(baseR.X, baseR.Y, baseR.Width, (int)(baseR.Height + y));
+                    case 3: // bottom
+                        H = (int)(baseR.Height + y);
+                        Y = Math.Min(Y, baseR.Y + H);
                         break;
-                    case 4:
-                        Rect = new Rectangle((int)(baseR.X + x), (int)(baseR.Y + y), (int)(baseR.Width - x), (int)(baseR.Height - y));
+                    case 4: // top left
+                        X = Math.Min((int)(baseR.X + x), baseR.X + baseR.Width);
+                        Y = Math.Min((int)(baseR.Y + y), baseR.Y + baseR.Height);
+                        W = (int)(baseR.Width - x);
+                        H = (int)(baseR.Height - y);
                         break;
-                    case 5:
-                        Rect = new Rectangle(baseR.X, (int)(baseR.Y + y), (int)(baseR.Width + x), (int)(baseR.Height - y));
+                    case 5: // top right
+                        Y = Math.Min((int)(baseR.Y + y), baseR.Y + baseR.Height);
+                        W = (int)(baseR.Width + x);
+                        X = Math.Min(X, baseR.X + W);
+                        H = (int)(baseR.Height - y);
                         break;
-                    case 6:
-                        Rect = new Rectangle((int)(baseR.X + x), baseR.Y, (int)(baseR.Width - x), (int)(baseR.Height + y));
+                    case 6: // bottom left
+                        X = Math.Min((int)(baseR.X + x), baseR.X + baseR.Width);
+                        W = (int)(baseR.Width - x);
+                        H = (int)(baseR.Height + y);
+                        Y = Math.Min(Y, baseR.Y + H);
                         break;
-                    case 7:
-                        Rect = new Rectangle(baseR.X, baseR.Y, (int)(baseR.Width + x), (int)(baseR.Height + y));
+                    case 7: // bottom right
+                        W = (int)(baseR.Width + x);
+                        X = Math.Min(X, baseR.X + W);
+                        H = (int)(baseR.Height + y);
+                        Y = Math.Min(Y, baseR.Y + H);
                         break;
                 }
+
+                Rect = new Rectangle(X, Y, Math.Abs(W), Math.Abs(H));
             }
         }
 
@@ -189,7 +215,14 @@ namespace DoAnLTTQ.Tools
             g.MultiplyTransform(rotate);
             rotate.Reset();
 
-            g.DrawImage(Image, rect.X, rect.Y, rect.Width, rect.Height);
+            using (Bitmap bmp = (Bitmap)Image.Clone())
+            {
+                if (radioButton2.Checked) bmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                else if (radioButton3.Checked) bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                else if (radioButton4.Checked) bmp.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+
+                g.DrawImage(bmp, rect.X, rect.Y, rect.Width, rect.Height);
+            }
             g.ResetTransform();
         }
 

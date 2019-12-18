@@ -342,7 +342,7 @@ namespace DoAnLTTQ
                     Bitmap bmp = null;
                     try
                     {
-                        var ptr = new IntPtr((long)gch.AddrOfPinnedObject() + 40);
+                        var ptr = new IntPtr((long)gch.AddrOfPinnedObject() + 52);
                         bmp = new Bitmap(width, height, width * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, ptr);
                         return new Bitmap(bmp);
                     }
@@ -372,6 +372,7 @@ namespace DoAnLTTQ
             Current.LayerContainer.Current.Layer.Stacking();
             tools.Transform.Image = bmp;
             Current.DrawSpace.TransformRectDisplay();
+            LayerMenuStripEnable(false);
             ColorMenuStripEnable(false);
             FilterMenuStripEnable(false);
             tools.Tool = Tool.Transform;
@@ -969,6 +970,7 @@ namespace DoAnLTTQ
                         Current.DrawSpace.TransformRectDisplay();
                     }
 
+                    LayerMenuStripEnable(false);
                     ColorMenuStripEnable(false);
                     FilterMenuStripEnable(false);
 
@@ -1034,10 +1036,15 @@ namespace DoAnLTTQ
 
             if(tools.Tool == Tool.Transform)
             {
-                if (tools.Select.Selected)
+                if (Current != null)
                 {
+                    LayerMenuStripEnable(true);
                     ColorMenuStripEnable(true);
                     FilterMenuStripEnable(true);
+                }
+
+                if (tools.Select.Selected)
+                {
                     Current.DrawSpace.TransformForceDraw();
                     tools.Transform.Image.Dispose();
                     Current.DrawSpace.ClearTop();
