@@ -45,6 +45,7 @@ namespace DoAnLTTQ
                 }
             }
         }
+        public bool Working { get; set; }
         public bool Saved { get; set; }
         public bool Stored { get; set; }
         public WorkSpace(DrawSpace ds, LayerContainer lc, History h)
@@ -55,6 +56,7 @@ namespace DoAnLTTQ
             DrawSpace = ds;
             LayerContainer = lc;
             History = h;
+            Working = false;
             Saved = true;
             Stored = false;
             filepath = filename = "";

@@ -166,7 +166,6 @@ namespace DoAnLTTQ
 
         #region File menu
 
-        private bool working = false;
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
@@ -182,7 +181,7 @@ namespace DoAnLTTQ
                     DSUpdate();
                     Current.Saved = true;
                     Current.Stored = true;
-                    working = true;
+                    Current.Working = true;
                     saveAsToolStripMenuItem.Enabled = true;
                     closeToolStripMenuItem.Enabled = true;
                     bmp.Dispose();
@@ -205,7 +204,7 @@ namespace DoAnLTTQ
                     Current.Parent.Text = Current.FileName;
                     DSUpdate();
                     Current.Saved = true;
-                    working = true;
+                    Current.Working = true;
                     saveAsToolStripMenuItem.Enabled = true;
                     closeToolStripMenuItem.Enabled = true;
                     bmp.Dispose();
@@ -215,7 +214,7 @@ namespace DoAnLTTQ
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(working)
+            if(Current.Working)
             {
                 if (Current.Stored)
                 {
@@ -232,7 +231,7 @@ namespace DoAnLTTQ
         }
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (working)
+            if (Current.Working)
             {
                 using (SaveFileDialog sfd = new SaveFileDialog())
                 {
@@ -254,7 +253,7 @@ namespace DoAnLTTQ
 
         private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (working)
+            if (Current.Working)
             {
                 if(!Current.Saved)
                 {
@@ -280,7 +279,7 @@ namespace DoAnLTTQ
                     ColorMenuStripEnable(false);
                     FilterMenuStripEnable(false);
                     ViewMenuStripEnable(false);
-                    working = false;
+                    Current.Working = false;
                     closeToolStripMenuItem.Enabled = false;
                     saveToolStripMenuItem.Enabled = false;
                     saveAsToolStripMenuItem.Enabled = false;
@@ -303,16 +302,83 @@ namespace DoAnLTTQ
         private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Current == null) return;
+            if (tools.Select.Selected)
+            {
+                Bitmap bmp;
+                bmp = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.FixedRect, Current.BmpPixelFormat);
+                Clipboard.SetImage(bmp);
+            }
+        }
+
+        
+
+        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Current == null) return;
+            if (tools.Select.Selected)
+            {
+                Bitmap bmp;
+                bmp = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.FixedRect, Current.BmpPixelFormat);
+                Clipboard.SetImage(bmp);
+                Current.LayerContainer.Current.Layer.Stacking();
+                tools.Eraser.MakeTransparent(Current.LayerContainer.Current.Layer.Image, tools.Select.FixedRect);
+                DSUpdate();
+                Current.History.Add(HistoryEvent.Erase, Current.LayerContainer.Current);
+            }
+        }
+
+        private Image GetImageFromClipboard()
+        {
+            if (Clipboard.GetDataObject() == null) return null;
+            if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Dib))
+            {
+                var dib = ((System.IO.MemoryStream)Clipboard.GetData(DataFormats.Dib)).ToArray();
+                var width = BitConverter.ToInt32(dib, 4);
+                var height = BitConverter.ToInt32(dib, 8);
+                var bpp = BitConverter.ToInt16(dib, 14);
+                if (bpp == 32)
+                {
+                    var gch = System.Runtime.InteropServices.GCHandle.Alloc(dib, System.Runtime.InteropServices.GCHandleType.Pinned);
+                    Bitmap bmp = null;
+                    try
+                    {
+                        var ptr = new IntPtr((long)gch.AddrOfPinnedObject() + 52);
+                        bmp = new Bitmap(width, height, width * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, ptr);
+                        return new Bitmap(bmp);
+                    }
+                    finally
+                    {
+                        gch.Free();
+                        if (bmp != null) bmp.Dispose();
+                    }
+                }
+            }
+            return Clipboard.ContainsImage() ? Clipboard.GetImage() : null;
         }
 
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Current == null) return;
-        }
-
-        private void CutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (Current == null) return;
+            Bitmap bmp = (Bitmap)GetImageFromClipboard();
+            if (bmp == null) return;
+            bmp.RotateFlip(RotateFlipType.Rotate180FlipX);
+            UncheckAll();
+            tools.Select.Selected = true;
+            tools.Select.Rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            tools.Select.Fix(Current.Rect);
+            tools.Transform.Done = false;
+            tools.Transform.Rect = tools.Select.Rect;
+            tools.Transform.StartPoint = tools.Select.Rect.Location;
+            Current.LayerContainer.Current.Layer.Stacking();
+            tools.Transform.Image = bmp;
+            Current.DrawSpace.TransformRectDisplay();
+            LayerMenuStripEnable(false);
+            ColorMenuStripEnable(false);
+            FilterMenuStripEnable(false);
+            tools.Tool = Tool.Transform;
+            transformStripButton.Checked = true;
+            transformStripButton.CheckState = CheckState.Checked;
+            ChangeTool();
         }
 
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -598,7 +664,7 @@ namespace DoAnLTTQ
 
         #endregion
 
-        #region Tool menu
+        #region Help menu
         private void AboutPhotoEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
         }
@@ -747,7 +813,7 @@ namespace DoAnLTTQ
                 case Tool.Transform:
                     if(!tools.Select.Selected && tools.Transform.Done)
                     {
-                        DSProcessUpdate(HistoryEvent.Draw);
+                        DSProcessUpdate(HistoryEvent.Transform);
                         tools.Transform.Reset();
                         tools.Transform.Done = false;
                     }
@@ -904,12 +970,13 @@ namespace DoAnLTTQ
                         Current.DrawSpace.TransformRectDisplay();
                     }
 
+                    LayerMenuStripEnable(false);
                     ColorMenuStripEnable(false);
                     FilterMenuStripEnable(false);
 
                     tools.Tool = Tool.Transform;
                 }
-                else if (button.Text == toolStripButton.Text)
+                else if (button.Text == selectStripButton.Text)
                 {
                     tools.Tool = Tool.Select;
                 }
@@ -969,24 +1036,26 @@ namespace DoAnLTTQ
 
             if(tools.Tool == Tool.Transform)
             {
+                if (Current != null)
+                {
+                    LayerMenuStripEnable(true);
+                    ColorMenuStripEnable(true);
+                    FilterMenuStripEnable(true);
+                }
+
                 if (tools.Select.Selected)
                 {
-                    tools.Select.Selected = false;
+                    Current.DrawSpace.TransformForceDraw();
                     tools.Transform.Image.Dispose();
                     Current.DrawSpace.ClearTop();
                     tools.Transform.Reset();
+                    DS_MouseUp(null, null);
                 }
             }
         }
 
         private void ChangeTool()
         {
-            if (tools.Tool != Tool.Transform)
-            {
-                ColorMenuStripEnable(true);
-                FilterMenuStripEnable(true);
-            }
-
             if (propertiesPanel.Controls.Count !=0)
             {
                 propertiesPanel.Controls.Remove(propertiesPanel.Controls[0]);
@@ -1010,7 +1079,6 @@ namespace DoAnLTTQ
             Current.LayerContainer.Tool = tools;
             layerPanel.Controls.Add(Current.LayerContainer);
             blendModeBox.SelectedIndex = 0;
-            BlendModeBox_Select();
             opacityVal = 100f;
             OpacityBarUpdate();
             LayerButtonCheck();
@@ -1041,7 +1109,6 @@ namespace DoAnLTTQ
                         Current.LayerContainer.AddLayerRow(ref layer);
                         LayerButtonCheck();
                         blendModeBox.SelectedIndex = 0;
-                        BlendModeBox_Select();
                         opacityVal = Current.LayerContainer.Current.Layer.Opacity;
                         OpacityBarUpdate();
                         DSProcessUpdate(HistoryEvent.NewL);
@@ -1195,58 +1262,23 @@ namespace DoAnLTTQ
 
         private void BlendModeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BlendModeBox_Select();
-            DSUpdate();
-        }
-
-        private void BlendModeBox_Select()
-        {
-            switch(blendModeBox.SelectedIndex)
+            if (!blendboxupdate)
             {
-                case 0:
-                    Current.LayerContainer.Current.Blend = Blend.Normal;
-                    break;
-                case 1:
-                    Current.LayerContainer.Current.Blend = Blend.Multiply;
-                    break;
-                case 2:
-                    Current.LayerContainer.Current.Blend = Blend.Screen;
-                    break;
-                case 3:
-                    Current.LayerContainer.Current.Blend = Blend.Darken;
-                    break;
-                case 4:
-                    Current.LayerContainer.Current.Blend = Blend.Lighten;
-                    break;
-                case 5:
-                    Current.LayerContainer.Current.Blend = Blend.Overlay;
-                    break;
+                Current.LayerContainer.Current.Blend = (Blend)blendModeBox.SelectedIndex;
+                DSUpdate();
+                if (Current.LayerContainer.Current.BlendCount == 1)
+                    return;
+
+                Current.History.Add(HistoryEvent.Blend, Current.LayerContainer.Current);
             }
         }
 
+        bool blendboxupdate = false;
         public void BlendModeBoxUpdate(Blend mode)
         {
-            switch (mode)
-            {
-                case Blend.Normal:
-                    blendModeBox.SelectedIndex = 0;
-                    break;
-                case Blend.Multiply:
-                    blendModeBox.SelectedIndex = 1;
-                    break;
-                case Blend.Screen:
-                    blendModeBox.SelectedIndex = 2;
-                    break;
-                case Blend.Darken:
-                    blendModeBox.SelectedIndex = 3;
-                    break;
-                case Blend.Lighten:
-                    blendModeBox.SelectedIndex = 4;
-                    break;
-                case Blend.Overlay:
-                    blendModeBox.SelectedIndex = 5;
-                    break;
-            }
+            blendboxupdate = true;
+            blendModeBox.Text = mode.ToString("G");
+            blendboxupdate = false;
         }
 
         #endregion

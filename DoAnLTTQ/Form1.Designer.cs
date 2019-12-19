@@ -107,7 +107,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.mToolStrip = new System.Windows.Forms.ToolStrip();
             this.transformStripButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.selectStripButton = new System.Windows.Forms.ToolStripButton();
             this.dragStripButton = new System.Windows.Forms.ToolStripButton();
             this.leftPanel = new System.Windows.Forms.Panel();
             this.colorPanel = new System.Windows.Forms.Panel();
@@ -245,7 +245,7 @@
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl C";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
@@ -253,7 +253,7 @@
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl V";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.PasteToolStripMenuItem_Click);
             // 
@@ -261,7 +261,7 @@
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
             this.cutToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl X";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.cutToolStripMenuItem.Text = "Cut";
             this.cutToolStripMenuItem.Click += new System.EventHandler(this.CutToolStripMenuItem_Click);
             // 
@@ -269,7 +269,7 @@
             // 
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl Z";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             this.undoToolStripMenuItem.Click += new System.EventHandler(this.UndoToolStripMenuItem_Click);
             // 
@@ -692,7 +692,6 @@
             // 
             this.blendModeBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.blendModeBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.blendModeBox.FormattingEnabled = true;
             this.blendModeBox.Items.AddRange(new object[] {
             "Normal",
             "Multiply",
@@ -897,7 +896,7 @@
             this.mToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.mToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.transformStripButton,
-            this.toolStripButton,
+            this.selectStripButton,
             this.dragStripButton});
             this.mToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mToolStrip.Name = "mToolStrip";
@@ -916,15 +915,15 @@
             this.transformStripButton.Size = new System.Drawing.Size(22, 20);
             this.transformStripButton.Text = "Transform";
             // 
-            // toolStripButton
+            // selectStripButton
             // 
-            this.toolStripButton.AutoSize = false;
-            this.toolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton.Image")));
-            this.toolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton.Name = "toolStripButton";
-            this.toolStripButton.Size = new System.Drawing.Size(22, 20);
-            this.toolStripButton.Text = "Select";
+            this.selectStripButton.AutoSize = false;
+            this.selectStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.selectStripButton.Image = ((System.Drawing.Image)(resources.GetObject("selectStripButton.Image")));
+            this.selectStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.selectStripButton.Name = "selectStripButton";
+            this.selectStripButton.Size = new System.Drawing.Size(22, 20);
+            this.selectStripButton.Text = "Select";
             // 
             // dragStripButton
             // 
@@ -1225,7 +1224,7 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripButton transformStripButton;
-        private System.Windows.Forms.ToolStripButton toolStripButton;
+        private System.Windows.Forms.ToolStripButton selectStripButton;
         private System.Windows.Forms.ToolStripButton dragStripButton;
         private System.Windows.Forms.Panel leftPanel;
         private System.Windows.Forms.PictureBox mainColorPic;

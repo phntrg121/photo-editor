@@ -123,6 +123,11 @@ namespace DoAnLTTQ
                     form.OpacityBarUpdate();
                     form.DSUpdate();
                     break;
+                case HistoryEvent.Blend:
+                    events.Peek().Value.RestoreBlend();
+                    form.BlendModeBoxUpdate(events.Peek().Value.Blend);
+                    form.DSUpdate();
+                    break;
                 default:
                     break;
             }

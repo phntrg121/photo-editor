@@ -200,7 +200,7 @@ namespace DoAnLTTQ
             gProcess.ResetTransform();
         }
 
-        void SelectRectDisplay()
+        public void SelectRectDisplay()
         {
             gTop.Clear(Color.Transparent);
             gTop.MultiplyTransform(ScaleMatrix);
@@ -222,6 +222,14 @@ namespace DoAnLTTQ
             Tools.Transform.DrawRect(gTop);
             gTop.ResetTransform();
             topBox.Invalidate();
+        }
+
+        public void TransformForceDraw()
+        {
+            Tools.Select.Selected = false;
+            Tools.Transform.Done = true;
+            Tools.Transform.DrawImg(g);
+            gProcess.Clear(Color.Transparent);
         }
 
         public void Mouse_Down(object sender, MouseEventArgs e)
@@ -273,16 +281,14 @@ namespace DoAnLTTQ
                         {
                             PointF p = Tools.Transform.RotatedPoint(ScaledPoint(e.Location));
 
-                            Tools.Transform.GetLocation(p);
+                            Tools.Transform.GetLocation(p, this);
 
                             if (Tools.Transform.InSmallRect(p)) Tools.Transform.Resizing = true;
                             else if (Tools.Transform.InRotateRect(p)) Tools.Transform.Rotating = true;
                             else if (Tools.Transform.InRect(p)) Tools.Transform.Moving = true;
                             else
                             {
-                                Tools.Select.Selected = false;
-                                Tools.Transform.Done = true;
-                                Tools.Transform.DrawImg(g);
+                                TransformForceDraw();
                             }
                         }
                     }

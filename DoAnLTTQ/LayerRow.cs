@@ -14,9 +14,14 @@ namespace DoAnLTTQ
     {
         private Layer layer;
         Blend blend;
+        Stack<Blend> blendlist;
         public LayerRow(bool visible = true)
         {
             InitializeComponent();
+
+            blend = Blend.Normal;
+            blendlist = new Stack<Blend>();
+
             if (visible)
                 pictureBox1.Image = Properties.Resources.visible;
             else
@@ -32,20 +37,22 @@ namespace DoAnLTTQ
             set
             {
                 blend = value;
-                if (value == Blend.Normal)
-                    label3.Text = "Normal";
-                else if (value == Blend.Multiply)
-                    label3.Text = "Multiply";
-                else if (value == Blend.Screen)
-                    label3.Text = "Screen";
-                else if (value == Blend.Darken)
-                    label3.Text = "Darken";
-                else if (value == Blend.Lighten)
-                    label3.Text = "Lighten";
-                else if (value == Blend.Overlay)
-                    label3.Text = "Overlay";
+                blendlist.Push(blend);
+                label3.Text = value.ToString("G");
             }
         }
+
+        public void RestoreBlend()
+        {
+            blendlist.Pop();
+
+            if (blendlist.Count != 0)
+                blend = blendlist.Peek();
+            else blend = Blend.Normal;
+
+            label3.Text = Blend.ToString("G");
+        }
+        public int BlendCount => blendlist.Count();
 
         public Layer Layer
         {
@@ -101,7 +108,7 @@ namespace DoAnLTTQ
             form.LayerButtonCheck();
             form.opacityVal = layer.Opacity;
             form.OpacityBarUpdate();
-            form.BlendModeBoxUpdate(blend);
+            form.BlendModeBoxUpdate(Blend);
         }
     }
 }
