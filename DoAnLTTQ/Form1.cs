@@ -121,7 +121,27 @@ namespace DoAnLTTQ
                 //
                 //tool
                 //
-
+                case Keys.T:
+                    TransformStripButton_Click(transformStripButton, null);
+                    return true;
+                case Keys.A:
+                    SelectStripButton_Click(selectStripButton, null);
+                    return true;
+                case Keys.H:
+                    DragStripButton_Click(dragStripButton, null);
+                    return true;
+                case Keys.B:
+                    PenStripButton_Click(penStripButton, null);
+                    return true;
+                case Keys.E:
+                    EraserStripButton_Click(eraserStripButton, null);
+                    return true;
+                case Keys.P:
+                    PickerStripButton_Click(pickerStripButton, null);
+                    return true;
+                case Keys.S:
+                    ShapeStripButton_Click(shapeStripButton, null);
+                    return true;
                 //
                 //layer
                 //
@@ -375,7 +395,7 @@ namespace DoAnLTTQ
             LayerMenuStripEnable(false);
             ColorMenuStripEnable(false);
             FilterMenuStripEnable(false);
-            tools.Tool = Tool.Transform;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Transform;
             transformStripButton.Checked = true;
             transformStripButton.CheckState = CheckState.Checked;
             ChangeTool();
@@ -391,6 +411,35 @@ namespace DoAnLTTQ
         #endregion
 
         #region Tool menu
+
+        private void ToolsToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem item = e.ClickedItem;
+            switch (item.Text)
+            {
+                case "Transform":
+                    TransformStripButton_Click(transformStripButton, null);
+                    break;
+                case "Select":
+                    SelectStripButton_Click(selectStripButton, null);
+                    break;
+                case "Drag":
+                    DragStripButton_Click(dragStripButton, null);
+                    break;
+                case "Pen":
+                    PenStripButton_Click(penStripButton, null);
+                    break;
+                case "Eraser":
+                    EraserStripButton_Click(eraserStripButton, null);
+                    break;
+                case "Color Picker":
+                    PickerStripButton_Click(pickerStripButton, null);
+                    break;
+                case "Shape":
+                    ShapeStripButton_Click(shapeStripButton, null);
+                    break;
+            }
+        }
 
         #endregion
 
@@ -533,6 +582,50 @@ namespace DoAnLTTQ
                 System.Drawing.Imaging.ColorMatrix matrix = new System.Drawing.Imaging.ColorMatrix();
                 matrix.Matrix00 = matrix.Matrix11 = matrix.Matrix22 = -1f;
                 matrix.Matrix33 = matrix.Matrix40 = matrix.Matrix41 = matrix.Matrix42 = matrix.Matrix44 = 1f;
+
+                using (System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes())
+                {
+                    attributes.SetColorMatrix(matrix);
+                    g.DrawImage(Current.LayerContainer.Current.Layer.Image, new Rectangle(0, 0, bmp.Width, bmp.Height),
+                        x, y, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
+                }
+
+                Current.DrawSpace.ProcessBoxImage = new Bitmap(bmp);
+            }
+
+            bmp.Dispose();
+
+            DSProcessUpdate(HistoryEvent.DrawFilter);
+            DSUpdate();
+        }
+
+        private void GrayscaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp;
+            float x, y;
+            if (!tools.Select.Selected)
+            {
+                bmp = (Bitmap)Current.DrawSpace.ProcessBoxImage.Clone();
+                x = y = 0;
+            }
+            else
+            {
+                bmp = (Current.DrawSpace.ProcessBoxImage as Bitmap).Clone(tools.Select.FixedRect, Current.BmpPixelFormat);
+                x = tools.Select.FixedRect.X;
+                y = tools.Select.FixedRect.Y;
+            }
+
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                System.Drawing.Imaging.ColorMatrix matrix = new System.Drawing.Imaging.ColorMatrix(
+                   new float[][]
+                   {
+                         new float[] {.3f, .3f, .3f, 0, 0},
+                         new float[] {.59f, .59f, .59f, 0, 0},
+                         new float[] {.11f, .11f, .11f, 0, 0},
+                         new float[] {0, 0, 0, 1, 0},
+                         new float[] {0, 0, 0, 0, 1}
+                   });
 
                 using (System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes())
                 {
@@ -785,7 +878,7 @@ namespace DoAnLTTQ
 
         private void DS_MouseDown(object sender, MouseEventArgs e)
         {
-            if (tools.Tool == Tool.Picker)
+            if (tools.Tool == DoAnLTTQ.Tools.Tool.Picker)
             {
                 mainColorPic.BackColor = tools.Picker.Color;
             }
@@ -804,19 +897,22 @@ namespace DoAnLTTQ
         {
             switch(tools.Tool)
             {
-                case Tool.Pen:
+                case DoAnLTTQ.Tools.Tool.Pen:
                     DSProcessUpdate(HistoryEvent.Draw);
                     break;
-                case Tool.Eraser:
+                case DoAnLTTQ.Tools.Tool.Eraser:
                     DSProcessUpdate(HistoryEvent.Erase);
                     break;
-                case Tool.Transform:
+                case DoAnLTTQ.Tools.Tool.Transform:
                     if(!tools.Select.Selected && tools.Transform.Done)
                     {
                         DSProcessUpdate(HistoryEvent.Transform);
                         tools.Transform.Reset();
                         tools.Transform.Done = false;
                     }
+                    break;
+                case DoAnLTTQ.Tools.Tool.Shape:
+                    DSProcessUpdate(HistoryEvent.Draw);
                     break;
             }
 
@@ -948,72 +1044,85 @@ namespace DoAnLTTQ
 
         #region ToolPanel
 
-        private void MToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void TransformStripButton_Click(object sender, EventArgs e)
         {
             UncheckAll();
-            if (e.ClickedItem.GetType() == typeof(ToolStripButton))
-            {
-                ToolStripButton button = (ToolStripButton)e.ClickedItem;
-                button.Checked = true;
-                button.CheckState = CheckState.Checked;
-                if (button.Text == transformStripButton.Text)
-                {
-                    if(tools.Select.Selected)
-                    {
-                        tools.Transform.Done = false;
-                        tools.Transform.Rect = tools.Select.Rect;
-                        tools.Transform.StartPoint = tools.Select.Rect.Location;
-                        tools.Transform.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.FixedRect, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                        Current.LayerContainer.Current.Layer.Stacking();
-                        tools.Eraser.MakeTransparent(Current.LayerContainer.Current.Layer.Image, tools.Select.FixedRect);
-                        DSUpdate();
-                        Current.DrawSpace.TransformRectDisplay();
-                    }
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
 
-                    LayerMenuStripEnable(false);
-                    ColorMenuStripEnable(false);
-                    FilterMenuStripEnable(false);
-
-                    tools.Tool = Tool.Transform;
-                }
-                else if (button.Text == selectStripButton.Text)
-                {
-                    tools.Tool = Tool.Select;
-                }
-                else if (button.Text == dragStripButton.Text)
-                {
-                    tools.Tool = Tool.Drag;
-                }
-            }
-            ChangeTool();
-        }
-        private void PToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            UncheckAll();
-            if (e.ClickedItem.GetType() == typeof(ToolStripButton))
+            if (tools.Select.Selected)
             {
-                ToolStripButton button = (ToolStripButton)e.ClickedItem;
-                button.Checked = true;
-                button.CheckState = CheckState.Checked;
-                if (button.Text == penStripButton.Text)
-                {
-                    tools.Tool = Tool.Pen;
-                }
-                else if (button.Text == eraserStripButton.Text)
-                {
-                    tools.Tool = Tool.Eraser;
-                }
-                else if (button.Text == pickerStripButton.Text)
-                {
-                    tools.Tool = Tool.Picker;
-                }
+                tools.Transform.Done = false;
+                tools.Transform.Rect = tools.Select.Rect;
+                tools.Transform.StartPoint = tools.Select.Rect.Location;
+                tools.Transform.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.FixedRect, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                Current.LayerContainer.Current.Layer.Stacking();
+                tools.Eraser.MakeTransparent(Current.LayerContainer.Current.Layer.Image, tools.Select.FixedRect);
+                DSUpdate();
+                Current.DrawSpace.TransformRectDisplay();
             }
+
+            LayerMenuStripEnable(false);
+            ColorMenuStripEnable(false);
+            FilterMenuStripEnable(false);
+
+            tools.Tool = DoAnLTTQ.Tools.Tool.Transform;
+
             ChangeTool();
         }
 
-        private void SToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void SelectStripButton_Click(object sender, EventArgs e)
         {
             UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Select;
+            ChangeTool();
+        }
+
+        private void DragStripButton_Click(object sender, EventArgs e)
+        {
+            UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Drag;
+            ChangeTool();
+        }
+
+        private void PenStripButton_Click(object sender, EventArgs e)
+        {
+            UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Pen;
+            ChangeTool();
+        }
+
+        private void EraserStripButton_Click(object sender, EventArgs e)
+        {
+            UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Eraser;
+            ChangeTool();
+        }
+
+        private void PickerStripButton_Click(object sender, EventArgs e)
+        {
+            UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Picker;
+            ChangeTool();
+        }
+
+        private void ShapeStripButton_Click(object sender, EventArgs e)
+        {
+            UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Shape;
+            ChangeTool();
         }
 
         private void UncheckAll()
@@ -1034,7 +1143,7 @@ namespace DoAnLTTQ
                 button.CheckState = CheckState.Unchecked;
             }
 
-            if(tools.Tool == Tool.Transform)
+            if(tools.Tool == DoAnLTTQ.Tools.Tool.Transform)
             {
                 if (Current != null)
                 {
@@ -1389,6 +1498,7 @@ namespace DoAnLTTQ
             comboBox1.Text = ((int)(Current.DrawSpace.Zoom * 100)).ToString() + '%';
             DSUpdate();
         }
+
 
         #endregion
 

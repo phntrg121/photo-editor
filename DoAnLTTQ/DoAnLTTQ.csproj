@@ -153,6 +153,18 @@
     <Compile Include="Tools\Eraser.Designer.cs">
       <DependentUpon>Eraser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Line.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\Line.Designer.cs">
+      <DependentUpon>Line.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Shape.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\Shape.Designer.cs">
+      <DependentUpon>Shape.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Transform.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -254,6 +266,9 @@
     <EmbeddedResource Include="Tools\Select.resx">
       <DependentUpon>Select.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Shape.resx">
+      <DependentUpon>Shape.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\Transform.resx">
       <DependentUpon>Transform.cs</DependentUpon>
     </EmbeddedResource>
@@ -338,6 +353,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\color_wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shape.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

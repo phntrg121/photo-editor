@@ -8,6 +8,11 @@ using System.Drawing;
 
 namespace DoAnLTTQ.Tools
 {
+    public enum Tool
+    {
+        Pen, Eraser, Picker, Select, Drag, Transform, Shape
+    }
+
     public class Tools
     {
         private Tool tool;
@@ -17,6 +22,7 @@ namespace DoAnLTTQ.Tools
         public Select Select;
         public Drag Drag;
         public Transform Transform;
+        public Shape Shape;
 
         public Tool Tool
         {
@@ -44,6 +50,9 @@ namespace DoAnLTTQ.Tools
                     case Tool.Drag:
                         Current = Drag;
                         break;
+                    case Tool.Shape:
+                        Current = Shape;
+                        break;
                     default:
                         Current = null;
                         break;
@@ -60,6 +69,7 @@ namespace DoAnLTTQ.Tools
             Select = new Select();
             Transform = new Transform();
             Drag = new Drag();
+            Shape = new Shape();
             tool = Tool.Pen;
             Current = Pen;
         }
@@ -69,6 +79,7 @@ namespace DoAnLTTQ.Tools
             set
             {
                 Pen.Color = value;
+                Shape.Color = value;
             }
         }
 

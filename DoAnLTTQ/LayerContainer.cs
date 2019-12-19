@@ -64,10 +64,10 @@ namespace DoAnLTTQ
         {
             if (processing != null)
             {
-                if (!preview && Tool.Tool != DoAnLTTQ.Tool.Transform) layers[current].Layer.Stacking();
+                if (!preview && Tool.Tool != DoAnLTTQ.Tools.Tool.Transform) layers[current].Layer.Stacking();
                 using (Graphics g = Graphics.FromImage(layers[current].Layer.Image))
                 {
-                    if (preview || filter || Tool.Tool == DoAnLTTQ.Tool.Eraser)
+                    if (preview || filter || Tool.Tool == DoAnLTTQ.Tools.Tool.Eraser)
                         g.CompositingMode = CompositingMode.SourceCopy;
 
                     if (!Tool.Select.Selected)
