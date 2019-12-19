@@ -142,6 +142,12 @@ namespace DoAnLTTQ
                 case Keys.S:
                     ShapeStripButton_Click(shapeStripButton, null);
                     return true;
+                case Keys.L:
+                    LineStripButton_Click(lineStripButton, null);
+                    return true;
+                case Keys.F:
+                    BucketStripButton_Click(bucketStripButton, null);
+                    return true;
                 //
                 //layer
                 //
@@ -437,6 +443,12 @@ namespace DoAnLTTQ
                     break;
                 case "Shape":
                     ShapeStripButton_Click(shapeStripButton, null);
+                    break;
+                case "Line":
+                    LineStripButton_Click(lineStripButton, null);
+                    break;
+                case "Bucket":
+                    BucketStripButton_Click(bucketStripButton, null);
                     break;
             }
         }
@@ -912,6 +924,14 @@ namespace DoAnLTTQ
                     }
                     break;
                 case DoAnLTTQ.Tools.Tool.Shape:
+                    if (tools.Shape.Drawed)
+                        DSProcessUpdate(HistoryEvent.Draw);
+                    break;
+                case DoAnLTTQ.Tools.Tool.Line:
+                    if (tools.Line.Drawed)
+                        DSProcessUpdate(HistoryEvent.Draw);
+                    break;
+                case DoAnLTTQ.Tools.Tool.Bucket:
                     DSProcessUpdate(HistoryEvent.Draw);
                     break;
             }
@@ -1122,6 +1142,24 @@ namespace DoAnLTTQ
             (sender as ToolStripButton).Checked = true;
             (sender as ToolStripButton).CheckState = CheckState.Checked;
             tools.Tool = DoAnLTTQ.Tools.Tool.Shape;
+            ChangeTool();
+        }
+
+        private void LineStripButton_Click(object sender, EventArgs e)
+        {
+            UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Line;
+            ChangeTool();
+        }
+
+        private void BucketStripButton_Click(object sender, EventArgs e)
+        {
+            UncheckAll();
+            (sender as ToolStripButton).Checked = true;
+            (sender as ToolStripButton).CheckState = CheckState.Checked;
+            tools.Tool = DoAnLTTQ.Tools.Tool.Bucket;
             ChangeTool();
         }
 

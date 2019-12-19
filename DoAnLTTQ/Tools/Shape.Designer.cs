@@ -34,9 +34,9 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.sizeBar = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.sizeBar = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sizeBar)).BeginInit();
             this.SuspendLayout();
@@ -45,7 +45,7 @@
             // 
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 19);
+            this.groupBox1.Location = new System.Drawing.Point(3, 29);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(165, 77);
             this.groupBox1.TabIndex = 0;
@@ -80,49 +80,53 @@
             this.comboBox1.Items.AddRange(new object[] {
             "Border",
             "Solid"});
-            this.comboBox1.Location = new System.Drawing.Point(50, 102);
+            this.comboBox1.Location = new System.Drawing.Point(39, 112);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(118, 21);
+            this.comboBox1.Size = new System.Drawing.Size(129, 21);
             this.comboBox1.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(149, 0);
+            this.label3.Location = new System.Drawing.Point(146, 10);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(13, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "5";
+            this.label3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Bar_MouseDown);
+            this.label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Bar_MouseDown);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(27, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Size";
+            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Bar_MouseDown);
+            this.label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Bar_MouseDown);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 115);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(30, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Style";
             // 
             // sizeBar
             // 
             this.sizeBar.BackColor = System.Drawing.Color.Gainsboro;
             this.sizeBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.sizeBar.Location = new System.Drawing.Point(63, 3);
+            this.sizeBar.Location = new System.Drawing.Point(60, 13);
             this.sizeBar.Name = "sizeBar";
             this.sizeBar.Size = new System.Drawing.Size(80, 10);
             this.sizeBar.TabIndex = 8;
             this.sizeBar.TabStop = false;
             this.sizeBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Bar_MouseDown);
             this.sizeBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Bar_MouseDown);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(27, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Size";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 105);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(30, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Style";
             // 
             // Shape
             // 

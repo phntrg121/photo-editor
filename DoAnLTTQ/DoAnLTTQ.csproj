@@ -141,6 +141,12 @@
     <Compile Include="Layer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Bucket.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Tools\Bucket.Designer.cs">
+      <DependentUpon>Bucket.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Drag.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -257,6 +263,9 @@
     <EmbeddedResource Include="Tools\Eraser.resx">
       <DependentUpon>Eraser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\Line.resx">
+      <DependentUpon>Line.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\PenTool.resx">
       <DependentUpon>PenTool.cs</DependentUpon>
     </EmbeddedResource>
@@ -356,6 +365,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bucket.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\line.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

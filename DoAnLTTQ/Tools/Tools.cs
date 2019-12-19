@@ -10,7 +10,7 @@ namespace DoAnLTTQ.Tools
 {
     public enum Tool
     {
-        Pen, Eraser, Picker, Select, Drag, Transform, Shape
+        Pen, Eraser, Picker, Select, Drag, Transform, Shape, Line, Bucket
     }
 
     public class Tools
@@ -23,7 +23,8 @@ namespace DoAnLTTQ.Tools
         public Drag Drag;
         public Transform Transform;
         public Shape Shape;
-
+        public Bucket Bucket;
+        public Line Line;
         public Tool Tool
         {
             get => tool;
@@ -53,6 +54,12 @@ namespace DoAnLTTQ.Tools
                     case Tool.Shape:
                         Current = Shape;
                         break;
+                    case Tool.Line:
+                        Current = Line;
+                        break;
+                    case Tool.Bucket:
+                        Current = Bucket;
+                        break;
                     default:
                         Current = null;
                         break;
@@ -70,6 +77,8 @@ namespace DoAnLTTQ.Tools
             Transform = new Transform();
             Drag = new Drag();
             Shape = new Shape();
+            Line = new Line();
+            Bucket = new Bucket();
             tool = Tool.Pen;
             Current = Pen;
         }
@@ -80,6 +89,8 @@ namespace DoAnLTTQ.Tools
             {
                 Pen.Color = value;
                 Shape.Color = value;
+                Line.Color = value;
+                Bucket.Color = value;
             }
         }
 

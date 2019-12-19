@@ -50,6 +50,8 @@
             this.eraserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorPickerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shapeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bucketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoomOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,12 +129,12 @@
             this.propertiesPanel = new System.Windows.Forms.Panel();
             this.sToolStrip = new System.Windows.Forms.ToolStrip();
             this.shapeStripButton = new System.Windows.Forms.ToolStripButton();
-            this.lineStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.bucketStripButton = new System.Windows.Forms.ToolStripButton();
+            this.lineStripButton = new System.Windows.Forms.ToolStripButton();
             this.pToolStrip = new System.Windows.Forms.ToolStrip();
             this.penStripButton = new System.Windows.Forms.ToolStripButton();
             this.eraserStripButton = new System.Windows.Forms.ToolStripButton();
             this.pickerStripButton = new System.Windows.Forms.ToolStripButton();
+            this.bucketStripButton = new System.Windows.Forms.ToolStripButton();
             this.workSpaceTabControl = new System.Windows.Forms.TabControl();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -290,7 +292,9 @@
             this.penToolStripMenuItem,
             this.eraserToolStripMenuItem,
             this.colorPickerToolStripMenuItem,
-            this.shapeToolStripMenuItem});
+            this.shapeToolStripMenuItem,
+            this.lineToolStripMenuItem,
+            this.bucketToolStripMenuItem});
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
             this.toolToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolToolStripMenuItem.Text = "Tools";
@@ -345,6 +349,20 @@
             this.shapeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.shapeToolStripMenuItem.Text = "Shape";
             // 
+            // lineToolStripMenuItem
+            // 
+            this.lineToolStripMenuItem.Name = "lineToolStripMenuItem";
+            this.lineToolStripMenuItem.ShortcutKeyDisplayString = "L";
+            this.lineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lineToolStripMenuItem.Text = "Line";
+            // 
+            // bucketToolStripMenuItem
+            // 
+            this.bucketToolStripMenuItem.Name = "bucketToolStripMenuItem";
+            this.bucketToolStripMenuItem.ShortcutKeyDisplayString = "F";
+            this.bucketToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bucketToolStripMenuItem.Text = "Bucket";
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -359,7 +377,7 @@
             // 
             this.zoomInToolStripMenuItem.Name = "zoomInToolStripMenuItem";
             this.zoomInToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl +";
-            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.zoomInToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zoomInToolStripMenuItem.Text = "Zoom In";
             this.zoomInToolStripMenuItem.Click += new System.EventHandler(this.ZoomInToolStripMenuItem_Click);
             // 
@@ -367,7 +385,7 @@
             // 
             this.zoomOutToolStripMenuItem.Name = "zoomOutToolStripMenuItem";
             this.zoomOutToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl -";
-            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.zoomOutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zoomOutToolStripMenuItem.Text = "Zoom Out";
             this.zoomOutToolStripMenuItem.Click += new System.EventHandler(this.ZoomOutToolStripMenuItem_Click);
             // 
@@ -375,7 +393,7 @@
             // 
             this.centerToolStripMenuItem.Name = "centerToolStripMenuItem";
             this.centerToolStripMenuItem.ShortcutKeyDisplayString = "Clrt Shift C";
-            this.centerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.centerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.centerToolStripMenuItem.Text = "Center";
             this.centerToolStripMenuItem.Click += new System.EventHandler(this.CenterToolStripMenuItem_Click);
             // 
@@ -1126,8 +1144,7 @@
             this.sToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.sToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.shapeStripButton,
-            this.lineStripButton2,
-            this.bucketStripButton});
+            this.lineStripButton});
             this.sToolStrip.Location = new System.Drawing.Point(0, 50);
             this.sToolStrip.Name = "sToolStrip";
             this.sToolStrip.Size = new System.Drawing.Size(182, 25);
@@ -1145,25 +1162,16 @@
             this.shapeStripButton.Text = "Shape";
             this.shapeStripButton.Click += new System.EventHandler(this.ShapeStripButton_Click);
             // 
-            // lineStripButton2
+            // lineStripButton
             // 
-            this.lineStripButton2.AutoSize = false;
-            this.lineStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.lineStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("lineStripButton2.Image")));
-            this.lineStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.lineStripButton2.Name = "lineStripButton2";
-            this.lineStripButton2.Size = new System.Drawing.Size(22, 21);
-            this.lineStripButton2.Text = "Line";
-            // 
-            // bucketStripButton
-            // 
-            this.bucketStripButton.AutoSize = false;
-            this.bucketStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bucketStripButton.Image = ((System.Drawing.Image)(resources.GetObject("bucketStripButton.Image")));
-            this.bucketStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bucketStripButton.Name = "bucketStripButton";
-            this.bucketStripButton.Size = new System.Drawing.Size(22, 21);
-            this.bucketStripButton.Text = "Bucket";
+            this.lineStripButton.AutoSize = false;
+            this.lineStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.lineStripButton.Image = global::DoAnLTTQ.Properties.Resources.line;
+            this.lineStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.lineStripButton.Name = "lineStripButton";
+            this.lineStripButton.Size = new System.Drawing.Size(22, 21);
+            this.lineStripButton.Text = "Line";
+            this.lineStripButton.Click += new System.EventHandler(this.LineStripButton_Click);
             // 
             // pToolStrip
             // 
@@ -1172,7 +1180,8 @@
             this.pToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.penStripButton,
             this.eraserStripButton,
-            this.pickerStripButton});
+            this.pickerStripButton,
+            this.bucketStripButton});
             this.pToolStrip.Location = new System.Drawing.Point(0, 25);
             this.pToolStrip.Name = "pToolStrip";
             this.pToolStrip.Size = new System.Drawing.Size(182, 25);
@@ -1213,6 +1222,17 @@
             this.pickerStripButton.Size = new System.Drawing.Size(22, 21);
             this.pickerStripButton.Text = "Picker";
             this.pickerStripButton.Click += new System.EventHandler(this.PickerStripButton_Click);
+            // 
+            // bucketStripButton
+            // 
+            this.bucketStripButton.AutoSize = false;
+            this.bucketStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bucketStripButton.Image = global::DoAnLTTQ.Properties.Resources.bucket;
+            this.bucketStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bucketStripButton.Name = "bucketStripButton";
+            this.bucketStripButton.Size = new System.Drawing.Size(22, 21);
+            this.bucketStripButton.Text = "Bucket";
+            this.bucketStripButton.Click += new System.EventHandler(this.BucketStripButton_Click);
             // 
             // workSpaceTabControl
             // 
@@ -1379,11 +1399,13 @@
         private System.Windows.Forms.ToolStripMenuItem mergeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem grayscaleToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton shapeStripButton;
-        private System.Windows.Forms.ToolStripButton lineStripButton2;
-        private System.Windows.Forms.ToolStripButton bucketStripButton;
+        private System.Windows.Forms.ToolStripButton lineStripButton;
         private System.Windows.Forms.ToolStripMenuItem transformToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dragToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem shapeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton bucketStripButton;
+        private System.Windows.Forms.ToolStripMenuItem lineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bucketToolStripMenuItem;
     }
 }

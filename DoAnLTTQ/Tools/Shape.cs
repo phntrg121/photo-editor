@@ -22,6 +22,7 @@ namespace DoAnLTTQ.Tools
         public Shape()
         {
             InitializeComponent();
+            Location = new Point(0, 20);
             radioButton1.Checked = true;
             this.Dock = DockStyle.Fill;
             Pen = new Pen(Color.Black, 5);
@@ -31,9 +32,11 @@ namespace DoAnLTTQ.Tools
             comboBox1.SelectedIndex = 0;
         }
 
+        public bool Drawed;
         public void GetLocation(PointF p)
         {
             startP = p;
+            Drawed = false;
         }
 
         public void DrawRect(Graphics g, PointF p)
@@ -46,11 +49,14 @@ namespace DoAnLTTQ.Tools
 
             Rect = new Rectangle(p1.X, p1.Y, size.Width, size.Height);
 
+            Drawed = true;
             Draw(g);
         }
 
         public void Draw(Graphics g)
         {
+            if (!Drawed) return;
+
             if (radioButton1.Checked)
             {
                 if (comboBox1.SelectedIndex == 0)

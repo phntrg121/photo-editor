@@ -81,8 +81,8 @@ namespace DoAnLTTQ
             Invalidate();
             if (Tools.Select.Selected)
             {
-                if (Tools.Tool == DoAnLTTQ.Tools.Tool.Select) SelectRectDisplay();
-                else if (Tools.Tool == DoAnLTTQ.Tools.Tool.Transform) TransformRectDisplay();
+                if (Tools.Tool == DoAnLTTQ.Tools.Tool.Transform) TransformRectDisplay();
+                else SelectRectDisplay();
             }
         }
 
@@ -116,6 +116,8 @@ namespace DoAnLTTQ
             gFinal.DrawImageUnscaled(Final, 0, 0);
             gFinal.ResetTransform();
         }
+
+        public Bitmap CurrentLayerImg { get; set; }
 
         public bool CurrentVisible { get; set; }
         public Image ProcessBoxImage
@@ -293,6 +295,29 @@ namespace DoAnLTTQ
                         Tools.Shape.GetLocation(ScaledPoint(e.Location));
                     }
                     break;
+                case DoAnLTTQ.Tools.Tool.Line:
+                    {
+                        Tools.Line.GetLocation(ScaledPoint(e.Location));
+                    }
+                    break;
+                case DoAnLTTQ.Tools.Tool.Bucket:
+                    {
+                        Bitmap bmp;
+
+                        if (Tools.Select.Selected)
+                        {
+                            bmp = (Parent as WorkSpace).LayerContainer.Current.Layer.Image.Clone(Tools.Select.FixedRect, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                            Tools.Bucket.Fill(ScaledPoint(e.Location), bmp, Tools.Select.Rect.X, Tools.Select.Rect.Y);
+                        }
+                        else
+                        {
+                            bmp = (Bitmap)(Parent as WorkSpace).LayerContainer.Current.Layer.Image.Clone();
+                            Tools.Bucket.Fill(ScaledPoint(e.Location), bmp);
+                        }
+
+                        bmp.Dispose();
+                    }
+                    break;
                 default:
                     break;
             }
@@ -373,6 +398,14 @@ namespace DoAnLTTQ
                             gProcess.ResetTransform();
                         }
                         break;
+                    case DoAnLTTQ.Tools.Tool.Line:
+                        {
+                            gProcess.Clear(Color.Transparent);
+                            gProcess.MultiplyTransform(ScaleMatrix);
+                            Tools.Line.DrawLine(gProcess, ScaledPoint(e.Location));
+                            gProcess.ResetTransform();
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -391,6 +424,16 @@ namespace DoAnLTTQ
 
             if(Tools.Tool == DoAnLTTQ.Tools.Tool.Shape)
                 Tools.Shape.Draw(g);
+
+            if (Tools.Tool == DoAnLTTQ.Tools.Tool.Line)
+                Tools.Line.Draw(g);
+
+            if (Tools.Tool == DoAnLTTQ.Tools.Tool.Bucket)
+            {
+                if (Tools.Select.Selected)
+                    Tools.Bucket.DrawFill(g, Tools.Select.Rect.X, Tools.Select.Rect.Y);
+                else Tools.Bucket.DrawFill(g);
+            }
 
             if (Tools.Tool != DoAnLTTQ.Tools.Tool.Transform || !Tools.Select.Selected)
                 gProcess.Clear(Color.Transparent);
