@@ -11,11 +11,6 @@ using System.Drawing.Drawing2D;
 
 namespace DoAnLTTQ
 {
-    public enum Tool
-    {
-        Pen, Eraser, Picker, Select, Drag, Transform
-    }
-
     public partial class DrawSpace : UserControl
     {
         private Bitmap processing;
@@ -86,8 +81,8 @@ namespace DoAnLTTQ
             Invalidate();
             if (Tools.Select.Selected)
             {
-                if (Tools.Tool == Tool.Select) SelectRectDisplay();
-                else if (Tools.Tool == Tool.Transform) TransformRectDisplay();
+                if (Tools.Tool == DoAnLTTQ.Tools.Tool.Transform) TransformRectDisplay();
+                else SelectRectDisplay();
             }
         }
 
@@ -121,6 +116,8 @@ namespace DoAnLTTQ
             gFinal.DrawImageUnscaled(Final, 0, 0);
             gFinal.ResetTransform();
         }
+
+        public Bitmap CurrentLayerImg { get; set; }
 
         public bool CurrentVisible { get; set; }
         public Image ProcessBoxImage
@@ -236,18 +233,18 @@ namespace DoAnLTTQ
         {
             switch (Tools.Tool)
             {
-                case Tool.Pen:
+                case DoAnLTTQ.Tools.Tool.Pen:
                     {
                         p1 = ScaledPoint(e.Location);
                         Tools.Pen.GetLocation(ScaledPoint(e.Location));
                     }
                     break;
-                case Tool.Picker:
+                case DoAnLTTQ.Tools.Tool.Picker:
                     {
                         Tools.Picker.GetColor(Final, ScaledPoint(e.Location));
                     }
                     break;
-                case Tool.Eraser:
+                case DoAnLTTQ.Tools.Tool.Eraser:
                     {
                         p1 = ScaledPoint(e.Location);
                         Tools.Eraser.GetLocation(ScaledPoint(e.Location));
@@ -256,12 +253,12 @@ namespace DoAnLTTQ
                         gFinal.Clear(Color.Transparent);
                     }
                     break;
-                case Tool.Drag:
+                case DoAnLTTQ.Tools.Tool.Drag:
                     {
                         Tools.Drag.GetLocation(ref e);
                     }
                     break;
-                case Tool.Select:
+                case DoAnLTTQ.Tools.Tool.Select:
                     {
                         if (!Tools.Select.Selected || !Tools.Select.CheckInRect(ScaledPoint(e.Location)))
                         {
@@ -275,7 +272,7 @@ namespace DoAnLTTQ
                         }
                     }
                     break;
-                case Tool.Transform:
+                case DoAnLTTQ.Tools.Tool.Transform:
                     {
                         if (Tools.Select.Selected)
                         {
@@ -293,6 +290,34 @@ namespace DoAnLTTQ
                         }
                     }
                     break;
+                case DoAnLTTQ.Tools.Tool.Shape:
+                    {
+                        Tools.Shape.GetLocation(ScaledPoint(e.Location));
+                    }
+                    break;
+                case DoAnLTTQ.Tools.Tool.Line:
+                    {
+                        Tools.Line.GetLocation(ScaledPoint(e.Location));
+                    }
+                    break;
+                case DoAnLTTQ.Tools.Tool.Bucket:
+                    {
+                        Bitmap bmp;
+
+                        if (Tools.Select.Selected)
+                        {
+                            bmp = (Parent as WorkSpace).LayerContainer.Current.Layer.Image.Clone(Tools.Select.FixedRect, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                            Tools.Bucket.Fill(ScaledPoint(e.Location), bmp, Tools.Select.Rect.X, Tools.Select.Rect.Y);
+                        }
+                        else
+                        {
+                            bmp = (Bitmap)(Parent as WorkSpace).LayerContainer.Current.Layer.Image.Clone();
+                            Tools.Bucket.Fill(ScaledPoint(e.Location), bmp);
+                        }
+
+                        bmp.Dispose();
+                    }
+                    break;
                 default:
                     break;
             }
@@ -308,7 +333,7 @@ namespace DoAnLTTQ
             {
                 switch (Tools.Tool)
                 {
-                    case Tool.Pen:
+                    case DoAnLTTQ.Tools.Tool.Pen:
                         {
                             p2 = ScaledPoint(e.Location);
                             Tools.Pen.Draw(g, ScaledPoint(e.Location));
@@ -317,7 +342,7 @@ namespace DoAnLTTQ
                             p1 = p2;
                         }
                         break;
-                    case Tool.Eraser:
+                    case DoAnLTTQ.Tools.Tool.Eraser:
                         {
                             p2 = ScaledPoint(e.Location);
                             Tools.Eraser.Draw(g, ScaledPoint(e.Location));
@@ -331,12 +356,12 @@ namespace DoAnLTTQ
                             p1 = p2;
                         }
                         break;
-                    case Tool.Drag:
+                    case DoAnLTTQ.Tools.Tool.Drag:
                         {
                             Tools.Drag.Dragging(this, e);
                         }
                         break;
-                    case Tool.Select:
+                    case DoAnLTTQ.Tools.Tool.Select:
                         {
                             if (!Tools.Select.Selected || !Tools.Select.CheckInRect(ScaledPoint(e.Location)))
                             {
@@ -352,7 +377,7 @@ namespace DoAnLTTQ
                             }
                         }
                         break;
-                    case Tool.Transform:
+                    case DoAnLTTQ.Tools.Tool.Transform:
                         {
                             if (Tools.Select.Selected)
                             {
@@ -363,6 +388,22 @@ namespace DoAnLTTQ
                                 Tools.Transform.Translate(p);
                                 TransformRectDisplay();
                             }
+                        }
+                        break;
+                    case DoAnLTTQ.Tools.Tool.Shape:
+                        {
+                            gProcess.Clear(Color.Transparent);
+                            gProcess.MultiplyTransform(ScaleMatrix);
+                            Tools.Shape.DrawRect(gProcess, ScaledPoint(e.Location));
+                            gProcess.ResetTransform();
+                        }
+                        break;
+                    case DoAnLTTQ.Tools.Tool.Line:
+                        {
+                            gProcess.Clear(Color.Transparent);
+                            gProcess.MultiplyTransform(ScaleMatrix);
+                            Tools.Line.DrawLine(gProcess, ScaledPoint(e.Location));
+                            gProcess.ResetTransform();
                         }
                         break;
                     default:
@@ -378,9 +419,23 @@ namespace DoAnLTTQ
                 gTop.Clear(Color.Transparent);
             else Tools.Select.Movable = false;
 
-            Tools.Transform.StartPoint = Tools.Transform.Rect.Location;
+            if (Tools.Tool == DoAnLTTQ.Tools.Tool.Transform)
+                Tools.Transform.StartPoint = Tools.Transform.Rect.Location;
 
-            if (Tools.Tool != Tool.Transform || !Tools.Select.Selected)
+            if(Tools.Tool == DoAnLTTQ.Tools.Tool.Shape)
+                Tools.Shape.Draw(g);
+
+            if (Tools.Tool == DoAnLTTQ.Tools.Tool.Line)
+                Tools.Line.Draw(g);
+
+            if (Tools.Tool == DoAnLTTQ.Tools.Tool.Bucket)
+            {
+                if (Tools.Select.Selected)
+                    Tools.Bucket.DrawFill(g, Tools.Select.Rect.X, Tools.Select.Rect.Y);
+                else Tools.Bucket.DrawFill(g);
+            }
+
+            if (Tools.Tool != DoAnLTTQ.Tools.Tool.Transform || !Tools.Select.Selected)
                 gProcess.Clear(Color.Transparent);
         }
 

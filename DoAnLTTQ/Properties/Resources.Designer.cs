@@ -63,6 +63,16 @@ namespace DoAnLTTQ.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bucket {
+            get {
+                object obj = ResourceManager.GetObject("bucket", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap clear_L {
             get {
                 object obj = ResourceManager.GetObject("clear_L", resourceCulture);
@@ -126,6 +136,16 @@ namespace DoAnLTTQ.Properties {
         internal static System.Drawing.Bitmap hand {
             get {
                 object obj = ResourceManager.GetObject("hand", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap line {
+            get {
+                object obj = ResourceManager.GetObject("line", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -236,6 +256,16 @@ namespace DoAnLTTQ.Properties {
         internal static System.Drawing.Bitmap select {
             get {
                 object obj = ResourceManager.GetObject("select", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shape {
+            get {
+                object obj = ResourceManager.GetObject("shape", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
