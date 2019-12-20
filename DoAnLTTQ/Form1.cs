@@ -765,6 +765,20 @@ namespace DoAnLTTQ
 
         private void SharpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            using (Forms.Sharpen sp = new Forms.Sharpen(this, Current.LayerContainer))
+            {
+                if (!tools.Select.Selected)
+                    sp.Image = Current.LayerContainer.Current.Layer.Image;
+                else
+                    sp.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.FixedRect, Current.BmpPixelFormat);
+
+                if (sp.ShowDialog() == DialogResult.OK)
+                {
+                    Current.DrawSpace.ProcessBoxImage = sp.Image;
+                    DSProcessUpdate(HistoryEvent.DrawFilter);
+                    DSUpdate();
+                }
+            }
         }
 
         #endregion
