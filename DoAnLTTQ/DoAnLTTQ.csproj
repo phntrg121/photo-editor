@@ -145,6 +145,7 @@
       <DependentUpon>LayerRow.cs</DependentUpon>
     </Compile>
     <Compile Include="Layer.cs" />
+    <Compile Include="Other\ToolStripColorTable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Bucket.cs">
@@ -208,6 +209,9 @@
     <Compile Include="WorkSpace.Designer.cs">
       <DependentUpon>WorkSpace.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="DrawSpace.resx">
       <DependentUpon>DrawSpace.cs</DependentUpon>
     </EmbeddedResource>
@@ -266,6 +270,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Tools\Bucket.resx">
+      <DependentUpon>Bucket.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tools\Drag.resx">
       <DependentUpon>Drag.cs</DependentUpon>
     </EmbeddedResource>

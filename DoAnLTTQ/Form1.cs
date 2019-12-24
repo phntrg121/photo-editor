@@ -24,6 +24,8 @@ namespace DoAnLTTQ
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ToolStripManager.Renderer = new ToolStripProfessionalRenderer(new Other.ToolStripColorTable());
+
             LayerMenuStripEnable(false);
             ColorMenuStripEnable(false);
             FilterMenuStripEnable(false);
@@ -73,7 +75,7 @@ namespace DoAnLTTQ
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
-            {   
+            {
                 //
                 //file
                 //
