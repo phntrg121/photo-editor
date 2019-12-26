@@ -58,7 +58,7 @@
             // 
             // sizeBar
             // 
-            this.sizeBar.BackColor = System.Drawing.Color.Gainsboro;
+            this.sizeBar.BackColor = System.Drawing.Color.Gray;
             this.sizeBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sizeBar.Location = new System.Drawing.Point(60, 13);
             this.sizeBar.Name = "sizeBar";
@@ -70,7 +70,7 @@
             // 
             // opacityBar
             // 
-            this.opacityBar.BackColor = System.Drawing.Color.Gainsboro;
+            this.opacityBar.BackColor = System.Drawing.Color.Gray;
             this.opacityBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.opacityBar.Location = new System.Drawing.Point(60, 35);
             this.opacityBar.Name = "opacityBar";

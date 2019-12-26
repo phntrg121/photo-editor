@@ -46,6 +46,7 @@
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(3, 29);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(165, 77);
@@ -77,6 +78,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Border",
@@ -119,7 +121,7 @@
             // 
             // sizeBar
             // 
-            this.sizeBar.BackColor = System.Drawing.Color.Gainsboro;
+            this.sizeBar.BackColor = System.Drawing.Color.Gray;
             this.sizeBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sizeBar.Location = new System.Drawing.Point(60, 13);
             this.sizeBar.Name = "sizeBar";

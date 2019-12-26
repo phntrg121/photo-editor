@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace DoAnLTTQ
 {
@@ -24,7 +25,7 @@ namespace DoAnLTTQ
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ToolStripManager.Renderer = new ToolStripProfessionalRenderer(new Other.ToolStripColorTable());
+            ToolStripManager.Renderer = new DoAnLTTQ.Other.MyToolStripRender(new Other.ToolStripColorTable());
 
             LayerMenuStripEnable(false);
             ColorMenuStripEnable(false);
@@ -37,19 +38,23 @@ namespace DoAnLTTQ
             propertiesPanel.Controls.Add(tools.Current);
             hexCode.Text = ColorTranslator.ToHtml(mainColorPic.BackColor);
         }
+
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
-            workSpaceTabControl.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
-            workSpaceTabControl.Height = this.Height - bottomPanel.Height - statusStrip1.Height - menuStrip.Height - 39;
+            workSpaceTabControl.Width = this.Width - rightPanel.Width - leftPanel.Width;
+            workSpaceTabControl.Height = this.Height - bottomPanel.Height - statusStrip1.Height - menuStrip.Height;
             layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 26;
             if (Current != null)
             {
                 Current.LayerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 7;
             }
             bottomPanel.Location = new Point(190, workSpaceTabControl.Location.Y + workSpaceTabControl.Height);
-            bottomPanel.Width = this.Width - rightPanel.Width - leftPanel.Width - 16;
+            bottomPanel.Width = this.Width - rightPanel.Width - leftPanel.Width;
             toolPanel.Height = statusStrip1.Location.Y - toolPanel.Location.Y - 27;
             propertiesPanel.Height = statusStrip1.Location.Y - propertiesPanel.Location.Y - 226;
+            ExitBtn.Left = this.Width - ExitBtn.Width;
+            RestoreBtn.Left = ExitBtn.Left - RestoreBtn.Width;
+            MinMaxBtn.Left = RestoreBtn.Left - MinMaxBtn.Width;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -66,6 +71,23 @@ namespace DoAnLTTQ
         private void NoKeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
+        }
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private void Form1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
 
         #endregion
@@ -1411,7 +1433,7 @@ namespace DoAnLTTQ
                 label10.Text = ((int)opacityVal).ToString();
                 int w = (int)Math.Ceiling(((float)opacityVal / 100) * opacityBar.Width);
                 g.Clear(opacityBar.BackColor);
-                g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, opacityBar.Height));
+                g.FillRectangle(Brushes.Gainsboro, new Rectangle(0, 0, w, opacityBar.Height));
             }
         }
 
@@ -1556,5 +1578,24 @@ namespace DoAnLTTQ
 
         #endregion
 
+        private void MinMaxBtn_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void RestoreBtn_Click(object sender, EventArgs e)
+        {
+            if(this.WindowState == FormWindowState.Maximized)
+            {
+
+                this.WindowState = FormWindowState.Normal;
+            }
+            else this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            ExitToolStripMenuItem_Click(null, null);
+        }
     }
 }

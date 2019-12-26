@@ -17,7 +17,6 @@ namespace DoAnLTTQ.Other
         public override Color MenuBorder => Color.Gray;
         public override Color MenuItemBorder => Color.Transparent;
         public override Color ToolStripDropDownBackground => Color.DimGray;
-        public override Color ToolStripBorder => Color.DimGray;
         public override Color ToolStripContentPanelGradientBegin => Color.Red;
         public override Color ButtonCheckedGradientBegin => Color.Gray;
         public override Color ButtonCheckedGradientMiddle => Color.Gray;
@@ -31,5 +30,26 @@ namespace DoAnLTTQ.Other
         public override Color ButtonPressedGradientEnd => Color.Gray;
         public override Color MenuItemSelectedGradientBegin => Color.Gray;
         public override Color MenuItemSelectedGradientEnd => Color.Gray;
+        public override Color ImageMarginGradientBegin => Color.FromArgb(96, 96, 96);
+        public override Color ImageMarginGradientMiddle => Color.FromArgb(96, 96, 96);
+        public override Color ImageMarginGradientEnd => Color.FromArgb(96, 96, 96);
     }
+
+    public class MyToolStripRender : ToolStripProfessionalRenderer
+    {
+        public MyToolStripRender(ToolStripColorTable t) : base(t)
+        { }
+
+        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+        {
+            if (e.Item.Text == "") return;
+            base.OnRenderMenuItemBackground(e);
+        }
+
+        protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+        {
+            return;
+        }
+    }
+
 }
