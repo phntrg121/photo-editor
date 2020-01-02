@@ -71,7 +71,7 @@ namespace DoAnLTTQ.Tools
         {
             int w = (int)Math.Ceiling(((float)val / 100) * sender.Width);
             g.Clear(sender.BackColor);
-            g.FillRectangle(Brushes.Gray, new Rectangle(0, 0, w, sender.Height));
+            g.FillRectangle(Brushes.Gainsboro, new Rectangle(0, 0, w, sender.Height));
             sender.Invalidate();
         }
 

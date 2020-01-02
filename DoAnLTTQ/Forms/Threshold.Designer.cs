@@ -50,6 +50,8 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Location = new System.Drawing.Point(306, 51);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
@@ -61,6 +63,8 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Location = new System.Drawing.Point(225, 51);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
@@ -85,6 +89,7 @@
             this.levelTrack.Location = new System.Drawing.Point(50, 18);
             this.levelTrack.Maximum = 255;
             this.levelTrack.Name = "levelTrack";
+            this.levelTrack.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.levelTrack.Size = new System.Drawing.Size(300, 45);
             this.levelTrack.TabIndex = 5;
             this.levelTrack.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -95,6 +100,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(393, 83);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
@@ -102,6 +108,8 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.levelTrack);
+            this.ForeColor = System.Drawing.Color.White;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Threshold";

@@ -20,20 +20,32 @@ namespace DoAnLTTQ.Tools
             InitializeComponent();
             Color = Color.Black;
         }
-
+        bool fill = false;
         public void Fill(PointF p, Bitmap bmp, int x = 0, int y = 0)
         {
-            basecolor = bmp.GetPixel((int)p.X - x, (int)p.Y - y);
-            fillpart = new Bitmap(bmp.Width, bmp.Height);
+            try
+            {
 
-            FloodFill(fillpart, bmp , new Point((int)p.X - x, (int)p.Y - y));
+                basecolor = bmp.GetPixel((int)p.X - x, (int)p.Y - y);
+                fillpart = new Bitmap(bmp.Width, bmp.Height);
+                fill = true;
+                FloodFill(fillpart, bmp, new Point((int)p.X - x, (int)p.Y - y));
+            }
+            catch
+            {
+
+            }
 
         }
 
         public void DrawFill(Graphics g , int x = 0, int y =0)
         {
-            g.DrawImageUnscaled(fillpart, x, y);
-            fillpart.Dispose();
+            if (fill)
+            {
+                g.DrawImageUnscaled(fillpart, x, y);
+                fillpart.Dispose();
+                fill = false;
+            }
         }
 
         bool Match(Color c1, Color c2)

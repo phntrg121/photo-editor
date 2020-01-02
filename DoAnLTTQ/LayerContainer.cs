@@ -179,9 +179,9 @@ namespace DoAnLTTQ
                 int offset = (layers.Count - 1 - index) * (row.Size.Height + 3);
                 row.Location = new Point(2, 2 + offset);
                 if (index == current)
-                    row.BackColor = Color.LightBlue;
+                    row.BackColor = Color.DarkGray;
                 else
-                    row.BackColor = Color.White;
+                    row.BackColor = Color.Gray;
             }
             panel.Refresh();
         }

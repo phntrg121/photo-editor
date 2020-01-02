@@ -58,7 +58,7 @@
             // 
             // sizeBar
             // 
-            this.sizeBar.BackColor = System.Drawing.Color.Gainsboro;
+            this.sizeBar.BackColor = System.Drawing.Color.Gray;
             this.sizeBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sizeBar.Location = new System.Drawing.Point(60, 13);
             this.sizeBar.Name = "sizeBar";
@@ -70,7 +70,7 @@
             // 
             // opacityBar
             // 
-            this.opacityBar.BackColor = System.Drawing.Color.Gainsboro;
+            this.opacityBar.BackColor = System.Drawing.Color.Gray;
             this.opacityBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.opacityBar.Location = new System.Drawing.Point(60, 35);
             this.opacityBar.Name = "opacityBar";
@@ -102,13 +102,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.opacityBar);
             this.Controls.Add(this.sizeBar);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.ForeColor = System.Drawing.Color.White;
             this.Name = "PenTool";
             this.Size = new System.Drawing.Size(174, 150);
             ((System.ComponentModel.ISupportInitialize)(this.sizeBar)).EndInit();
