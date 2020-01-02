@@ -46,7 +46,7 @@ namespace DoAnLTTQ
             layerPanel.Height = statusStrip1.Location.Y - layerPanel.Location.Y - 26;
             if (Current != null)
             {
-                Current.LayerContainer.Height = layerPanel.Height - panel5.Height - layerToolStrip.Height - 7;
+                Current.LayerContainer.Height = layerPanel.Height - blendPanel.Height - layerToolStrip.Height - 7;
             }
             bottomPanel.Location = new Point(190, workSpaceTabControl.Location.Y + workSpaceTabControl.Height);
             bottomPanel.Width = this.Width - rightPanel.Width - leftPanel.Width;
@@ -57,17 +57,6 @@ namespace DoAnLTTQ
             MinMaxBtn.Left = RestoreBtn.Left - MinMaxBtn.Width;
         }
 
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            if (Current!= null && !Current.Saved)
-            {
-                DialogResult dialog = MessageBox.Show("Your work haven't saved yet.\nDo you want to save it", "Photo Editor",
-                                                       MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (dialog == DialogResult.Yes)
-                    SaveToolStripMenuItem_Click(this, e);
-            }
-        }
         private void NoKeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
@@ -88,6 +77,26 @@ namespace DoAnLTTQ
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
+        }
+
+        private void MinMaxBtn_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void RestoreBtn_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized)
+            {
+
+                this.WindowState = FormWindowState.Normal;
+            }
+            else this.WindowState = FormWindowState.Maximized;
+        }
+
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            ExitToolStripMenuItem_Click(null, null);
         }
 
         #endregion
@@ -176,32 +185,39 @@ namespace DoAnLTTQ
                 //layer
                 //
                 case (Keys.Control | Keys.Shift | Keys.N):
-                    NewLayerToolStripMenuItem_Click(newLayerToolStripMenuItem, null);
+                    if (layerPanel.Enabled)
+                        NewLayerToolStripMenuItem_Click(newLayerToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.D):
-                    DeleteLayerToolStripMenuItem_Click(deleteLayerToolStripMenuItem, null);
+                    if (layerPanel.Enabled)
+                        DeleteLayerToolStripMenuItem_Click(deleteLayerToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.Delete):
-                    DeleteLayerToolStripMenuItem_Click(deleteLayerToolStripMenuItem, null);
+                    if (layerPanel.Enabled)
+                        DeleteLayerToolStripMenuItem_Click(deleteLayerToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.R):
-                    RenameToolStripMenuItem_Click(renameToolStripMenuItem, null);
+                    if (layerPanel.Enabled)
+                        RenameToolStripMenuItem_Click(renameToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.J):
-                    DuplicateToolStripMenuItem_Click(duplicateToolStripMenuItem, null);
+                    if (layerPanel.Enabled)
+                        DuplicateToolStripMenuItem_Click(duplicateToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.K):
-                    MergeToolStripMenuItem_Click(mergeToolStripMenuItem, null);
+                    if (layerPanel.Enabled)
+                        MergeToolStripMenuItem_Click(mergeToolStripMenuItem, null);
                     return true;
                 case (Keys.Control | Keys.Shift | Keys.F):
-                    FillToolStripMenuItem_Click(fillToolStripMenuItem, null);
+                    if (layerPanel.Enabled)
+                        FillToolStripMenuItem_Click(fillToolStripMenuItem, null);
                     return true;
                 case (Keys.Up):
-                    if (upLStripButton.Enabled)
+                    if (upLStripButton.Enabled && layerPanel.Enabled)
                         UpLStripButton_Click(upLStripButton, null);
                     return true;
                 case (Keys.Down):
-                    if (downLStripButton.Enabled)
+                    if (downLStripButton.Enabled && layerPanel.Enabled)
                         DownLStripButton_Click(downLStripButton, null);
                     return true;
 
@@ -334,6 +350,7 @@ namespace DoAnLTTQ
                     saveToolStripMenuItem.Enabled = false;
                     saveAsToolStripMenuItem.Enabled = false;
                     Current.FileName = Current.FilePath = "";
+                    workSpaceTabControl.Visible = false;
                     Current = null;
                 }
                 else Current = (WorkSpace)workSpaceTabControl.SelectedTab.Controls[0];
@@ -342,6 +359,11 @@ namespace DoAnLTTQ
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int tabcount = workSpaceTabControl.TabPages.Count;
+            for (int i = 0; i < tabcount; i++)
+            {
+                CloseToolStripMenuItem_Click(null, null);
+            }
             this.Close();
         }
 
@@ -787,29 +809,12 @@ namespace DoAnLTTQ
             }
         }
 
-        private void SharpenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (Forms.Sharpen sp = new Forms.Sharpen(this, Current.LayerContainer))
-            {
-                if (!tools.Select.Selected)
-                    sp.Image = Current.LayerContainer.Current.Layer.Image;
-                else
-                    sp.Image = Current.LayerContainer.Current.Layer.Image.Clone(tools.Select.FixedRect, Current.BmpPixelFormat);
-
-                if (sp.ShowDialog() == DialogResult.OK)
-                {
-                    Current.DrawSpace.ProcessBoxImage = sp.Image;
-                    DSProcessUpdate(HistoryEvent.DrawFilter);
-                    DSUpdate();
-                }
-            }
-        }
-
         #endregion
 
         #region Help menu
         private void AboutPhotoEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Nothing to see here", "Notice");
         }
 
         #endregion
@@ -825,10 +830,13 @@ namespace DoAnLTTQ
             FilterMenuStripEnable(true);
             ViewMenuStripEnable(true);
 
+            if (!workSpaceTabControl.Visible)
+                workSpaceTabControl.Visible = true;
+
             if (Current != null)
             {
                 layerPanel.Controls.Remove(Current.LayerContainer);
-                historyTabPage.Controls.Remove(Current.History);
+                historyPanel.Controls.Remove(Current.History);
             }
 
             DrawSpace drawSpace = new DrawSpace();
@@ -838,10 +846,10 @@ namespace DoAnLTTQ
             layerContainer.AddLayerRow(ref firstLayer);
             layerContainer.ScaleMatrix = drawSpace.ScaleMatrix;
 
-            if (historyTabPage.Controls.Count != 0)
-                historyTabPage.Controls.Clear();
+            if (historyPanel.Controls.Count != 0)
+                historyPanel.Controls.Clear();
             History history = new History();
-            historyTabPage.Controls.Add(history);
+            historyPanel.Controls.Add(history);
 
             WorkSpace newWS = new WorkSpace(drawSpace, layerContainer, history);
             TabPage tab = new TabPage();
@@ -863,13 +871,13 @@ namespace DoAnLTTQ
                 return;
 
             layerPanel.Controls.Remove(Current.LayerContainer);
-            historyTabPage.Controls.Remove(Current.History);
+            historyPanel.Controls.Remove(Current.History);
             Current = (WorkSpace)workSpaceTabControl.SelectedTab.Controls[0];
             layerPanel.Controls.Add(Current.LayerContainer);
             LayerButtonCheck();
             opacityVal = Current.LayerContainer.Current.Layer.Opacity;
             OpacityBarUpdate();
-            historyTabPage.Controls.Add(Current.History);
+            historyPanel.Controls.Add(Current.History);
             saveToolStripMenuItem.Enabled = !Current.Saved;
             BlendModeBoxUpdate(Current.LayerContainer.Current.Blend);
         }
@@ -1037,9 +1045,9 @@ namespace DoAnLTTQ
             greenVal = mainColorPic.BackColor.G;
             blueVal = mainColorPic.BackColor.B;
 
-            BarUpdate(ref redBar, Color.Red, redVal);
-            BarUpdate(ref greenBar, Color.Green, greenVal);
-            BarUpdate(ref blueBar, Color.Blue, blueVal);
+            BarUpdate(ref redBar, Color.Pink, redVal);
+            BarUpdate(ref greenBar, Color.PaleGreen, greenVal);
+            BarUpdate(ref blueBar, Color.LightSteelBlue, blueVal);
 
             label7.Text = redVal.ToString();
             label8.Text = greenVal.ToString();
@@ -1578,24 +1586,5 @@ namespace DoAnLTTQ
 
         #endregion
 
-        private void MinMaxBtn_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-        }
-
-        private void RestoreBtn_Click(object sender, EventArgs e)
-        {
-            if(this.WindowState == FormWindowState.Maximized)
-            {
-
-                this.WindowState = FormWindowState.Normal;
-            }
-            else this.WindowState = FormWindowState.Maximized;
-        }
-
-        private void ExitBtn_Click(object sender, EventArgs e)
-        {
-            ExitToolStripMenuItem_Click(null, null);
-        }
     }
 }
